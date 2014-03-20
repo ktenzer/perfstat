@@ -1,0 +1,71 @@
+1.0
+2/21/03		First release of Win32 Client for PerfMon
+
+1.10		
+2/22/03		Enabled perfctl to run as a service (perfctl.pl)
+2/22/03		Compiled perf.pl to run as native win32 exe
+		(perf.pl)
+
+1.20
+2/23/03		Added metric to gather cpu statistics (cpu.pl)
+2/25/03		Added metric to gather disk statistics (fs.pl)
+2/25/03		Added metric to gather memory statistics
+		(memory.pl)
+2/26/03		Added metric to gather tcp statistics (tcp.pl)
+2/26/03		Added metric to gather socket statistics
+		(socket.pl)
+
+1.30
+3/02/03		Created MSI database for installation
+3/03/03		Created MSI installation for perfmon
+		Win32 client
+
+1.31
+3/15/03		Fixed bug in tcp.pl that allows for multiple 
+		instances of the same ethenet adapter
+		(tcp.pl)
+3/18/03		Copiled all binaries to enable greater
+		application independence
+
+1.40
+3/22/03		Created Win32 GUI to allow easy Perfmon
+		configuration (perfconfig.pl)
+3/24/03		Fixed bug in disk counters (fs.pl)
+3/26/03		Integrated PDK API to dynamically configure
+		path for all binaries
+
+1.41
+3/28/03		Added ability to stop and start Perfmon service
+		through perfconfig gui (perfoncifg.pl)
+4/1/03		Added listbox to make configuring metrics
+		(perfconfig.pl)
+4/1/03		Added add and delete buttons to metrics
+		listbox (perfconfig.pl)	
+
+1.45
+4/25/03		Fixed bug when addind/deleting services
+		(perfconfig.pl)
+5/15/03		Added more metrics to cpu, memory, fs, tcp,
+		and procs services
+6/01/03		Added new service to collect uptime metrics
+		(uptime.pl)
+6/22/03		Improved performance by only initiating one
+		performance counter instance upon startup
+		(perfctl.pl)
+7/1/03		Improved performance by adding client connection
+		code (perfctl.pl)
+7/11/03		Added scheduler to allow service run intervals to
+		be controlled (perfctl.pl)
+7/12/03		Added ability to add user created extension scripts 
+		utilizing new scheduler functionality (perfctl.pl)
+7/19/03		Added support to handle counter data (perfctl.pl)
+
+1.46
+11/10/03	Combined cperfstat client and scheduler (perfctl.pl)
+11/16/03	Created io service for io related metrics (perfctl.pl)
+
+1.51
+1/20/05		Updated fs and mem services to include new metrics
+1/20/05		Fixed bug with directory mounted file systems
+
+			

@@ -1,0 +1,42 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The perfstat application can send smtp alerts. Any device that can receive and email can also receive an alert from the perfstat application. Alerts are enabled by event status in the perf-conf and further configured in the notify-rules file. This allows you to configure alerts both globaly and at a host/service level.</p>
+		<p><b>Enable Events</b></p>
+		<p>1) Ensure EVENTLOG is enabled in perf-conf and set to &quot;Y&quot; by running the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -list</p>
+		<p>2) To change any of the perf-conf settings run the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -server</p>
+		<p>Note: if you are logged in as root you will need to the &quot;-root&quot; flag.  You can also simply cat the /perfhome/etc/perf-conf file.</p>
+		<p>3) Ensure service is not disabled in the /perfhome/etc/events-disable configuration file.</p>
+		<p><b>Enable Global Alerts</b></p>
+		<p>1) Ensure EMAIL and one of the email status types is enabled and set to &quot;Y&quot; in the perf-conf file by running the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -list</p>
+		<p>Note: at a minimum you must enable EMAIL and EMAIL_ALL, or EMAIL_CRIT, or EMAIL_WARN, or EMAIL_NOSTATUS.</p>
+		<p>2) To change any of the perf-conf settings run the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -server</p>
+		<p>Note: if you are logged in as root you will need to the &quot;-root&quot; flag. You can also simply cat the /perfhome/etc/perf-conf file.</p>
+		<p>3) If you make any changes to the perf-conf you must restart perfstat by running the following command:</p>
+		<p>/perfhome/perf.sh restart</p>
+		<p><b>Configure notify-rules file</b></p>
+		<p>In order for alerts to be sent you must configure notify rules.  The rules are a collection of hosts, hours, days, services, and email addresses.  When a rule is matched an alert is sent to the email addresses on that rule.</p>
+		<p>1) Using an editor such as vi open the /perfhome/etc/notify-rules file.</p>
+		<p>2) Add a rule using the template within the file.</p>
+		<p>Notification rules use the following format:</p>
+		<p>&lt;hostname&gt;:&lt;comma separated hour list&gt;:&lt;comma separeated day list&gt;:&lt;comma separated service list&gt;:comma separated email list&gt;</p>
+		<p>Hostname - name of the client you are configuring alerts for.</p>
+		<p>Hour List - Hours when alerts can be sent (separated by commas).  If you wanted to send alerts only between 8am-10am and 8pm-10pm it would be as follows: 8-10,20-22.  The &quot;*&quot; wildcard can be used for every hour.</p>
+		<p>Day List - Days of the month when alerts can be sent (separated by commas).  If you wanted to send alerts only on the 5th and 10th-15th of every month it would be as follows: 5,10-15.  The &quot;*&quot; wildcard can be used for all days.</p>
+		<p>Service List - Services you want to send alerts for (separated by commas).  If you wanted to send alerts for only cpu, mem, and io it would be as follows: cpu,mem,io.  The &quot;*&quot; wildcard can be used for all services.</p>
+		<p>Email List - List of email addresses to send alerts to (separated by commas).  If you wanted to send alerts to myemail1@mydomain.com and myemail2@mydomain.com it would be as follows: myemail1@mydomain.com,myemail2@mydomain.com</p>
+		<p>Note: a restart of the perfstat application is not needed when updating notify-rules.</p>
+	</body>
+
+</html>

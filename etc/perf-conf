@@ -1,0 +1,55 @@
+# perf-conf
+#
+# This is the main configuration file for configuring
+# the PerfServer. You can also configure email alerting,
+# event logging, and the PerfClient.
+
+# Global Settings
+PERFHOME=/perfstat/dev/1.52/server
+USER=pmdev
+GROUP=pmgroup
+VER=1.52
+DEBUG=0
+
+# PerfServer Settings
+SERVER=Y
+SERVERIP=192.168.1.100
+SERVERPORT=2062
+MAXBYTES=8192
+PING_INTERVAL=5
+STATUS_INTERVAL=30
+ALERT_INTERVAL=15
+AUTO_DETECT=N
+ADMIN_NAME=perfstat
+
+# PerfClient Settings
+PERFSERVER=192.168.1.100
+CLIENTPORT=2062
+METRICS=cpu.pl fs.pl io.pl procs.pl memory.pl socket.pl tcp.pl uptime.pl
+HOST_INFO=Y
+INFO_INTERVAL=5
+RUN_INTERVAL=5
+
+# OS Specific Commands
+PS_CMD=/bin/ps
+VMSTAT_CMD=/usr/bin/vmstat
+IOSTAT_CMD=/usr/bin/iostat
+NETSTAT_CMD=/bin/netstat
+DF_CMD=/bin/df
+UNAME_CMD=/bin/uname
+PS_CMD=/bin/ps
+RPM_CMD=/bin/rpm
+
+# EMAIL Settings (optional)
+EMAIL=Y
+ALERT_ALL=N
+ALERT_CRIT=N
+ALERT_WARN=N
+ALERT_NOSTATUS=Y
+SMTP_SERVER=69.49.109.11
+EMAIL_FROM=ktenzer@covad.net
+TRAP_SCRIPT=/usr/local/sendtrap \" CRIT MAIL %ALERT %EVENT %NAME %VALUE %BOUNDARY %THRESHOLD \"
+
+# Event Log Settings (optional)
+EVENTLOG=Y
+LOGSIZE=100

@@ -1,0 +1,28 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The PerfStat client application is responsoble for gathering performance data on the client and sending it to the PerfStat server.  The client application has it's own daemon and log.</p>
+		<p><b>Client Daemon</b></p>
+		<p>The PerfStat client daemon program is called perfctl.  The main function of the perfctl daemon is to schedule and execute the client programs.  The client programs which get executed are defined under the METRICS field in the perf-conf configuration file.  The client programs gather and format performance data and place that data into a temporary file called perf.out.  From there the transport program takes the data and sends it to the PerfStat server.</p>
+		<p><b>Transport Program</b></p>
+		<p>The PerfStat transport program is called perf.  It is responsible for transporting the client data from the client to the server.  It takes any data in the perf.out file, packages the data, establishes a connection the PerfStat server and sends the data accross the establsihed connection.</p>
+		<p><b>Client Programs</b></p>
+		<p>The PerfStat client programs are the programs that gather client data to be sent to the PerfStat server.  Within the PerfStat application we refer to these programs as services.  These programs could be compiled perl, C, java, or anything else including shell and perl scripts.  The transport program perf can be called directly as well to allow for user defined services.</p>
+		<p><b>Client Log</b></p>
+		<p>The PerfStat client has a separate log located under /var/logs/perfctl.log.  By analyzing the perfctl.log you should be able to tell if the issue is related to the client.  The client log uses the following format:</p>
+		<p>[Timestamp] [Client Program] [Alert Level] [Message]</p>
+		<p> [Sat Apr  9 20:37:34 2005] io.pl: WARNING: Data for io service was not collected during this sampling!</p>
+		<p>In the above example we see that on Apr 9 the io.pl client program/service encountered a warning event, no data was gathered for the io service during that sampling period.</p>
+		<p>Alert Levels - The PerfStat client log has the following alert levels: DEBUG, INFO, WARNING, and ERROR.</p>
+		<p>DEBUG - By default debug log messages are not enabled.  If debug is enabled much more information will be displayed in the perfctl.log.  You can enable debug by setting the DEBUG field to &quot;1&quot; in the perf-conf configuration file and then restarting the PerfStat client application.</p>
+		<p></p>
+	</body>
+
+</html>

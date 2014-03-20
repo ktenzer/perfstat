@@ -1,0 +1,34 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The PerfStat server application is responsoble for recieving data from the client program, analyzing the data, taking action on that data, and storing the data. The client application has it's own daemon and log.</p>
+		<p><b>Server Daemon</b></p>
+		<p>The PerfStat server daemon is called perfd.  The perfd daemon is the heart of the PerfStat server.  The main function of the server daemon is to recieve and store data.  The server daemon follows the following process:</p>
+		<p>1.  Checks to ensure incomming connection is allowed based on user configuration</p>
+		<p>2.  Checks integrity of data being sent</p>
+		<p>3.  Stores data into RRD file for given service by calling rrdAPI program</p>
+		<p>4.  Handles event notification based on user configuration</p>
+		<p>5.  Handles alert notification based on user configuration</p>
+		<p>If anyone of the above steps has problems an alert will be generated in the server log file.</p>
+		<p><b>Server Programs</b></p>
+		<p>Aside from the perfd server daemon the are several other server programs that are executed by the PerfStat client daemon perfctl.  When running o the PerfStat server, perfctl acts as a scheduler for both client and server programs.  Below is a list of server programs that run via the perfctl client daemon:</p>
+		<p>alert - A server program that runs at a user defined interval and is responsible for sending email alerts and/or user defined traps</p>
+		<p>conn - A server program that runs at a user defined interval and is responsible for testing a clients connection from the PerfStat server.  The two types of connection tests are ping and port.  By default a ping test will be done but a port test must be configured by the user.</p>
+		<p>status -  A server program that runs at a user defined interval and is responsible for checking client status.  This program checks to ensure the server has recieved status from a client/service in a user defined window.  If  it hasn't is marks that client/service as &quot;no status&quot;, meaning the client has gone AWOL.</p>
+		<p><b>Server Log</b></p>
+		<p>The PerfStat server has a separate log located under /var/logs/perfd.log. By analyzing the perfd.log you should be able to tell if the issue is related to the server. The server log uses the following format:</p>
+		<p>[Timestamp] [Client Program] [Alert Level] [Message]</p>
+		<p>[Sat Feb 12 13:23:56 2005] perfd.pl: ERROR: 4 data points sent, RRD configuration expected 6 for Host: testhost.test.com Service: cpu</p>
+		<p>In the above example we see that on Feb 12 the perfd.pl server daemon encountered an error event, 4 data points sent, RRD configuration expected 6 for Host: testhost.test.com Service: cpu</p>
+		<p>Alert Levels - The PerfStat server log has the following alert levels: DEBUG, INFO, WARNING, and ERROR.</p>
+		<p>DEBUG - By default debug log messages are not enabled. If debug is enabled much more information will be displayed in the perfd.log. You can enable debug by setting the DEBUG field to &quot;1&quot; in the perf-conf configuration file and then restarting the PerfStat server application.</p>
+	</body>
+
+</html>

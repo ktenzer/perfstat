@@ -1,0 +1,6 @@
+PERFSERVER=<PERFSERVER IP>
+BASIC_SERVICES=memory tcp socket uptime cpu fs io procs
+DEBUG=0
+CLIENTPORT=<Client Port>
+RUN_INTERVAL=5
+EXT_SERVICES=

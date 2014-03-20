@@ -1,0 +1,126 @@
+<form action="index.pl" method="post">
+<input type="hidden" name="action" value="insertHostGroupGraphs">
+<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+<table border="0" cellpadding="0" cellspacing="0">
+	%if ($sessionObj->param("userMessage1") ne "") {
+	<tr>
+		<td class="liteGray" valign="top" align="left"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+	</tr>
+	<tr>
+		<td class="liteGray" valign="top" align="left"><img name="xallHosts_host1" src="../../../appRez/images/common/spacer.gif" border="0" width="9" height="9"></td>
+	</tr>
+	%$sessionObj->param("userMessage1", "");
+	% }
+	% if (@$hostGroupArray == 0) {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Groups</legend>
+							<b>There are no host groups to select</b>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	%} else {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Groups</legend>
+							<select name="selectHostGroups" size="4" multiple>
+							%foreach my $hostGroupName (@$hostGroupArray) {
+								<option value="<%$hostGroupName%>" <%searchArray($selectHostGroups, $hostGroupName) ? 'selected' : ' '%>><%$hostGroupName%></option>
+							%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Group Graphs</legend>
+							<select name="selectGraphs" size="5" multiple>
+							% foreach my $contentStruct (@$graphArray) {
+								%my $value="$contentStruct->{'serviceName'}^$contentStruct->{'graphName'}";
+								<option value="<%$value%>" <%searchArray($selectGraphs, $value) ? 'selected' : ' '%>><%$contentStruct->{'serviceName'}%> :: <%$contentStruct->{'graphName'}%></option>
+							%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graph Interval</legend>
+							<table border="0" cellpadding="0" cellspacing="3">
+								<tr>
+									<td><input type="checkbox" name="graphInterval" value="day" <%searchArray($graphInterval, 'day') ? 'checked' : ' '%>></td>
+									<td>day</td>
+									<td>&nbsp;</td>
+									<td><input type="checkbox" name="graphInterval" value="week" <%searchArray($graphInterval, 'week') ? 'checked' : ' '%>></td>
+									<td>week</td>
+									<td>&nbsp;</td>
+									<td><input type="checkbox" name="graphInterval" value="month" <%searchArray($graphInterval, 'month') ? 'checked' : ' '%>></td>
+									<td>month</td>
+									<td>&nbsp;</td>
+									<td><input type="checkbox" name="graphInterval" value="year" <%searchArray($graphInterval, 'year') ? 'checked' : ' '%>></td>
+									<td>year</td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graph Type</legend>
+							<table border="0" cellpadding="0" cellspacing="3">
+								<tr>
+									<td><input type="checkbox" name="graphType" value="bar" <%searchArray($graphType, 'bar') ? 'checked' : ' '%>></td>
+									<td>Bar</td>
+									<td>&nbsp;</td>
+									<td><input type="checkbox"name="graphType" value="pie" <%searchArray($graphType, 'pie') ? 'checked' : ' '%>></td>
+									<td>Pie</td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<td class="liteGray" valign="top" align="center"><input class="liteButton" type="submit" value="ADD"></td>
+			</table>
+		</td>
+	</tr>
+	%}
+</table>
+</form>

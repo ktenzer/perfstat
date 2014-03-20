@@ -1,0 +1,33 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>Status monitor displays the current status of all systems in the perfstat application.  There are four types of status: no status, crit, warn, and ok.  Status is displayed at three different levels: host group, host, and service.  You can also drill down to the service-&gt;metrics themselves and view the metric name, warn thresholds, crit thresholds, threshold unit, and the current metric value. If you have configured event logging you can view the event logs for a given service at the service level.  Event logs show a historical view of status for a given service.</p>
+		<p><b>Status Types</b></p>
+		<p>Since we have more than one type of status there is an ordered hierarchy to select what status type get displayed for a given host group, host, or service.  The hierarchy is 1-4, with 1 having the highest priority.  Below is the hierarchy for all the status types:</p>
+		<p>1. nostatus</p>
+		<p>2. crit</p>
+		<p>3. warn</p>
+		<p>4. ok</p>
+		<p><b>Status Levels</b></p>
+		<p>There are three levels of status: host group status, host status, and service status. The status is determined at the metric level and then flows up from their to the service, host, and host group.</p>
+		<p>Host Group - This is the first status level. It shows the status of an entire host group and uses the status hierarchy to determine overall status a service.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Host - This is the second status level. It shows status for a given host and uses the status hierarchy to determine overall status of a service. Host status shows the os type and last update time as well.  The last update time is a timestamp from when the perfstat server last recieved an update for a given host.  By default services that haven't reported status in 30 minutes are automatically set to nostatus.  </p>
+		<p>&lt;Picture&gt;</p>
+		<p>Service - This is the third status level. It shows status for a given service and uses the status hierarchy to determine overall status of an object.  From service status you can access the metric names, warn thresholds, crit thresholds, threshold unit, and metric values for a given service. You can also access the event log for a given service as well.  Some services have sub services such as fs, io, and tcp.  A service has a parent-&gt;child relationship with it's sub service.  In the case of a sub service, status is reported up to the service. </p>
+		<p>&lt;Picture&gt;</p>
+		<p><b>Event Log</b></p>
+		<p>The event log is configured in the perfstat configuration file (perf-conf). You can enable or disable (default: enable) event logging, control the size of the log (default: 100 lines), and choose what types of status to log: nostatus, crit, warn, and ok.  When the status of a metric changes perfstat will check your event configuration before logging anything. If you are allowing that type of event to log it will write to the correct service log for that metric. Once the log size reaches the maximum log size (lines) you have configured, perfstat will truncate the oldest entries to make room for new ones.</p>
+		<p>&lt;Picture&gt;</p>
+		<p></p>
+		<p></p>
+	</body>
+
+</html>

@@ -1,0 +1,5 @@
+1.  Ensure only two decimal points are used for data (Done)
+2.  Update GetCOnfiguration sub with Dale's fix (windows only)
+3.  File Systems aren't being displayed with "/" separators
+4.  Copy gd libs to /usr/local/lib dir in perfinstall.sh
+5.  Update uptime hour to days appears to be somewhat done

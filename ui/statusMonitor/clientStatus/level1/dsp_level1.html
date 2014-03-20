@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+	</head>
+	<body onLoad="parent.navigation.setLinkChosen('<%$navLinkChosen%>');">
+		<div class="navHeader">Status Monitor :: <%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></div>
+			<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+				<tr>
+					<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Host Group Status</td>
+				</tr>
+				<tr>
+					<th nowrap="nowrap" width="10%" valign="middle" align="left">Host Group</th>
+					<th nowrap="nowrap" valign="middle" align="left">Current Status</th>
+				</tr>
+				%foreach my $hostGroupDescHash (@$hostGroupArray) {
+				%my $hasHosts = $hostGroupDescHash->{'hasHosts'};
+				%my $hostGroupServiceHash = $hostGroupDescHash->{'hostGroupServiceHash'};
+				%my $hgOwner = $hostGroupDescHash->{'hostGroupOwner'};
+				%my $hgID = $hostGroupDescHash->{'hostGroupID'};
+				<tr>
+					<td class="liteGray" height="50" nowrap="nowrap" width="10%" valign="top" align="left">
+						% if ($hasHosts == 0) {
+							<span class="table1Text1"><%$hgID%></span>
+						% } else {
+						<a href="../level2/index.pl?hgOwner=<%URLEncode($hgOwner)%>&hostGroupID=<%URLEncode($hgID)%>" class="table1Text1"><%$hgID%></a>
+						% }
+					</td>
+					<td class="darkGray" align="left" valign="middle" height="50">
+						% if (%$hostGroupDescHash->{'hasHosts'} == 0) {
+							<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+								<tr>
+									<td valign="middle" align="left" height="25" style="text-align:left; padding-left: 8px" nowrap>No hosts found in host group</td>
+								</tr>
+							</table>
+						% } elsif (keys(%$hostGroupServiceHash) == 0) {
+							<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+								<tr>
+									<td valign="middle" align="left" height="25" style="text-align:left; padding-left: 8px" nowrap>No status data found in host group</td>
+								</tr>
+							</table>
+						% } else {
+							<table border="0" cellpadding="2" cellspacing="2">
+								<tr>
+									%foreach my $hostGroupServiceHashKey (sort(keys(%$hostGroupServiceHash))) {
+									<td width="40" valign="top" align="center">
+										<table cellpadding="1" cellspacing="1" border="0" class="table2" height="0%" width="100%">
+											<tr>
+												<th nowrap="nowrap"><%$hostGroupServiceHashKey%></th>
+											</tr>
+											<tr>
+												<td><img src="../../../appRez/images/content/status_<%$hostGroupServiceHash->{$hostGroupServiceHashKey}%>.gif" width="20" height="20"></td>
+											</tr>
+										</table>
+									</td>
+									%}
+								</tr>
+							</table>
+						%}
+						</td>
+					</tr>
+				%}
+			</table>
+	</body>
+</html>

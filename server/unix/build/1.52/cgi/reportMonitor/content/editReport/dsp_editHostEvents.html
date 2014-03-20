@@ -1,0 +1,112 @@
+<table border="0" cellpadding="0" cellspacing="0">
+	%if ($sessionObj->param("userMessage1") ne "") {
+	<tr>
+		<td class="liteGray" valign="top" align="left"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+	</tr>
+	<tr>
+		<td class="liteGray" valign="top" align="left"><img name="xallHosts_host1" src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+	</tr>
+	%$sessionObj->param("userMessage1", "");
+	% }
+	% if (@$hostGroupArray == 0) {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Groups</legend>
+							<b>There are no host groups to select</b>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	%} else {
+	<tr>
+		<td>
+			<form action="index.pl" method="post">
+			<input type="hidden" name="displayMode" value="edit">
+			<input type="hidden" name="contentType" value="hostEvent">
+			<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+			<input type="hidden" name="contentID" value="<%$contentID%>">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Group</legend>
+							<select name="hostGroupID" size="1" onchange="submit();">
+								%foreach my $hostGroupName (@$hostGroupArray) {
+									<option value="<%$hostGroupName%>" <%$hostGroupName eq $hostGroupID ? 'selected' : ' '%>><%$hostGroupName%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<form name="selectHost" action="index.pl" method="get">
+		<input type="hidden" name="displayMode" value="edit">
+		<input type="hidden" name="contentType" value="hostEvent">
+		<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+		<input type="hidden" name="contentID" value="<%$contentID%>">
+		<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+		<input type="hidden" name="selectHosts" value="<%$selectHosts->[0]%>">
+	</form>
+	<form action="index.pl" method="post">
+	<input type="hidden" name="action" value="updateHostEvents">
+	<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+	<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+	<input type="hidden" name="contentID" value="<%$contentID%>">
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>		
+            				<legend align="top">Host</legend>
+            				<select name="selectHosts" onChange="document.forms.selectHost.selectHosts.value=this.options[this.selectedIndex].value; document.forms.selectHost.submit();">>
+								% foreach my $contentStruct (@$hostArray) {
+									%my $value="$contentStruct->{'hostName'}";
+									<option value="<%$value%>" <%searchArray($selectHosts, $value) ? 'selected' : ' '%>><%$value%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Services</legend>
+							<select name="selectServices"  size="1">
+								% foreach my $serviceName (@$serviceArray) {
+									<option value="<%$serviceName%>" <%searchArray($selectServices, $serviceName) ? 'selected' : ' '%>><%$serviceName%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><table border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td><input class="liteButton" type="submit" name="Update" value="UPDATE"></td>
+            <td>&nbsp;</td>
+            <td><input class="liteButton" type="button" name="clear" value="Go Back" onclick="location='index.pl?reportNameID=<%$reportNameID%>';"></td>
+          </tr>
+        </table></td>
+	</tr>
+	</form>
+	%}
+</table>

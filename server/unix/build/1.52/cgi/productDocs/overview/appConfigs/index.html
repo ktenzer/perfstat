@@ -1,0 +1,44 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>App configs is the configuration tool for the perfstat application. You can configure the following: group, user, host, host group, and report group. Depending on the permissions of the user you are logged in as, not all options may be available.  Note: not all settings can be configured under app configs. Some things need to be configured editing the conf file (perf-conf) or using cli commands.</p>
+		<p><b>Group Config</b></p>
+		<p><b>User Config</b></p>
+		<p>There are three user types perfstat, admin, and users.  Your configuration options will depend on what type of user you are logged in as.</p>
+		<p>Perfstat - This is the super user for the perfstat application.  It has permissions to manage or create any other users in the perfstat application.  Note: you cannot delete the perfstat user.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Admin - This type of user has permissions to create and manage users but it cannot manage users created by other admins or the perfstat user.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>User - This type of user only has permissions to manage itself. It does not have permissions to add hosts to the perfstat application.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>All users have the following configurable preferences: password, Nav Bar Width and show all hosts.</p>
+		<p>&lt;Picture&gt;</p>
+		<p><b>Host Config</b></p>
+		<p>You can add, delete, and configure hosts by using host config.  Note: only an admin or the perfstat user can add, delete, or configure hosts.</p>
+		<p>Add - When you add a host into the perfstat application you must specify the hostname, ip address, and the os type.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Delete - Will remove a host from the perfstat application.  Note: all data associated with that host will be deleted.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Config - Allows you to configure events for every host-&gt;service-&gt;metric.  You can configure the warn threshold, crit threshold, or threshold unit for every metric.  The thresholds are the boudary's that trigger status change.  You can also enable/disable events for a given metric.</p>
+		<p>&lt;Picture&gt;</p>
+		<p><b>Host Groups</b></p>
+		<p>You can add, delete, configure, and share host groups.  All users cann create and share host groups.  This feature enables perfstat to be customized for every users preference.  It enables different logical groupings for the same hosts.</p>
+		<p>Add - When you add a host group, you must specify the host group name.  A description is optional but recommended especially if you have many host groups.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Delete - Will remove that host group from the perfstat application.  Note: only the host group is deleted, none of the hosts within will be removed.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Share - Enables you to share a host group with other users in the perfstat application.  It is nice to be able to do your on thing but maintaing shared vision with other users of the system is critical.</p>
+		<p>&lt;Picture&gt;</p>
+		<p>Config - Using config you can add hosts to a host group from a list of available hosts.  You can also remove hosts from that host group.  Note: only admin or the perfstat user can add hosts and a host can exist in only one place under an admin or the perfstat user.</p>
+		<p>&lt;Picture&gt;</p>
+		<p><b>Report Groups</b></p>
+	</body>
+
+</html>

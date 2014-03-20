@@ -1,0 +1,24 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Design</b></p>
+		<p>Perfstat is a two tier performance and status monitoring application.  It has a client and a server tier.  The client consists of a series of programs which gather data at a specified interval and then send that data to the perfstat server.  Once the data is recieved the server stores the data and displays it via the web based interface.  The server can be broken into two parts: backend and frontend.  Backend operations consist of: gathering data, storing data, event monitoring, event alerting, security checking, and job scheduling.  All backend operations are handled by the daemon (perfd).  Frontend operations consist of displaying data, managing the interface, and reporting data.  Aall frontend operations are handled by the web interface.</p>
+		<p><b>Communication</b> </p>
+		<p>All client/server communications are done through tcp/ip. Perfstat uses both pull and push methods of communication. You are allowed to configure the port that the perfstat server uses (default: 2002). Binding is done according to the ip address of the perfstat server hostname (also configurable). This makes it possible to run multiple perfstat servers on the same system.</p>
+		<p><b>Data Stores</b></p>
+		<p>Perfstat has two data stores. One is for performance data and the other is for application data. The performance data is stored using the rrdtool (<a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/">http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/</a>). The rrdtool is a round robin archive of data. Currently perfstat configures the rrdtool to store up to a year of data, but currently you must use our professional services to custimize that. Application data is stored in a serialized object database. The serialized object database was designed from the ground up and enables event configuration to be done on the server instead of the client like many other applications.  Both data stores are fast and uses a minimum amount of disk space. They also doesn't require the installation of any additional software on your part.</p>
+		<p><b>Data Clasification</b></p>
+		<p>The Perfstat application has a very modular approach to data clasification.  There are two data types: info and regular data.  The difference between the two is info does not get processed only stored.  </p>
+		<p>Info - Information only data.  This data is not processed only stored for viewing/organizational purposes.  Things like cpu speed, os version, and patch levels are examples of info.</p>
+		<p>Data - Regular data is grouped into categories we call services.  The data points themselves are called metrics, so a service is a grouping of metrics.  The only hard rule is ordering and number of metrics.  You must send data in the same order that it is defined in the perfstat object database.  You also must send the exact number of metrics perfstat is expecting for a given service.  </p>
+		<p><b>Daemons</b></p>
+		<p>The perfstat application has two daemons: perfd and perfctl.  The perfd daemon handles client communication, data processing, and data storage.  The perfd daemon will only run on the perfstat server, it is not part of the client.  The perfctl daemon is a job or program scheduler.  It runs on both the perfstat server and client.  Both daemons are configured via the perfstat configuration file (perf-conf).  Process control (ie: starting, stopping, restarting) is controled by a shell script (perf.sh).  On windows it worls a little different.  Instead of a daemon perfctl runs as a service but it is still configured via the perfstat configuration file (perf-conf). </p>
+	</body>
+
+</html>

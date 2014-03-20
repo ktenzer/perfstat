@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/contentFrame.js"></script>
+		<script language="javascript" src="../../../perfStatResources/javaScripts/pm.displayHostGraphs.js"></script>
+	</head>
+
+	<body>
+		<div class="navHeader">
+			<div class="navHeader">Performance Monitor :: <%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%> :: <%$sessionObj->param("hostGroupID")%> :: <a onclick="top.bottomFrame.document.getElementById('perfmonFrameset').cols='250,*';" href="../selectHostGraphs/index.pl?hostGroupID=<%$sessionObj->param("hostGroupID")%>&hostName=<%$sessionObj->param("hostName")%>&graphSize=<%$graphSize%>&customSize=<%$customSize%>&graphLayout=<%$graphLayout%>">Host Graphs</a>
+		</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left">Create Graph(s)</td>
+			</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top">
+					<form name="outputHostGraphs" action="index.pl" method="post">
+						<input type="hidden" name="hostGroupID" value="<%$sessionObj->param("hostGroupID")%>">
+						<input type="hidden" name="hostName" value="<%$sessionObj->param("hostName")%>">
+						<input type="hidden" name="hostGraphHolderArray" value="">
+						<table>
+							<tr>
+								<td><span class="table1Text1">Layout:</span></td>
+								<td><select name="graphLayout" size="1">
+										<option value="1" <%$graphLayout eq "1" ? "selected" : "";%>>1 Column</option>
+										<option value="2" <%$graphLayout eq "2" ? "selected" : "";%>>2 Column</option>
+										<option value="3" <%$graphLayout eq "3" ? "selected" : "";%>>3 Column</option>
+										<option value="4" <%$graphLayout eq "4" ? "selected" : "";%>>4 Column</option>
+									</select></td>
+								<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+								<td nowrap><span class="table1Text1">Graph Size:</span></td>
+								<td><select name="graphSize" size="1" onChange="document.outputHostGraphs.customSize.value=''">
+										<option value="custom" <%$graphSize eq "custom" ? "selected" : "";%>>Custom</option>
+										<option value="small" <%$graphSize eq "small" ? "selected" : "";%>>Small</option>
+										<option value="medium" <%$graphSize eq "medium" ? "selected" : "";%>>Medium</option>
+										<option value="large" <%$graphSize eq "large" ? "selected" : "";%>>Large</option>
+									</select></td>
+								<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+								<td nowrap><span class="table1Text1">Custom Size:</span></td>
+								<td><input type="text" name="customSize" value="<%$customSize%>" size="3" maxlength="3" onFocus="document.outputHostGraphs.graphSize.options[0].selected=true"></td>
+								<td><span class="table1Text1">%</span></td>
+								<td></td>
+								<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+								<td><input class="liteButton" type="button" value="Create" onClick="top.topFrame.displayHostGraphs();"></td>
+							</tr>
+						</table>
+				</td>
+				</form>
+			</tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" border="0">
+		%my $refinedGraphHolderArrayLen = @$refinedGraphHolderArray;
+		%my $graphDrawCounter = $graphLayout;
+		%for (my $count = 0; $count < $refinedGraphHolderArrayLen; $count++) {
+			%my $graphHash = $refinedGraphHolderArray->[$count];
+			%my $os = $graphHash->{'os'};
+			%my $graphIndex = $graphHash->{'graphIndex'};
+			%$graphIndex = $graphIndex . "ServiceGraphs";
+			%my $hostName = $graphHash->{'hostName'};
+			%my $serviceName = $graphHash->{'serviceName'};
+			%my $graphName = $graphHash->{'graphName'};
+			%my $intervalName = $graphHash->{'intervalName'};
+			%my $graphType = $graphHash->{'graphType'};
+			% if ($graphDrawCounter % $graphLayout == 0) {
+			<tr valign="top" align="center">
+				<td>
+					<table cellpadding="0" cellspacing="0" border="0" class="table1">
+						<tr>
+							<td class="tdTop" nowrap="nowrap"><%$hostName%> :: <%$serviceName%> :: <%$graphName%> :: <%$intervalName%></td>
+						</tr>
+						<tr>
+							<td class="liteGray" nowrap valign="middle" align="center">
+								%if ($graphType eq "line") {
+									<img src="<%$graphIndex%>/drawLineGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>" border="0">
+								%} elsif ($graphType eq "bar") {
+									<img src="<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=bar" border="0">
+								%} elsif ($graphType eq "pie") {
+									<img src="<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=pie" border="0">
+								%}
+							</td>
+						</tr>
+					</table>
+				</td>
+			% } else {
+				<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+				<td>
+					<table cellpadding="0" cellspacing="0" border="0" class="table1">
+						<tr>
+							<td class="tdTop" nowrap="nowrap"><%$hostName%> :: <%$serviceName%> :: <%$graphName%> :: <%$intervalName%> </td>
+						</tr>
+						<tr>
+							<td class="liteGray" nowrap valign="middle" align="center">
+								%if ($graphType eq "line") {
+									<img src="<%$graphIndex%>/drawLineGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>" border="0">
+								%} elsif ($graphType eq "bar") {
+									<img src="<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=bar" border="0">
+								%} elsif ($graphType eq "pie") {
+									<img src="<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=pie" border="0">
+								%}
+							</td>		
+						</tr>
+					</table>
+				</td>
+			%}
+			% $graphDrawCounter++;
+		%}
+			</tr>
+		</table>
+	</body>
+</html>

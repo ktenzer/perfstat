@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+
+	<body>
+		<div class="navHeader">Report Monitor :: <a href="../reportList/index.pl">My Reports</a> :: Share Report</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Add Shared User</td>
+			</tr>
+			% if (keys(%$potentialShareMembers) != 0) {
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">User Name</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="insertSharedUser">
+				<input type="hidden" name="adminName" value="<%$adminName%>">
+				<input type="hidden" name="userName" value="<%$userName%>">
+				<input type="hidden" name="reportName" value="<%$reportName%>">
+					<td class="liteGray" align="left" valign="middle">
+					<select name="memberName" size="1">
+						%foreach my $userName (sort(keys(%$potentialShareMembers))) {
+						<option value="<%$userName%>"><%$userName%></option>
+						%}
+					</select>
+				</td>
+					<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+			% } else {
+			<tr>
+				<td class="liteGray" align="left" valign="middle">
+					% if (keys(%$shareMembers) == 0) {
+						<span class="table1Text1">No users are available</span>
+					% } else {
+						<span class="table1Text1">All available users are already have access</span>
+					% }
+				</td>
+			</tr>
+			% }
+		</table>
+		% if (keys(%$shareMembers) != 0) {
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Shared User List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" width="10">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Shared User Name</th>
+			</tr>
+			%foreach my $memberName (sort(keys(%$shareMembers))) {
+			%my $permissions = $shareMembers->{$memberName};
+			%my $queryString = 	"adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) .  "&reportName=". URLEncode($reportName) . "&memberName=". URLEncode($memberName);
+			<tr>
+				<td class="liteGray" align="center" valign="middle" width="10">
+					<table width="100%" cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="index.pl?action=removeSharedUser&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to remove <%$memberName%>');">Remove From List</a></th>
+						</tr>
+					</table>
+				</td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$memberName%></span></td>
+			</tr>
+			%}
+		</table>
+		% } else {
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Share List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Shared User Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Permissions</th>
+			</tr>
+			<tr>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1">&nbsp;</span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2">&nbsp;</span></td>
+			</tr>
+		</table>
+		% }
+	</body>
+</html>

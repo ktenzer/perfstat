@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('clientStatus');">
+		<div class="navHeader">
+			Status Monitor :: <a href="../level1/index.pl"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a> :: <%$sessionObj->param("hostGroupID")%></div>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Host Status</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" width="48" valign="middle" align="center">OS&nbsp;</th>
+				<th nowrap="nowrap" width="10%" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Current Status Details&nbsp;</th>
+			</tr>
+			% foreach my $hostName (sort(keys(%$hostHash))) {
+			% my $hostDescHash = $hostHash->{$hostName};
+			% my $hasServices = $hostDescHash->{'hasServices'};
+			<tr>
+				<td class="liteGray" align="center" valign="top" height="50" width="48"><img src="../../../appRez/images/osIcons/<%$hostDescHash->{'OS'}%>/icon.gif" width="36" height="38" alt="No new posts" title="No new posts" /></td>
+				<td class="liteGray" height="50" nowrap="nowrap" width="10%" valign="top" align="left">
+					% if ($hasServices == 0) {
+						<span class="table1Text1"><%$hostName%></span>
+					% } else {
+						<a href="../level3/index.pl?hostGroupID=<%$sessionObj->param('hostGroupID')%>&hostName=<%$hostName%>" class="table1Text1"><%$hostName%></a>
+					%}
+					<br><span class="table1Text2">Last Update:<br><%$hostDescHash->{'lastUpdate'}%></span>
+				</td>
+				<td class="darkGray" align="left" valign="middle" height="50">
+					%if ($hasServices == 0) {
+					<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%" >
+						<tr>
+							<td valign="middle" align="left" height="25" style="text-align:left; padding-left: 8px" nowrap>No status data found for host</td>
+						</tr>
+					</table>
+					% } else {
+					%my $hostServiceHash = $hostDescHash->{'hostServiceHash'};
+					<table border="0" cellpadding="2" cellspacing="2">
+						<tr>
+							%foreach my $hostServiceHashKey (sort(keys(%$hostServiceHash))) {
+							%my $serviceDescHash = $hostServiceHash->{$hostServiceHashKey};
+							<td width="40" valign="top" align="center">
+								%if ($serviceDescHash->{'hasSubService'} != 1) {
+								<table cellpadding="1" cellspacing="1" border="0" class="table2" height="0%" width="100%">
+									<tr>
+										<th nowrap="nowrap"><%$hostServiceHashKey%></th>
+									</tr>
+									<tr>
+										<td valign="top" align="center"><a href="../level3/index.pl?hostGroupID=<%$sessionObj->param('hostGroupID')%>&hostName=<%$hostName%>&serviceName=<%$hostServiceHashKey%>" class="table1Text1"><img src="../../../appRez/images/content/status_<%$serviceDescHash->{'status'}%>.gif" width="20" height="20" border="0"></a></td>
+									</tr>
+								</table>
+								%} else {
+								%my $subServiceHash = $serviceDescHash->{'subServiceHash'};
+								<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+									<tr>
+										<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$hostName%>-<%$hostServiceHashKey%>-off', '<%$hostName%>-<%$hostServiceHashKey%>-on');"><img id="x<%$hostName%>-<%$hostServiceHashKey%>-off" src="../../../appRez/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$hostServiceHashKey%></th>
+									</tr>
+									<tr>
+										<td valign="top" align="center">
+											<div id="<%$hostName%>-<%$hostServiceHashKey%>-off" style="display:block;">
+												<img src="../../../appRez/images/content/status_<%$serviceDescHash->{'status'}%>.gif" width="20" height="20" /></div>
+											<div id="<%$hostName%>-<%$hostServiceHashKey%>-on" style="display:none;">
+												<table border="0" cellpadding="1" cellspacing="1" class="table2">
+													%foreach my $subServiceHashKey (sort(keys(%$subServiceHash))) {
+													<tr>
+														<td style="text-align:right;"><a href="../level3/index.pl?hostGroupID=<%$sessionObj->param('hostGroupID')%>&hostName=<%$hostName%>&serviceName=<%$hostServiceHashKey%>.<%$subServiceHashKey%>"><%$subServiceHashKey%></a></td>
+														<td><img src="../../../appRez/images/content/status_<%$subServiceHash->{$subServiceHashKey}%>.gif" width="20" height="20" /></td>
+													</tr>
+													%}
+												</table>
+											</div>
+										</td>
+									</tr>
+								</table>
+								% }
+							</td>
+							% }
+						</tr>
+					</table>
+				% }
+				</td>
+			</tr>
+			%}
+		</table>
+	</body>
+</html>

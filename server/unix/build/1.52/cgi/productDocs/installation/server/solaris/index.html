@@ -1,0 +1,71 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>This section contains information for installing the Perfstat server on sun solaris hosts. The perfstat server for solaris comes as a package. By default the package will install into /opt/PERFsvr.</p>
+		<p><b>Package Installation</b></p>
+		<p>1) Copy the perfstat_vX.XX-solXXXX.pkg to the /tmp directory.</p>
+		<p>2) Run the following command to install the rpm:</p>
+		<p>pkgadd -d /tmp/perfstat_vX.XX-solXXXX.rpm</p>
+		<p><b>Perfstat Server Installation</b></p>
+		<p>3) Create perfstat user by running the following command:</p>
+		<p>useradd -d /opt/PERFsvr psuser</p>
+		<p>4) Create perfstat group by running the following command:</p>
+		<p>groupadd psgroup</p>
+		<p>5) Add perfstat user as a member of the perfstat group by running the following command:</p>
+		<p>usermod -g psgroup psuser</p>
+		<p>6) Run the following command to change directory into the perfstat client install directory:</p>
+		<p>cd /opt/PERFsvr/install</p>
+		<p>7) Run the following command to install and configure the perfstat client:</p>
+		<p>./perfinstall.sh /opt/PERFsvr</p>
+		<p>8) Enter psuser as the perfstat user.</p>
+		<p>9) Enter psgroup as the perfstat group.</p>
+		<p>10) Enter &quot;Y&quot; for yes to allow the installation program to change permissions of the /opt/PERFsvr directory.</p>
+		<p>11) Enter &quot;Y&quot; for yes to allow the installation program to start perfstat automatically upon boot.</p>
+		<p>&lt;Picture&gt;</p>
+		<p><b>Perfstat Global Configuration</b></p>
+		<p>12) Enter path to perfhome directory /opt/PERFsvr</p>
+		<p>13) Enter psuser as the perfstat user.</p>
+		<p>14) Enter psgroup as the perfstat group.</p>
+		<p>15) Enter 0 for debug level.</p>
+		<p>16) Enter &quot;Y&quot; for yes to save global settings.</p>
+		<p><b>Perfstat Server Configuration</b></p>
+		<p>17) Enter IP address of host you are configuring as perfstat server. By default it will grab the IP address of the current host.</p>
+		<p>18) Enter port you would like perfstat server daemon to listen on.  For security you should always use a port greater than 1024. The default is 2002.</p>
+		<p>19) Enter max bytes for an individual perfstat server connection.  The default is 8KB.</p>
+		<p>20) Enter perfstat server ping interval.  Interval perfstat will use to ping clients.  The default is 5 minutes.</p>
+		<p>21) Enter perfstat server status interval.  Interval perfstat will use for checking client status.  The default is 30 minutes.</p>
+		<p>22) Enter &quot;Y|N&quot; depending on if you would like to enable email alerts.  The default is &quot;N&quot;</p>
+		<p>     22a) Enter &quot;Y|N&quot; depending on if you would like to enable email alerts for all event status changes.</p>
+		<p>     22b) Enter &quot;Y|N&quot; depending on if you would like to enable email alerts for crit status changes.</p>
+		<p>     22c) Enter &quot;Y|N&quot; depending on if you would like to enable email alerts for warn status changes.</p>
+		<p>     22d) Enter &quot;Y|N&quot; depending on if you would like to enable email alerts for nostatus status changes.</p>
+		<p>     22e) Enter IP address of SMTP server.  The SMTP server can be a mail relay.</p>
+		<p>23) Enter &quot;Y|N&quot; depending on if you would like to enable event logging.  The default is &quot;Y&quot;</p>
+		<p>     23a) Enter max event log size in number of lines.  The default is 100.</p>
+		<p><b>Perfstat Client Configuration</b></p>
+		<p>24) Enter the IP address of the perfstat server. By default it will grab the IP address of the current host.</p>
+		<p>25) Enter the port for the perfstat server.</p>
+		<p>26) Enter perfstat client services. You should except the default unless you have special requirements.</p>
+		<p>27) Enter perfstat client run interval. You should except the default unless you need more or less granular data.</p>
+		<p>28) Enter path to ps command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>29) Enter path to vmstat command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>30) Enter path to iostat command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>31) Enter path to netstat command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>32) Enter path to df command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>33) Enter path to swap command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>34) Enter path to prtconf command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>35) Enter path to ifconfig command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>36) Enter path to kstat command. The configuration program will try and find the path automatically buy you should double check.</p>
+		<p>37) Enter &quot;Y&quot; for yes to save client settings.</p>
+		<p></p>
+		<p>If something changes later on, you can always re-run the installation program or the configuration program manualy. The configuration program is located in /perfhome/bin/tools/perfconfig.</p>
+	</body>
+
+</html>

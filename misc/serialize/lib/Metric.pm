@@ -1,0 +1,238 @@
+package Metric;
+
+sub new
+{
+	my $this = {};
+	bless ($this, shift);
+	$this->doInit(@_);
+	return $this;
+}
+
+sub doInit
+{
+	my ($this, %arg) = @_;
+	$this->{rrdIndex} = $arg{rrdIndex};
+	$this->{metricName} = $arg{metricName} || die("missing metricName");
+	$this->{friendlyName} = $arg{friendlyName} || die("missing friendlyName");
+	$this->{status} = $arg{status} || die("missing status");
+	$this->{rrdDST} = $arg{rrdDST};
+	$this->{rrdHeartbeat} = $arg{rrdHeartbeat};
+	$this->{rrdMin} = $arg{rrdMin};
+	$this->{rrdMax} = $arg{rrdMax};
+	$this->{hasEvents} = $arg{hasEvents};
+	$this->{metricValue} = $arg{metricValue};
+	$this->{servicePort} = $arg{servicePort};
+	$this->{warnThreshold} = $arg{warnThreshold};
+	$this->{critThreshold} = $arg{critThreshold};
+	$this->{thresholdUnit} = $arg{thresholdUnit};
+	$this->{lowThreshold} = $arg{lowThreshold};
+	$this->{highThreshold} = $arg{highThreshold};
+	$this->{notifyRule} = $arg{notifyRule};
+}
+
+sub getRRDIndex
+{
+	my ($this) = @_;
+	return $this->{rrdIndex};
+}
+
+sub setRRDIndex
+{
+	my ($this, $value) = @_;
+	$this->{rrdIndex} = $value;
+}
+
+sub getMetricName
+{
+	my ($this) = @_;
+	return $this->{metricName};
+}
+
+sub setMetricName
+{
+	my ($this, $value) = @_;
+	$this->{metricName} = $value;
+}
+
+sub getFriendlyName
+{
+	my ($this) = @_;
+	return $this->{friendlyName};
+}
+
+sub setFriendlyName
+{
+	my ($this, $value) = @_;
+	$this->{friendlyName} = $value;
+}
+
+sub getStatus
+{
+	my ($this) = @_;
+	return $this->{status};
+}
+
+sub setStatus
+{
+	my ($this, $value) = @_;
+	$this->{status} = $value;
+}
+
+sub getRRDDST
+{
+	my ($this, $value) = @_;
+	return $this->{rrdDST};
+}
+
+sub setRRDDST
+{
+	my ($this, $value) = @_;
+	$this->{rrdDST} = $value;
+}
+
+sub getRRDHeartbeat
+{
+	my ($this, $value) = @_;
+	return $this->{rrdHeartbeat};
+}
+
+sub setRRDHeartbeat
+{
+	my ($this, $value) = @_;
+	$this->{rrdHeartbeat} = $value;
+}
+
+sub getRRDMin
+{
+	my ($this, $value) = @_;
+	return $this->{rrdMin};
+}
+
+sub setRRDMin
+{
+	my ($this, $value) = @_;
+	$this->{rrdMin} = $value;
+}
+
+sub getRRDMax
+{
+	my ($this, $value) = @_;
+	return $this->{rrdMax};
+}
+
+sub setRRDMax
+{
+	my ($this, $value) = @_;
+	$this->{rrdMax} = $value;
+}
+
+sub getHasEvents
+{
+	my ($this) = @_;
+	return $this->{hasEvents};
+}
+
+sub setHasEvents
+{
+	my ($this, $value) = @_;
+	$this->{hasEvents} = $value;
+}
+
+sub getMetricValue
+{
+        my ($this) = @_;
+        return $this->{metricValue};
+}
+
+sub setMetricValue
+{
+        my ($this, $value) = @_;
+        $this->{metricValue} = $value;
+}
+
+
+sub getServicePort
+{
+	my ($this) = @_;
+	return $this->{servicePort};
+}
+
+sub setServicePort
+{
+	my ($this, $value) = @_;
+	$this->{servicePort} = $value;
+}
+
+sub getWarnThreshold
+{
+	my ($this) = @_;
+	return $this->{warnThreshold};
+}
+
+sub setWarnThreshold
+{
+	my ($this, $value) = @_;
+	$this->{warnThreshold} = $value;
+}
+
+sub getCritThreshold
+{
+	my ($this) = @_;
+	return $this->{critThreshold};
+}
+
+sub setCritThreshold
+{
+	my ($this, $value) = @_;
+	$this->{critThreshold} = $value;
+}
+
+sub getLowThreshold
+{
+	my ($this) = @_;
+	return $this->{lowThreshold};
+}
+
+sub setLowThreshold
+{
+	my ($this, $value) = @_;
+	$this->{lowThreshold} = $value;
+}
+
+sub getHighThreshold
+{
+	my ($this) = @_;
+	return $this->{highThreshold};
+}
+
+sub setHighThreshold
+{
+	my ($this, $value) = @_;
+	$this->{highThreshold} = $value;
+}
+
+sub getThresholdUnit
+{
+	my ($this) = @_;
+	return $this->{thresholdUnit};
+}
+
+sub setThresholdUnit
+{
+	my ($this, $value) = @_;
+	$this->{thresholdUnit} = $value;
+}
+
+sub getNotifyRule
+{
+	my ($this) = @_;
+	return $this->{notifyRule};
+}
+
+sub setNotifyRule
+{
+	my ($this, $value) = @_;
+	$this->{notifyRule} = $value;
+}
+
+1; #terminate the package

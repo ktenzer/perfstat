@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Perfstat Performance and Status Monitor</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+<body>
+<div class="navHeader"><a href="../list/index.pl">Metric Templates</a> :: <%$templateName%></div>
+<table cellpadding="2" cellspacing="1" border="0" class="table1">
+  <tr>
+    <td colspan="6" class="tdTop" nowrap="nowrap" valign="middle" align="left">Select Service </td>
+  </tr>
+  <tr>
+    <th nowrap="nowrap" valign="middle" align="left">OS</th>
+	 <th nowrap="nowrap" valign="middle" align="left">Service</th>
+  </tr>
+   <form name="selectMetric" action="index.pl" method="post">
+   <input type="hidden" name="templateName" value="<%$templateName%>">
+  <tr>
+		<td class="liteGray" align="left" valign="middle">
+			<select name="osName" size="1" onchange="submit();">
+				% foreach my $osNameTemp (@$osList) {
+					<option value="<%$osNameTemp%>" <%$osNameTemp eq $osName ? "selected" : "";%>><%$osNameTemp%></option>
+				%}
+			</select>
+		</td>
+		<td class="liteGray" align="left" valign="middle">
+			<select name="serviceName" size="1" onchange="submit();">
+				% foreach my $serviceNameTemp (@$serviceList) {
+					<option value="<%$serviceNameTemp%>" <%$serviceNameTemp eq $serviceName ? "selected" : "";%>><%$serviceNameTemp%></option>
+				%}
+			</select>
+		</td>
+  </tr>
+  </form>
+</table>
+<form name="configMetrics" action="index.pl" method="post">
+<input type="hidden" name="action" value="add">
+<input type="hidden" name="templateName" value="<%$templateName%>">
+<input type="hidden" name="osName" value="<%$osName%>">
+<input type="hidden" name="serviceName" value="<%$serviceName%>">
+<table cellpadding="2" cellspacing="1" border="0" class="table1">
+	<tr>
+		<td class="tdTop" nowrap="nowrap" colspan="6" valign="middle" align="left"><%$osName%> :: <%$serviceName%></td>
+	</tr>
+	% if ($sessionObj->param("userMessage") ne "") {
+	<tr>
+		<td class="liteGray" valign="top" align="left" colspan="6"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+	</tr>
+	% $sessionObj->param("userMessage", "");
+	% }
+	<tr>
+		<th nowrap="nowrap" valign="middle" align="left">Metric</th>
+		<th nowrap="nowrap" valign="middle" align="left">Warn</th>
+		<th nowrap="nowrap" valign="middle" align="left">Crit</th>
+		<th nowrap="nowrap" valign="middle" align="left">Unit</th>
+		<th nowrap="nowrap" valign="middle" align="left">Events</th>
+	</tr>
+	% foreach  my $metricObject (@$metricList) {
+		% if ($metricObject->getHasEvents() =~ m/-1/) { next; } 
+		% my $metricName = $metricObject->getMetricName();
+		% my $friendlyName = $metricObject->getFriendlyName();
+		% my $thresholdUnit = $metricObject->getThresholdUnit();
+		% my $hasEvents = $metricObject->getHasEvents();
+		% my $checkHasEvents = "";
+		% my $inputStruct = $inputHash->{$metricName};
+		% if ($inputStruct->{'hasEvents'}) {$checkHasEvents = "checked"};
+		<tr>
+			<td class="liteGray" nowrap="nowrap" valign="middle" align="left">
+				<span class="table1Text2"><%$friendlyName%></span>
+			</td>
+			<td class="liteGray" valign="middle" align="left">
+				% if (defined($inputStruct->{'warnThreshold'})) {
+					<input type="text" name="warnThreshold^<%$metricName%>" size="10" value="<%$inputStruct->{'warnThreshold'}%>">
+				% } else {
+					<span class="table1Text2">N/A</span>
+				%}
+			</td>
+			<td class="liteGray" valign="middle" align="left">
+				% if (defined($inputStruct->{'critThreshold'})) {
+					<input type="text" name="critThreshold^<%$metricName%>" size="10" value="<%$inputStruct->{'critThreshold'}%>">
+				% } else {
+					<span class="table1Text2">N/A</span>
+				%}
+			</td>
+			<td class="liteGray" valign="middle" align="left">
+				% if (defined($thresholdUnit)) {
+					<span class="table1Text2"><%$thresholdUnit%></span>
+				% } else {
+					<span class="table1Text2">N/A</span>
+				%}
+			</td>
+			<td class="liteGray" valign="middle" align="middle">
+				<input type="checkbox" name="hasEvents^<%$metricName%>" size="10" <%$checkHasEvents%>>
+			</td>
+		</tr>
+	% }
+	<tr>
+		<td class="liteGray" valign="top" align="right" colspan="5">
+			%if ($ruleSetExists) {
+				<input class="liteButton" type="submit" value="update">
+			%} else {
+				<input class="liteButton" type="submit" value="add">
+			%}
+		</td>
+	</tr>
+</table>
+</form>
+<table cellpadding="2" cellspacing="1" border="0" class="table1">
+  <tr>
+	<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="8">Alert Rule Set</td>
+  </tr>
+  <tr>
+	<th nowrap="nowrap" valign="middle" align="left">Actions</th>
+	<th nowrap="nowrap" valign="middle" align="left">OS</th>
+	<th nowrap="nowrap" valign="middle" align="left">Service</th>
+	<th align="left" valign="middle" nowrap="nowrap">Metric</th>
+	<th nowrap="nowrap" valign="middle" align="left">Warn</th>
+	<th nowrap="nowrap" valign="middle" align="left">Crit</th>
+	<th nowrap="nowrap" valign="middle" align="left">Unit</th>
+   <th nowrap="nowrap" valign="middle" align="left">Events</th>
+  </tr>
+	% if ($ruleSetIndexLength == 0) {
+		<tr>
+			<td class="liteGray" colspan="8">&nbsp;</td>
+		</tr>
+	% } else { 
+		% if ($ruleSetIndexLength > 1) {
+			<tr>
+				<td class="liteGray" colspan="8">
+					<table cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="index.pl?action=deleteAll&templateName=<%$templateName%>" onclick="return warnOnClickAnchor('Are you sure you want to delete all rules');">Delete All</a></th>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		%}
+	% }
+		  
+	%foreach my $osName (sort(keys(%$ruleSetIndex))) {
+		%my $serviceList = $ruleSetIndex->{$osName};
+		%foreach my $serviceName (sort(keys(%$serviceList))) {
+			%my $newService = 1;
+			%my $metricList = $serviceList->{$serviceName};
+			%my $metricListLength = keys(%$metricList);
+			%foreach my $metricName ( sort {$metricList->{$a}->{'order'} <=> $metricList->{$b}->{'order'}} (keys(%$metricList))) {
+				<tr>
+				%if ($newService) {
+					<td rowspan="<%$metricListLength%>" align="center" valign="top" class="liteGray">
+						<table cellpadding="1" cellspacing="1" border="0" class="table2">
+							<tr> 
+								<th nowrap="nowrap"><a href="index.pl?templateName=<%$templateName%>&osName=<%$osName%>&serviceName=<%$serviceName%>">&nbsp;Edit&nbsp;</a></th>
+								<th nowrap="nowrap"><a href="index.pl?action=delete&templateName=<%$templateName%>&osName=<%$osName%>&serviceName=<%$serviceName%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$osName%> :: <%$serviceName%>');">Delete</a></th>
+							</tr>
+						</table>
+					</td>
+					<td rowspan="<%$metricListLength%>" align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$osName%></span></td>
+					<td rowspan="<%$metricListLength%>" align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$serviceName%></span></td>
+					%$newService = 0;
+				%}
+				%my $metricStruct = $metricList->{$metricName};
+				%my $friendlyName = $metricStruct->{'friendlyName'};
+				%my $warnThreshold = $metricStruct->{'warnThreshold'};
+				%my $critThreshold = $metricStruct->{'critThreshold'};
+				%my $thresholdUnit = $metricStruct->{'thresholdUnit'};
+				%my $hasEvents;
+				%if ($metricStruct->{'hasEvents'}){$hasEvents = "on"} else {$hasEvents = "off"}
+					<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$friendlyName%></span></td>
+					<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$warnThreshold%></span></td>
+					<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$critThreshold%></span></td>
+					<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$thresholdUnit%></span></td>
+					<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$hasEvents%></span></td>
+				</tr>
+			%}
+		%}
+	%}
+</table>
+</body>
+</html>

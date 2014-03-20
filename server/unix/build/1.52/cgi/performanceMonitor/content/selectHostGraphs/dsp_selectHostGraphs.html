@@ -1,0 +1,264 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/contentFrame.js"></script>
+		<script language="javascript" src="../../../perfStatResources/javaScripts/pm.selectHostGraphs.js"></script>
+	</head>
+
+	<body onload="drawGraphTable();">
+		<div class="navHeader"><div class="navHeader">Performance Monitor :: <a href="../../navigation1/index.pl" target="navigation"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a> :: Host Graphs</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Group</th>
+				<th nowrap="nowrap" valign="middle" align="left">Selected Host</th>
+				<th nowrap="nowrap" valign="middle" align="left">Select Host</th>
+			</tr>
+			<tr>
+				<td class="liteGray" align="center" valign="middle"><%$sessionObj->param("hostGroupID")%></td>
+				<td class="liteGray" align="left" valign="middle"><%$sessionObj->param("hostName")%></td>
+				<td class="liteGray" align="center" valign="middle">
+					<form action="index.pl" method="get">
+					<input type="hidden" name="graphSize" value="<%$graphSize%>">
+					<input type="hidden" name="graphLayout" value="<%$graphLayout%>">
+					<input type="hidden" name="hostGroupID" value="<%$sessionObj->param("hostGroupID")%>">
+					<select name="hostName" size="1" onChange="submit();">
+						%foreach my $hostName (@$hostArray) {
+						<option value="<%$hostName%>" <%$sessionObj->param("hostName") eq $hostName ? "selected" : "";%>><%$hostName%></option>					
+						%}
+					</select>
+				</td>
+				</form>
+			</tr>
+		</table>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+				<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left"><span class="tableHeader">Select Graph(s)</span></td>
+				</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top">
+					<table class="smallJSLinkTable" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td nowrap><a href="javascript:openAll();">open all</a></td>
+							<td nowrap><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="6" border="0"></td>
+							<td nowrap><a href="javascript:closeAll();">close all</a></td>
+							<td nowrap><img src="../../../perfStatResources/images/common/spacer.gif" height="5" width="6" border="0"></td>
+							<td nowrap><a href="javascript:selectAll();">select all</a></td>
+							<td nowrap><img src="../../../perfStatResources/images/common/spacer.gif" height="5" width="6" border="0"></td>
+							<td nowrap><a href="javascript:removeAll();">remove all</a></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top">
+					<table border="0" cellpadding="2" cellspacing="2">
+						<tr>
+							%foreach my $serviceName (sort(keys(%$serviceHashRefined))) {
+							%my $descriptorHash = $serviceHashRefined->{$serviceName};
+							%if ( $descriptorHash->{'hasSubService'} == 0) {
+							%my $graphHash = $descriptorHash->{'graphHash'};
+							<td width="40" valign="top" align="left">
+								<div id="<%$serviceName%>-off" style="display:block;">
+									<table cellpadding="1" cellspacing="1" border="0" class="table2">
+										<tr>
+											<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-off" src="../../../perfStatResources/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+										</tr>
+									</table>
+								</div>
+								<div id="<%$serviceName%>-on" style="display:none;">
+									<table cellpadding="1" cellspacing="1" border="0" class="table2">
+										<tr>
+											<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-on" src="../../../perfStatResources/images/navigation/icon_minusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+										</tr>
+										<tr>
+											<td valign="top">
+												<table border="0" cellpadding="1" cellspacing="1">
+													% foreach my $graphName (sort(keys(%$graphHash))) {
+													<tr>
+														<td nowrap style="text-align: left;" valign="middle" align="left"><a class="insertHREF" ID="<%$selectedHostOS%>^single^<%$sessionObj->param("hostName")%>^<%$serviceName%>^<%$graphName%>" href="javascript: insertGraph('<%$selectedHostOS%>', 'single', '<%$sessionObj->param("hostName")%>', '<%$serviceName%>', '<%$graphName%>');"><%$graphName%></a></td>
+													</tr>
+													% }
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+							% } else {
+							% my $subServiceHash = $descriptorHash->{'subServiceHash'};
+							<td width="40" valign="top" align="left">
+								<div id="<%$serviceName%>-off" style="display:block;">
+									<table cellpadding="1" cellspacing="1" border="0" class="table2">
+										<tr>
+											<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-off" src="../../../perfStatResources/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+										</tr>
+									</table>
+								</div>
+								<div id="<%$serviceName%>-on" style="display:none;">
+									<table cellpadding="1" cellspacing="1" border="0" class="table2">
+										<tr>
+											<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-on" src="../../../perfStatResources/images/navigation/icon_minusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+										</tr>
+										% if (defined($descriptorHash->{'multiServiceGraphNames'})) {
+										<tr>
+											<td style="text-align: left;">
+												<div id="<%$serviceName%>-all-off" style="display:block;">
+												<table border="0" cellpadding="1" cellspacing="1">
+													<tr>
+														<td><a href="javascript:toggle('<%$serviceName%>-all-off', '<%$serviceName%>-all-on');"><img id="x<%$serviceName%>-all-off" src="../../../perfStatResources/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a></td>
+														<td nowrap>ALL</td>
+													</tr>
+												</table>
+												</div>
+												<div id="<%$serviceName%>-all-on" style="display:none;">
+												<table border="0" cellpadding="1" cellspacing="1">
+													<tr>
+														<td><a href="javascript:toggle('<%$serviceName%>-all-off', '<%$serviceName%>-all-on');"><img id="x<%$serviceName%>-all-on" src="../../../perfStatResources/images/navigation/icon_minusNavBar.gif" width="9" height="9" border="0"></a></td>
+														<td nowrap>ALL</td>
+													</tr>
+												</table>
+												% my $graphNameArray = $descriptorHash->{'multiServiceGraphNames'};
+												% foreach my $graphName (@$graphNameArray) {
+												<table cellpadding="1" cellspacing="1" border="0">
+													<tr>
+														<td><img src="../../../perfStatResources/images/common/spacer.gif" width="12" height="9" border="0"></td>
+														<td style="text-align: left;" nowrap><a class="insertHREF" ID="<%$selectedHostOS%>^multi^<%$sessionObj->param("hostName")%>^<%$serviceName%>.all^<%$graphName%>" href="javascript:insertGraph('<%$selectedHostOS%>', 'multi', '<%$sessionObj->param("hostName")%>', '<%$serviceName%>.all', '<%$graphName%>');"><%$graphName%></a></td>
+													</tr>
+												</table>
+												%}
+												</div>
+												%}
+											</td>
+										</tr>			
+										%foreach my $subServiceName (keys(%$subServiceHash)) {
+										% my $graphHash = $subServiceHash->{$subServiceName};
+										<tr>
+											<td style="text-align: left;">
+												<div id="<%$serviceName%>-<%$subServiceName%>-off" style="display:block;">
+												<table border="0" cellpadding="1" cellspacing="1">
+													<tr>
+														<td><a href="javascript:toggle('<%$serviceName%>-<%$subServiceName%>-off', '<%$serviceName%>-<%$subServiceName%>-on');"><img id="x<%$serviceName%>-<%$subServiceName%>-off" src="../../../perfStatResources/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a></td>
+														<td nowrap><%$subServiceName%></td>
+													</tr>
+												</table>
+												</div>
+												<div id="<%$serviceName%>-<%$subServiceName%>-on" style="display:none;">
+												<table border="0" cellpadding="1" cellspacing="1">
+													<tr>
+														<td><a href="javascript:toggle('<%$serviceName%>-<%$subServiceName%>-off', '<%$serviceName%>-<%$subServiceName%>-on');"><img id="x<%$serviceName%>-<%$subServiceName%>-on" src="../../../perfStatResources/images/navigation/icon_minusNavBar.gif" width="9" height="9" border="0"></a></td>
+														<td nowrap><%$subServiceName%></td>
+													</tr>
+												</table>
+												% foreach my $graphName (keys(%$graphHash)) {
+												<table cellpadding="1" cellspacing="1" border="0">
+													<tr>
+														<td><img src="../../../perfStatResources/images/common/spacer.gif" width="12" height="9" border="0"></td>
+														<td style="text-align: left;" nowrap><a class="insertHREF" ID="<%$selectedHostOS%>^single^<%$sessionObj->param("hostName")%>^<%$serviceName%>.<%$subServiceName%>^<%$graphName%>" href="javascript:insertGraph('<%$selectedHostOS%>', 'single', '<%$sessionObj->param("hostName")%>', '<%$serviceName%>.<%$subServiceName%>', '<%$graphName%>');"><%$graphName%></a></td>
+													</tr>
+												</table>
+												%}
+												</div>
+											</td>
+										</tr>
+										%}
+									</table>
+								</div>
+							</td>
+							% }
+							% }
+						</tr>
+					</table>
+				</td>
+				</tr>
+			</table>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left">Select Interval(s) and Graph Type(s)</td>
+			</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top">
+					<table class="table3" id="graphTable" border="0" cellpadding="2" cellspacing="2">
+						<thead>
+							<tr>
+								<th valign="middle" align="left" colspan="4"></th>
+								<th valign="middle" align="left" colspan="4">Intervals</th>
+								<th valign="middle" align="left" colspan="3">Graph Type</th>
+							</tr>
+							<tr>
+								<th valign="middle" align="left"></th>
+								<th valign="middle" align="left">Host</th>
+								<th valign="middle" align="left">Service</th>
+								<th valign="middle" align="left">Graph Name</th>
+								<th valign="middle" align="center">Day</th>
+								<th valign="middle" align="center">Week</th>
+								<th valign="middle" align="center">Month</th>
+								<th valign="middle" align="center">Year</th>
+								<th valign="middle" align="center">Line</th>
+								<th valign="middle" align="center">Bar</th>
+								<th valign="middle" align="center">Pie</th>
+							</tr>
+							<tr>
+								<th colspan="4"></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('day');">+</a> | <a href="javascript:deSelectColumn('day')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('week');">+</a> | <a href="javascript:deSelectColumn('week')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('month');">+</a> | <a href="javascript:deSelectColumn('month')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('year');">+</a> | <a href="javascript:deSelectColumn('year')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('line');">+</a> | <a href="javascript:deSelectColumn('line')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('bar');">+</a> | <a href="javascript:deSelectColumn('bar')">-</a></th>
+								<th valign="middle" align="center"><a href="javascript:selectColumn('pie');">+</a> | <a href="javascript:deSelectColumn('pie')">-</a></th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left">Create Graph(s)</td>
+			</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top">
+					<form name="outputHostGraphs" action="../displayHostGraphs/index.pl" method="post">
+					<input type="hidden" name="hostGroupID" value="<%$sessionObj->param("hostGroupID")%>">
+					<input type="hidden" name="hostName" value="<%$sessionObj->param("hostName")%>">
+					<input type="hidden" name="hostGraphHolderArray" value="">
+					<table>
+						<tr>
+							<td><span class="table1Text1">Layout:</span></td>
+							<td>
+								<select name="graphLayout" size="1">
+									<option value="1" <%$graphLayout eq "1" ? "selected" : "";%>>1 Column</option>
+									<option value="2" <%$graphLayout eq "2" ? "selected" : "";%>>2 Column</option>
+									<option value="3" <%$graphLayout eq "3" ? "selected" : "";%>>3 Column</option>
+									<option value="4" <%$graphLayout eq "4" ? "selected" : "";%>>4 Column</option>
+								</select>
+							</td>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+							<td nowrap><span class="table1Text1">Graph Size:</span></td>
+							<td>
+								<select name="graphSize" size="1" onChange="document.outputHostGraphs.customSize.value=''">
+									<option value="custom" <%$graphSize eq "custom" ? "selected" : "";%>>Custom</option>
+									<option value="small" <%$graphSize eq "small" ? "selected" : "";%>>Small</option>
+									<option value="medium" <%$graphSize eq "medium" ? "selected" : "";%>>Medium</option>
+									<option value="large" <%$graphSize eq "large" ? "selected" : "";%>>Large</option>
+								</select>
+							</td>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+							<td nowrap><span class="table1Text1">Custom Size:</span></td>
+							<td><input type="text" name="customSize" value="<%$customSize%>" size="3" maxlength="3" onFocus="document.outputHostGraphs.graphSize.options[0].selected=true"></td>
+								<td><span class="table1Text1">%</span></td>
+								<td><img src="../../../perfStatResources/images/common/spacer.gif" height="6" width="4" border="0"></td>
+								<td><input class="liteButton" type="button" value="Create" onClick="top.topFrame.displayHostGraphs();"></td>
+						</tr>
+					</table>
+				</td>
+				</form>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,47 @@
+use strict;
+package main;
+print("<html>\n");
+print("	<head>\n");
+print("		<meta http-equiv=\"content-type\" content=\"text/html;charset=iso-8859-1\">\n");
+print("		<title>PerfStat Tool: Status And Performance Monitoring</title>\n");
+print("		<link rel=\"stylesheet\" type=\"text/css\" href=\"../../perfStatResources/styleSheets/contentFrame.css\" media=\"screen\">\n");
+print("		<link rel=\"stylesheet\" type=\"text/css\" href=\"../../perfStatResources/styleSheets/forms.css\" media=\"screen\">\n");
+print("	</head>\n");
+
+print("	<body onLoad=\"parent.navigation.setLinkChosen('groupConfig');\">\n");
+my $formula0=$sessionObj->param("selectedAdmin");print("		<div class=\"navHeader\">Group Config  :: $formula0</div>\n");
+print("			<form action=\"index.pl\" method=\"post\">\n");
+print("			<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\" class=\"table1\">\n");
+print("				<tr>\n");
+print("					<td class=\"tdTop\" nowrap=\"nowrap\" colspan=\"3\" valign=\"middle\" align=\"left\">Group Preferences</td>\n");
+print("				</tr>\n");
+ if (length($sessionObj->param("userMessage")) ne 0) {
+print("				<tr>\n");
+my $formula1=$sessionObj->param("userMessage");print("					<td class=\"liteGray\" valign=\"top\" align=\"left\" colspan=\"3\"><span class=\"userMessage\">$formula1</span></td>\n");
+print("				</tr>\n");
+ $sessionObj->param("userMessage", "");
+ }
+print("				<tr>\n");
+print("					<th nowrap=\"nowrap\" valign=\"middle\" align=\"left\">Setting</th>\n");
+print("					<th nowrap=\"nowrap\" valign=\"middle\" align=\"left\"></th>\n");
+print("					<th nowrap=\"nowrap\" valign=\"top\" align=\"left\">Unit</th>\n");
+print("				</tr>\n");
+print("				<tr>\n");
+print("					<input type=\"hidden\" name=\"action\" value=\"updateTimeoutInterval\">\n");
+print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><span class=\"table1Text1\">Timeout Interval</span></td>\n");
+my $formula2=$timeoutInterval;print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><input type=\"text\" name=\"timeoutInterval\" size=\"10\" value=\"$formula2\"></td>\n");
+print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><span class=\"table1Text2\">minutes</td>\n");
+print("				</tr>\n");
+print("				<tr>\n");
+print("					<input type=\"hidden\" name=\"action\" value=\"updateStatusRefreshInterval\">\n");
+print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><span class=\"table1Text1\">Status Refresh Interval</span></td>\n");
+my $formula3=$statusRefreshInterval;print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><input type=\"text\" name=\"statusRefreshInterval\" size=\"10\" value=\"$formula3\"></td>\n");
+print("					<td class=\"liteGray\" valign=\"top\" align=\"left\"><span class=\"table1Text2\">minutes</td>\n");
+print("				</tr>\n");
+print("				<tr>\n");
+print("					<td class=\"tdBottom\" valign=\"middle\" align=\"right\" colspan=\"3\"><input class=\"liteButton\" type=\"submit\" name=\"submit\" value=\"ENTER\"></td>\n");
+print("				</tr>\n");
+print("			</form>\n");
+print("		</table>\n");
+print("	</body>\n");
+print("</html>\n");

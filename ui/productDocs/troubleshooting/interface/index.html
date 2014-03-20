@@ -1,0 +1,21 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The PerfStat user interface is responsible for displaying client data based on user configurations.  The user interface is a collection of cgi programs located under the perfhome/cgi directory.  Most of these programs are not compiled therefore ActiveStat perl 5.8 must be installed on the server.  The cgi programs are interpreted via a web browser.  The PerfStat application supports the Apache Web Server.</p>
+		<p><b>CGI Log</b></p>
+		<p>The PerfStat user interface has a separate log located under /var/logs/cgi.log. By analyzing the cgi.log you should be able to tell if the issue is related to the user interface. The cgi log uses the following format:</p>
+		<p>[Timestamp] [Client Program] [Alert Level] [Message]</p>
+		<p>[Fri Feb  4 16:52:16 2005] index.pl: ERROR: Couldn't open file handle to /perfstat/dev/1.52/server/var/events/cashcow.perfstat.com/conn.ping.log: No such file or directory</p>
+		<p>In the above example we see that on Feb 4 the index.pl cgi program encountered an error event, Couldn't open file handle to /perfstat/dev/1.52/server/var/events/testhost.test.com/conn.ping.log: No such file or directory</p>
+		<p>Alert Levels - The PerfStat cgi log has the following alert levels: DEBUG, INFO, WARNING, and ERROR.</p>
+		<p>DEBUG - By default debug log messages are not enabled. If debug is enabled much more information will be displayed in the cgi.log. You can enable debug by setting the DEBUG field to &quot;1&quot; in the perf-conf configuration file and then restarting the PerfStat server application.</p>
+	</body>
+
+</html>

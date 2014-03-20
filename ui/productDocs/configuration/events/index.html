@@ -1,0 +1,52 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>Events are the key to status monitoring.  Any change in status is considered an event.  The four status types in PerfStat are: OK, CRIT, WARN, and nostatus.  If event logging is enabled events will be written to a log.  Each service has an event log containing events for all that services metrics.  Event logging must be enabled in order to do alerting. </p>
+		<p><b>Enable Events</b></p>
+		<p>1) Ensure EVENTLOG is enabled in perf-conf and set to &quot;Y&quot; by running the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -list</p>
+		<p>2) To change any of the perf-conf settings run the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -server</p>
+		<p>Note: if you are logged in as root you will need to run the perfconfig command with &quot;-root&quot; flag. You can also simply cat the /perfhome/etc/perf-conf file.</p>
+		<p><b>Configure Event Log Size</b></p>
+		<p>The size is the number of lines in the event log file.  The event log will grow to the size (lines) of the LOGSIZE value in perf-conf and then will truncate old log entries to make room for new log entries when it reaches that size.</p>
+		<p>1) Set LOGSIZE to the maximum size (lines) that you want the event logs to be by running the following command:</p>
+		<p>/perfhome/bin/tools/perfconfig -server</p>
+		<p>Note: if you are logged in as root you will need to run the perfconfig command with &quot;-root&quot; flag. You can also simply vi the /perfhome/etc/perf-conf file.</p>
+		<p><b>Configure Event Thresholds (Optional)</b></p>
+		<p>In the PerfStat application you can configure WARN and CRIT thresholds.  The thresholds are the levels at which an event is triggered.  Below is how events are triggered:</p>
+		<p>WARN - A WARN event is generated when the value for a metric is at or above the WARN threshold and below the CRIT threshold</p>
+		<p>CRIT - A CRIT event is generated when the value for a metric is at or above the CRIT threshold</p>
+		<p>OK - A OK event is generated when a metric has a status of WARN or CRIT and the value falls below that of the WARN level</p>
+		<p>NOSTATUS - A NOSTATUS event is generated when the PerfStat application has not recieved data for that metric and the Status Interval (set in perf-conf) expires</p>
+		<p>1) Select &quot;App Configs-&gt;Host Config&quot; within the PerfStat application</p>
+		<p>2) Under the &quot;Manage Hosts&quot; section select &quot;Config&quot; to configure thresholds for a host</p>
+		<p>3) Under the &quot;Configure Services&quot; section select the service you would like to configure thresholds for</p>
+		<p>4) Under the service section configure the warn threshold, crit threshold, and/or threshold unit for a metric</p>
+		<p>5) Under the service section select &quot;Update&quot; to save your changes</p>
+		<p><b>Disable Service Events (Optional)</b></p>
+		<p>In the PerfStat application you can diable events at the service level by configuring the /perfhome/etc/events-disable file.  This allows you to get more granular with your event logging policy. Disabled events can not be alerted on.</p>
+		<p>1) Using an editor such as vi open the /perfhome/etc/events-disable file.</p>
+		<p>2) Disable event(s) using the template within the file.</p>
+		<p>The events-disable file uses the following format:</p>
+		<p>hostname:&lt;service1&gt;:&lt;service2&gt;</p>
+		<p>A host followed by a comma separated list of services. You can also use the wildcard (*) to indicate all services such as follows:</p>
+		<p>hostname:*</p>
+		<p><b>Disable Metric Events (Optional)</b></p>
+		<p>In the PerfStat application you can disable events at the metric level.  This allows for the most granular event policy.</p>
+		<p>1) Select &quot;App Configs-&gt;Host Config&quot; within the PerfStat application</p>
+		<p>2) Under the &quot;Manage Hosts&quot; section select &quot;Config&quot; to configure thresholds for a host</p>
+		<p>3) Under the &quot;Configure Services&quot; section select the service you would like to configure thresholds for</p>
+		<p>4) Under the service section configure the warn and/or crit thresholds for a metric</p>
+		<p>5) Under the service section select &quot;Update&quot; to save your changes</p>
+		<p>  </p>
+	</body>
+
+</html>

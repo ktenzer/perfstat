@@ -1,0 +1,124 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+		<script language="javascript" src="../../../appRez/javaScripts/sm.level3.js"></script>
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('clientStatus'); statusLevel3InitialToggle('<%$sessionObj->param("serviceName")%>');">
+		<div class="navHeader">
+			Status Monitor :: <a href="../level1/index.pl"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a>  :: <a href="../level2/index.pl?hgOwner=<%$sessionObj->param('hgOwner')%>&hostGroupID=<%$sessionObj->param('hostGroupID')%>"><%$sessionObj->param("hostGroupID")%></a> :: <%$sessionObj->param("hostName")%>
+		</div>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left">Service Status</td>
+			</tr>
+			<tr>
+				<td class="darkGray" align="left" valign="top" height="50">
+					% if (keys(%$serviceHashRefined) == 0) {
+						<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+							<tr>
+								<td>No status metrics currently available</td>
+							</tr>
+						</table>
+					% } else {
+						<table border="0" cellpadding="2" cellspacing="2">
+							<tr>
+								% foreach my $serviceHashRefinedKey (sort(keys(%$serviceHashRefined))) {
+								%my $serviceDescHash = $serviceHashRefined->{$serviceHashRefinedKey};
+								<td width="40" valign="top" align="center">					
+									%if ($serviceDescHash->{'hasSubService'} != 1) {
+									<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+										<tr>
+											<th nowrap="nowrap"><%$serviceHashRefinedKey%></th>
+										</tr>
+										<tr>
+											<td valign="top" align="center"><a href="index.pl?hostGroupID=<%$sessionObj->param("hostGroupID")%>&hostName=<%$sessionObj->param("hostName")%>&serviceName=<%$serviceHashRefinedKey%>"><img src="../../../appRez/images/content/status_<%$serviceDescHash->{'status'}%>.gif" width="20" height="20" /></a></td>
+										</tr>
+									</table>
+									%} else {
+									%my $subServiceHash = $serviceDescHash->{'subServiceHash'};
+									<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+										<tr>
+											<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceHashRefinedKey%>-off', '<%$serviceHashRefinedKey%>-on');"><img id="x<%$serviceHashRefinedKey%>-off" src="../../../appRez/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceHashRefinedKey%></th>
+										</tr>
+										<tr>
+											<td valign="top" align="center">
+												<div id="<%$serviceHashRefinedKey%>-off" style="display:block;">
+													<img src="../../../appRez/images/content/status_<%$serviceDescHash->{'status'}%>.gif" width="20" height="20" />
+												</div>
+												<div id="<%$serviceHashRefinedKey%>-on" style="display:none;">
+													<table border="0" cellpadding="1" cellspacing="1" class="table2">
+														%foreach my $subServiceHashKey (sort(keys(%$subServiceHash))) {
+														<tr>
+															<td style="text-align:right;"><a href="index.pl?hostGroupID=<%$sessionObj->param("hostGroupID")%>&hostName=<%$sessionObj->param("hostName")%>&serviceName=<%$serviceHashRefinedKey%>.<%$subServiceHashKey%>"><%$subServiceHashKey%></a></td>
+															<td><img src="../../../appRez/images/content/status_<%$subServiceHash->{$subServiceHashKey}%>.gif" width="20" height="20" /></td>
+														</tr>
+														%}
+													</table>
+												</div>
+											</td>
+										</tr>
+									</table>
+									% }
+								</td>
+								%}
+							</tr>
+						</table>
+					%}
+				</td>
+			</tr>
+		</table>
+		% if (length($sessionObj->param("serviceName")) != 0) {
+		<div align="center">
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+					<td class="tdTop" nowrap colspan="6" valign="middle" align="left"><%$sessionObj->param("serviceName")%></td>
+				</tr>
+			<tr>
+					<th nowrap valign="middle" align="left">Metric</th>
+					<th nowrap valign="middle" align="left">Warn</th>
+					<th nowrap valign="middle" align="left">Crit</th>
+					<th nowrap valign="middle" align="left">Unit</th>
+					<th nowrap valign="middle" align="left">Value</th>
+					<th nowrap valign="middle" align="left">Status</th>
+				</tr>
+			%my $serviceMetricArray = $hostObject->{'serviceIndex'}->{$sessionObj->param("serviceName")}->{'metricArray'};
+			%foreach my $metricObject (@$serviceMetricArray) {
+			% my $hasEvents = $metricObject->getHasEvents();
+			% if ($hasEvents == 1) {
+			% my $friendlyName = $metricObject->getFriendlyName();
+			% my $warnThreshold = $metricObject->getWarnThreshold();
+			% if (! defined $warnThreshold) { $warnThreshold="null"; };
+			% my $critThreshold = $metricObject->getCritThreshold();
+			% if (! defined $critThreshold) { $critThreshold="null"; };
+			% my $thresholdUnit = $metricObject->getThresholdUnit();
+			% if (! defined $thresholdUnit) { $thresholdUnit="null"; };
+			% my $metricValue = $metricObject->getMetricValue();
+			% if (! defined $metricValue) { $metricValue="null"; };
+			% my $status = $metricObject->getStatus();
+			<tr>
+				<td class="liteGray"><span class="table1Text2"><%$friendlyName%></span></td>
+				<td class="liteGray"><span class="table1Text2"><%$warnThreshold%></span></td>
+				<td class="liteGray"><span class="table1Text2"><%$critThreshold%></span></td>
+				<td class="liteGray"> <span class="table1Text2"><%$thresholdUnit%></span></td>
+				<td class="liteGray"> <span class="table1Text2"><%$metricValue%></span></td>
+				<td class="darkGray" valign="middle" align="center"><img src="../../../appRez/images/content/status_<%$status%>.gif" width="20" height="20"></td>
+			</tr>
+			%}
+			%}
+			<tr>
+				<form action="../level4/index.pl" method="post">
+					<input type="hidden" name="hostGroupID" value="<%$sessionObj->param("hostGroupID")%>">
+					<input type="hidden" name="hostName" value="<%$sessionObj->param("hostName")%>">
+					<input type="hidden" name="serviceName" value="<%$sessionObj->param("serviceName")%>">
+					<td class="tdBottom" colspan="6" valign="middle" align="center"><input class="liteButton" type="submit" value="View Event Log" /></td>
+				</form>
+			</tr>
+			</table>
+		</div>
+		%}
+	</body>
+</html>

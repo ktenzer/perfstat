@@ -1,0 +1,51 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The main configuration file for the perfstat server and client is perf-conf.  It can be updated manually using an editor like vi or via the cli tool perfconfig.  We recommend using perfconfig.  There are three main sections to the perf-conf configuration file: Global, Server, and Client.  The location of the perf-conf file is /perfhome/etc/perf-conf.</p>
+		<p><b>Global Settings</b></p>
+		<p>PERFHOME - Location of perfstat home directory.</p>
+		<p>USER - OS user used to run perfstat processes.  Note: root is not allowed for security reasons.</p>
+		<p>GROUP - OS group, not used by application but is useful if you want to give other os users access to perfstat files.</p>
+		<p>VER - Version number of perfstat application.</p>
+		<p>DEBUG - Enables or disabled debug logging. Set to 0 for disable or 1 for enable.</p>
+		<p><b>Server Settings</b></p>
+		<p>SERVER - Configures application to run as server.  The client and server piece are tightly coupled.</p>
+		<p>SERVERIP - IP address of the perfstat server.</p>
+		<p>SERVERPORT - Port number perfstat server will use.</p>
+		<p>MAXBYTES - Maximum bytes for an individual connection.  Security feature which allows you to limit the amount of data accepted perc connection.</p>
+		<p>PING_INTERVAL - Interval (minutes) for pinging clients from the perfstat server.</p>
+		<p>STATUS_INTERVAL - Interval (minutes) for checking status.  If a client or service has not reported to the perfstat server within the status interval that client or service will be set to nostatus.</p>
+		<p>ALERT_INTERVAL - Interval (minutes) for sending alerts.  The rate at which the perfstat server checks for and sends alerts.</p>
+		<p>AUTO_DETECT - Enable or disable auto detection of new hosts.  Set to Y for enable or N for disable.  If enabled you don't need to add hosts manually into the PerfStat application.</p>
+		<p>ADMIN_NAME - Name of admin user whom the AUTO_DETECT hosts will be owned by.  This field only matters if AUTO_DETECT is enabled.  Note: user must be an admin.</p>
+		<p>EMAIL - Enable or disable email alerts. Set to Y for enable or N for disable.  Only applicable if EVENTLOG is enabled.</p>
+		<p>EMAIL_ALL - Enable or disable all status changes for email notification. Set to Y for enable or N for disable. Note: If enabled an alert will be sent when status changes. Only applicable if EVENTLOG and EMAIL is enabled.</p>
+		<p>EMAIL_CRIT - Enable or disable crit status changes for email notification.  Set to Y for enable or N for disable.  Note: If enabled an alert will be sent when status changes to crit.  Only applicable if EMAIL is enabled and EMAIL_ALL is disabled.</p>
+		<p>EMAIL_WARN - Enable or disable warn status changes for email notification. Set to Y for enable or N for disable. Note: If enabled an alert will be sent when status changes to warn. Only applicable if EVENTLOG is enabled, EMAIL is enabled, and EMAIL_ALL is disabled.</p>
+		<p>EMAIL_NOSTATUS - Enable or disable nostatus changes for email notification. Set to Y for enable or N for disable. Note: If enabled an alert will be sent when status changes to nostatus. Only applicable if EVENTLOG is enabled, EMAIL is enabled, and EMAIL_ALL is disabled.</p>
+		<p>SMTP_SERVER - IP address of smtp server.  Note:  must accept relay messages.</p>
+		<p>EMAIL_FROM - From email address used to send alerts.</p>
+		<p>EVENTLOG - Enable of disable event logging. Set to Y to enable or N to disable.</p>
+		<p>LOGSIZE - Maximum size in  number of lines of each service event log.  All metric events are logged into their respective services event log.</p>
+		<p><b>Client Settings</b></p>
+		<p>PERFSERVER - IP address of the perfstat server.  This is where the client will attemp to send data.</p>
+		<p>CLIENTPORT - Port the perfstat server is using for communications.</p>
+		<p>METRICS - List of data collection agents.  Each service has it's own agent.  You can configure agents to have their own run interval by placing a &quot;:&lt;Num Minuutes&gt; after the agent ie: myagent:10 will run the myagent program every 10 minutes.</p>
+		<p>HOST_INFO - Enables or disables host information from being gathered and sent to the perfstat server.  Set to Y for enable or N for disable.</p>
+		<p>INFO_INTERVAL - Interval (minutes) to collect host information.  Only applicable if HOST_INFO is enabled.</p>
+		<p>RUN_INTERVAL - Interval (minutes) to run agent programs in METRICS list.  Only applicable for agents not using their own run interval.</p>
+		<p></p>
+		<p>Note: The OS specific section is where all unique os commands are defined.  If you do customization on your own and want to globally set any os specific commands this would be the section to do it.</p>
+		<p>Note: any changes to the perf-conf file will require a restart of the perfstat application!</p>
+		<p></p>
+		<p></p>
+	</body>
+
+</html>

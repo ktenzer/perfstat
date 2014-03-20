@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link type="text/css" rel="stylesheet" href="../../perfStatResources/styleSheets/navigationFrame.css">
+		<script language="javascript" src="../../perfStatResources/javaScripts/navigationFrame.js"></script>
+	</head>
+	<body onLoad="onBodyLoad('appConfigs');">
+		% if ($sessionObj->param("userName") eq "perfstat" || $sessionObj->param("role") eq "admin") {
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">	
+			% if ($sessionObj->param("userName") eq "perfstat") {
+			<tr>
+				<form action="index.pl" method="post">
+				<td nowrap="nowrap" valign="middle" align="right"><span class="table1Text1">Admin:</span></td>
+				<td nowrap="nowrap" valign="middle" align="left">
+					<select name="adminName" size="1" onChange="submit();">
+						% foreach my $adminNameTemp (sort (keys(%$adminList))) {
+						<option value="<%$adminNameTemp%>" <%$adminNameTemp eq $sessionObj->param("selectedAdmin") ? "selected" : "";%>><%$adminNameTemp%></option>
+						% }
+					</select>
+				</td>
+				</form>
+			</tr>
+			%}
+			% if ($sessionObj->param("role") eq "admin") {
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="adminName" value="<%$sessionObj->param("selectedAdmin")%>">
+				<td nowrap="nowrap" valign="middle" align="right"><span class="table1Text1">User:</span></td>
+				<td nowrap="nowrap" valign="middle" align="left">
+					<select name="userName" size="1" onChange="submit();">
+						% foreach my $userNameTemp (sort (keys(%$userList))) {
+						<option value="<%$userNameTemp%>" <%$userNameTemp eq $sessionObj->param("selectedUser")  ? "selected" : "";%>><%$userNameTemp%></option>
+						% }
+					</select>
+				</td>
+				</form>
+			</tr>
+			%}
+		</table>
+		%}
+		<table border="0" align="center" cellpadding="3" cellspacing="1" class="table1" width="100%">
+			<tr> 
+				<td height="25" class="header">App Configs</td>
+			</tr>
+			<tr>
+				<td align="left" valign="top">
+					<div style="margin-left:5px">
+					<table border="0" cellpadding="2" cellspacing="0">
+						% if ($sessionObj->param("role") eq "admin") {
+						<tr>
+							<td><img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+							<td><img src="../../perfStatResources/images/navigation/icon_appConfig1.gif" border="0" width="19" height="19"></td>
+							<td nowrap><a id="groupConfig" href="../groupConfig/index.pl" target="content">Group Config</a></td>
+						</tr>
+						% }
+						<tr>
+							<td><img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+							<td><img src="../../perfStatResources/images/navigation/icon_appConfig1.gif" border="0" width="19" height="19"></td>
+							<td nowrap><a id="userConfig" href="../userConfig/level1/index.pl" target="content">User Config</a></td>
+						</tr>
+						% if ($sessionObj->param("role") eq "admin") {
+						<tr>
+							<td><img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+							<td><img src="../../perfStatResources/images/navigation/icon_appConfig1.gif" border="0" width="19" height="19"></td>
+							<td nowrap><a id="hostConfig" href="../hostConfig/level1/index.pl" target="content">Host Config</a></td>
+						</tr>
+						% }
+						<tr>
+							<td><img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+							<td><img src="../../perfStatResources/images/navigation/icon_appConfig1.gif" border="0" width="19" height="19"></td>
+							<td nowrap><a id="hostGroups" href="../hostGroups/level1/index.pl" target="content">Host Groups</a></td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</body>
+</html>

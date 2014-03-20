@@ -1,0 +1,24 @@
+<form action="index.pl" method="post">
+<input type="hidden" name="action" value="insertTextComment">
+<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+	<table border="0" cellpadding="0" cellspacing="0">
+		%if ($sessionObj->param("userMessage1") ne "") {
+		<tr>
+			<td class="liteGray" valign="top" align="left"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+		</tr>
+		<tr>
+			<td class="liteGray" valign="top" align="left"><img name="xallHosts_host1" src="../../../appRez/images/common/spacer.gif" border="0" width="9" height="9"></td>
+		</tr>
+		%$sessionObj->param("userMessage1", "");
+		% }
+		<tr>
+			<td>
+				<fieldset>	
+        			<legend align="top">Add Text Comment</legend>
+					<textarea name="textComment" cols="65" rows="7"></textarea>
+				</fieldset>
+			</td>
+		</tr>
+		<td class="liteGray" valign="top" align="center"><input class="liteButton" type="submit" name="Update" value="ADD"></td>
+	</table>
+</form>

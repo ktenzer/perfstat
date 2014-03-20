@@ -1,0 +1,170 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+	<title>PerfStat Tool: Status And Performance Monitoring</title>
+	<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+	<script language="javascript" src="../../../perfStatResources/javaScripts/contentFrame.js"></script>
+</head>
+
+<body>
+	<div class="navHeader">
+		<a href="../level1/index.pl">Host Config</a> :: <%$sessionObj->param("selectedAdmin")%> :: <%$sessionObj->param("hostName")%>
+	</div>
+	<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="4" valign="middle" align="left">Modify Host</td>
+			</tr>
+			% if ($sessionObj->param("userMessage1") ne "") {
+			<tr>
+				<td class="liteGray" valign="top" align="left" colspan="4"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+			</tr>
+			% $sessionObj->param("userMessage1", "");
+			% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+				<th nowrap="nowrap" valign="top" align="left">OS</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form  action="index.pl" method="post">
+				<input type="hidden" name="action" value="updateItem">
+				<input type="hidden" name="osName" value="<%$osName%>">
+				<td class="liteGray" align="left" valign="top"><input type="text" name="newHostName" value="<%$newHostName%>" size="24"></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><input type="text" name="ipAddress" value="<%$ipAddress%>" size="24"></td>
+				<td class="liteGray" align="left" valign="middle"><span class="table1Text1"><%$osName%></span></td>
+					<td class="darkGray" align="center" valign="middle">
+						<table cellpadding="0" cellspacing="0" border="0" >
+							<tr>
+								<td nowrap="nowrap"><input class="liteButton" type="submit" name="submit" value="ENTER"></td>
+							</tr>
+						</table>
+					</td>
+				</form>
+			</tr>
+		</table>
+	<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+			<td class="tdTop" nowrap="nowrap" valign="middle" align="left">Config Services</td>
+		</tr>
+			<tr>
+			<td class="darkGray" align="left" valign="top">
+				<table border="0" cellpadding="2" cellspacing="2">
+					<tr>	
+						% foreach my $serviceName (sort(keys(%$serviceHashRefined))) {
+							% my $descriptorHash = $serviceHashRefined->{$serviceName};				
+							% if ($descriptorHash->{'hasSubService'} != 1) {
+							%my $hostName = $sessionObj->param("hostName");
+							%my $queryString = "action=selectMetricConfig&hostName=$hostName&serviceName=$serviceName&newHostName=$newHostName&ipAddress=$ipAddress&osName=$osName";
+							<td width="40" valign="top" align="center">	
+								<table cellpadding="1" cellspacing="1" border="0" class="table2" height="0%" width="100%">
+									<tr>
+										<th nowrap="nowrap"><a href="index.pl?<%$queryString%>"><%$serviceName%></a></th>
+									</tr>
+								</table>
+							</td>
+							% } else {
+							% my $subServiceHash = $descriptorHash->{'subServiceHash'};
+							<td width="40" valign="top" align="center">	
+								<div id="<%$serviceName%>-off" style="display:block;">
+								<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+									<tr>
+										<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-off" src="../../../perfStatResources/images/navigation/icon_plusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+									</tr>
+								</table>
+								</div>
+								<div id="<%$serviceName%>-on" style="display:none;">
+								<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+									<tr>
+										<th nowrap="nowrap" valign="middle" align="left"><a href="javascript:toggle('<%$serviceName%>-off', '<%$serviceName%>-on');"><img id="x<%$serviceName%>-on" src="../../../perfStatResources/images/navigation/icon_minusNavBar.gif" width="9" height="9" border="0"></a>&nbsp;<%$serviceName%></th>
+									</tr>
+									<tr>
+										<td valign="top" align="center">
+											<table border="0" cellpadding="1" cellspacing="1" class="table2">
+												%foreach my $subServiceHashKey (sort(keys(%$subServiceHash))) {
+												%my $hostName = $sessionObj->param("hostName");
+												%my $queryString = "action=selectMetricConfig&hostName=$hostName&serviceName=$serviceName.$subServiceHashKey&newHostName=$newHostName&ipAddress=$ipAddress&osName=$osName";
+												<tr>
+													<td style="text-align:right;"><a href="index.pl?<%$queryString%>"><%$subServiceHashKey%></a></td>
+												</tr>
+												% }
+											</table>
+										</td>
+									</tr>
+								</table>
+								</div>
+							</td>
+							% }	
+						% }
+					</tr>
+				</table>
+			</td>
+		</tr>
+		</table>
+		<div align="center">
+			<form name="configMetrics" action="index.pl" method="post">
+				<input type="hidden" name="action" value="setMetricThresholds">
+				<input type="hidden" name="serviceName" value="<%$sessionObj->param("serviceName")%>">
+				<input type="hidden" name="newHostName" value="<%$newHostName%>">
+				<input type="hidden" name="ipAddress" value="<%$ipAddress%>">
+				<input type="hidden" name="osName" value="<%$osName%>">
+				<table cellpadding="2" cellspacing="1" border="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap" colspan="5" valign="middle" align="left"><%$sessionObj->param("serviceName")%></td>
+					</tr>
+					% if ($sessionObj->param("userMessage2") ne "") {
+						<tr>
+						<td class="liteGray" valign="top" align="left" colspan="5"><span class="userMessage"><%$sessionObj->param("userMessage2")%></span></td>
+					</tr>
+						% $sessionObj->param("userMessage2", "");
+					% }
+					<tr>
+						<th nowrap="nowrap" valign="middle" align="left">Metric</th>
+						<th nowrap="nowrap" valign="middle" align="left">Warn</th>
+						<th nowrap="nowrap" valign="middle" align="left">Crit</th>
+						<th nowrap="nowrap" valign="middle" align="left">Unit</th>
+						<th nowrap="nowrap" valign="middle" align="left">Events</th>
+					</tr>
+					% my $count = keys(%$serviceHashRefined);
+					% if ($count != 0) {
+						%my $serviceMetricArrayLen = @$serviceMetricArray;
+						% for (my $count = 0; $count < $serviceMetricArrayLen; $count++) {
+							% my $metricObject = $serviceMetricArray->[$count];
+							% my $hasEvents = $metricObject->getHasEvents();
+							% #my $hasEvents = 0;
+							% if ($hasEvents == 1) {
+								% my $friendlyName = $metricObject->getFriendlyName();
+								% my $warnThreshold = $metricObject->getWarnThreshold();
+								% my $critThreshold = $metricObject->getCritThreshold();
+								% my $thresholdUnit = $metricObject->getThresholdUnit();
+								<tr>
+									<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$friendlyName%></td>
+									<td class="liteGray" valign="top" align="left"><input type="text" name="warnThreshold_<%$count%>" size="10" value="<%$warnThreshold%>"></td>
+									<td class="liteGray" valign="top" align="left"><input type="text" name="critThreshold_<%$count%>" size="10" value="<%$critThreshold%>"></td>
+									<td class="liteGray" valign="top" align="left"><input type="text" name="thresholdUnit_<%$count%>" size="10" value="<%$thresholdUnit%>"></td>
+									<td class="liteGray" valign="top" align="middle"><input type="checkbox" name="hasEvents_<%$count%>" size="10" CHECKED></td>
+								</tr>
+							% } elsif ($hasEvents == 0) {
+								% my $friendlyName = $metricObject->getFriendlyName();
+								% my $warnThreshold = $metricObject->getWarnThreshold();
+								% my $critThreshold = $metricObject->getCritThreshold();
+								% my $thresholdUnit = $metricObject->getThresholdUnit();
+								<tr>
+									<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$friendlyName%></td>
+									<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$warnThreshold%></td>
+									<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$critThreshold%></td>
+									<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$thresholdUnit%></td>
+									<td class="liteGray" valign="top" align="middle"><input type="checkbox" name="hasEvents_<%$count%>" size="10"></td>
+								</tr>
+							%}
+						% }
+						<tr>
+						<td class="liteGray" valign="top" align="right" colspan="5"><input class="liteButton" type="button" name="Delete" value="delete"><input class="liteButton" type="submit" name="Update" value="update"></td>
+					</tr>
+					% }
+				</table>
+			</form>
+		</div>
+	</body>
+</html>

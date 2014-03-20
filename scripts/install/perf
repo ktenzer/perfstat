@@ -1,0 +1,55 @@
+#!/bin/sh
+# PerfStat Init Script
+#
+# perf:       Starts the PerfStat client/server
+#
+#
+# chkconfig: 2345 99 10
+# description: Starts and stops the PerfStat client/server
+#
+# processname: perf
+# hide: true
+
+PERFHOME=/perfstat/dev/1.52/server
+
+# Source in PerfStat profile
+. $PERFHOME/perf.profile
+
+# Set Environment Variables
+SERVER=`$GREP_CMD "^SERVER=" $PERFHOME/etc/perf-conf |$SED_CMD 's/SERVER=//'`
+USER=`$GREP_CMD "^USER=" $PERFHOME/etc/perf-conf |$SED_CMD 's/USER=//'`
+VER=`$GREP_CMD "^VER=" $PERFHOME/etc/perf-conf |$SED_CMD 's/VER=//'`
+
+case "$1" in
+start)
+        STATUS="starting"
+        ;;
+stop)
+        STATUS="stopping"
+        ;;
+restart)
+        STATUS="restarting"
+        ;;
+*)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+if [ "$SERVER" = "y" -o "$SERVER" = "Y" ]; then
+	echo "PerfStat $VER Server $STATUS"
+else
+	echo "PerfStat $VER Client $STATUS"
+fi
+
+# Start PerfStat as correct user
+$SU_CMD - $USER -c "$PERFHOME/perf.sh $1 2>&1"
+
+if [ $? != 0 ]; then
+        sleep 2
+        echo "$STARTUP"
+        exit 1
+fi
+
+sleep 2
+exit 0

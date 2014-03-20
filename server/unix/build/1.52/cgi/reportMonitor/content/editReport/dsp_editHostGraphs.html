@@ -1,0 +1,289 @@
+<table border="0" cellpadding="0" cellspacing="0">
+	%if ($sessionObj->param("userMessage1") ne "") {
+	<tr>
+		<td class="liteGray" valign="top" align="left"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+	</tr>
+	<tr>
+		<td class="liteGray" valign="top" align="left"><img name="xallHosts_host1" src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+	</tr>
+	%$sessionObj->param("userMessage1", "");
+	% }
+	% if (@$hostGroupArray == 0) {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Groups</legend>
+							<b>There are no host groups to select</b>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	%} else {
+	<tr>
+		<td>
+			<form action="index.pl" method="post">
+			<input type="hidden" name="displayMode" value="edit">
+			<input type="hidden" name="contentType" value="hostGraph">
+			<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+			<input type="hidden" name="contentID" value="<%$contentID%>">
+			<input type="hidden" name="osName" value="<%$osName%>">
+			<input type="hidden" name="graphServiceType" value="<%$graphServiceType%>">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host Group</legend>
+							<select name="hostGroupID" size="1" onchange="submit();">
+								%foreach my $hostGroupName (@$hostGroupArray) {
+									<option value="<%$hostGroupName%>" <%$hostGroupName eq $hostGroupID ? 'selected' : ' '%>><%$hostGroupName%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td>	
+			<form name="selectOS" action="index.pl" method="post">
+			<input type="hidden" name="displayMode" value="edit">
+			<input type="hidden" name="contentType" value="hostGraph">
+			<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+			<input type="hidden" name="contentID" value="<%$contentID%>">
+			<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+			<input type="hidden" name="graphServiceType" value="<%$graphServiceType%>">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+						<legend align="top">OS</legend>
+						<select name="osName" size="1" onchange="submit();">
+							% foreach my $osNameTemp (sort( @$osList)) {
+								<option value="<%$osNameTemp%>" <%$osNameTemp eq $osName ? "selected" : "";%>><%$osNameTemp%></option>
+							%}
+						</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td>	
+			<form name="selectGraphServiceType" action="index.pl" method="post">
+			<input type="hidden" name="displayMode" value="edit">
+			<input type="hidden" name="contentType" value="hostGraph">
+			<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+			<input type="hidden" name="contentID" value="<%$contentID%>">
+			<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+						<legend align="top">Graph Service Type</legend>
+						<select name="graphServiceType" size="1" onchange="submit();">
+							<option value="singleService" <%$graphServiceType eq "singleService" ? "selected" : "";%>>Single Service</option>
+							<option value="singleSubService" <%$graphServiceType eq "singleSubService" ? "selected" : "";%>>Single Subservice</option>
+							<option value="aggregateSubService" <%$graphServiceType eq "aggregateSubService" ? "selected" : "";%>>Aggregate Subservice</option>
+						</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	% if ($graphServiceType eq "singleSubService") {
+		<form name="selectGraphOrHost" action="index.pl" method="get">
+		<input type="hidden" name="displayMode" value="edit">
+		<input type="hidden" name="contentType" value="hostGraph">
+		<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+		<input type="hidden" name="contentID" value="<%$contentID%>">
+		<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+		<input type="hidden" name="osName" value="<%$osName%>">
+		<input type="hidden" name="graphServiceType" value="singleSubService">
+		<input type="hidden" name="selectGraphs" value="<%$selectGraphs->[0]%>">
+		<input type="hidden" name="selectHosts" value="<%$selectHosts->[0]%>">
+		</form>
+	% }
+	<form name="updateHostGraphs" action="index.pl" method="post">
+	<input type="hidden" name="action" value="updateHostGraph">
+	<input type="hidden" name="hostGroupID" value="<%$hostGroupID%>">
+	<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+	<input type="hidden" name="contentID" value="<%$contentID%>">
+	<input type="hidden" name="osName" value="<%$osName%>">
+	<input type="hidden" name="graphServiceType" value="<%$graphServiceType%>">
+	% if ($graphServiceType ne "singleSubService") {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graphs</legend>
+								<select name="selectGraphs" size="1">
+								% foreach my $contentStruct (@$graphArray) {
+									%my $value="$contentStruct->{'serviceName'}^$contentStruct->{'graphName'}";
+									<option value="<%$value%>" <%searchArray($selectGraphs, $value) ? 'selected' : ' '%>><%$contentStruct->{'serviceName'}%> :: <%$contentStruct->{'graphName'}%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	% } else {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graph</legend>
+								<select name="selectGraphs" onChange="document.forms.selectGraphOrHost.selectGraphs.value=this.options[this.selectedIndex].value; document.forms.selectGraphOrHost.submit();">
+								% foreach my $contentStruct (@$graphArray) {
+									%my $value="$contentStruct->{'serviceName'}^$contentStruct->{'graphName'}";
+									<option value="<%$value%>" <%searchArray($selectGraphs, $value) ? 'selected' : ' '%>><%$contentStruct->{'serviceName'}%> :: <%$contentStruct->{'graphName'}%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	% }
+	% if ($graphServiceType ne "singleSubService") {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Hosts</legend>
+								<select name="selectHosts" size="1">
+								% foreach my $contentStruct (@$hostArray) {
+									%my $value="$contentStruct->{'hostName'}";
+									<option value="<%$value%>" <%searchArray($selectHosts, $value) ? 'selected' : ' '%>><%$value%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	% } else {
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Host</legend>
+								<select name="selectHosts" onChange="document.forms.selectGraphOrHost.selectHosts.value=this.options[this.selectedIndex].value; document.forms.selectGraphOrHost.submit();">
+								% foreach my $contentStruct (@$hostArray) {
+									%my $value="$contentStruct->{'hostName'}";
+									<option value="<%$value%>" <%searchArray($selectHosts, $value) ? 'selected' : ' '%>><%$value%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">SubService</legend>
+							<select name="selectSubServices"  size="1">
+								% foreach my $subServiceName (@$subServiceArray) {
+									<option value="<%$subServiceName%>" <%searchArray($selectSubServices, $subServiceName) ? 'selected' : ' '%>><%$subServiceName%></option>
+								%}
+							</select>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	% }
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graph Interval</legend>
+							<table border="0" cellpadding="0" cellspacing="3">
+								<tr>
+									<td><input type="radio" name="graphInterval" value="day" <%searchArray($graphInterval, 'day') ? 'checked' : ' '%>></td>
+									<td>day</td>
+									<td>&nbsp;</td>
+									<td><input type="radio" name="graphInterval" value="week" <%searchArray($graphInterval, 'week') ? 'checked' : ' '%>></td>
+									<td>week</td>
+									<td>&nbsp;</td>
+									<td><input type="radio" name="graphInterval" value="month" <%searchArray($graphInterval, 'month') ? 'checked' : ' '%>></td>
+									<td>month</td>
+									<td>&nbsp;</td>
+									<td><input type="radio" name="graphInterval" value="year" <%searchArray($graphInterval, 'year') ? 'checked' : ' '%>></td>
+									<td>year</td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<fieldset>
+							<legend align="top">Graph Type</legend>
+							<table border="0" cellpadding="0" cellspacing="3">
+								<tr>
+									<td><input type="radio" name="graphType" value="line" <%searchArray($graphType, 'line') ? 'checked' : ' '%>></td>
+									<td>Line</td>
+									<td>&nbsp;</td>
+									<td><input type="radio" name="graphType" value="bar" <%searchArray($graphType, 'bar') ? 'checked' : ' '%>></td>
+									<td>Bar</td>
+									<td>&nbsp;</td>
+									<td><input type="radio"name="graphType" value="pie" <%searchArray($graphType, 'pie') ? 'checked' : ' '%>></td>
+									<td>Pie</td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		
+      <td align="center"> <table border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td><input class="liteButton" type="submit" name="Update" value="UPDATE"></td>
+            <td>&nbsp;</td>
+            <td><input class="liteButton" type="button" name="clear" value="Go Back" onclick="location='index.pl?reportNameID=<%$reportNameID%>';"></td>
+          </tr>
+        </table></td>
+	</tr>
+	</form>
+	%}
+</table>

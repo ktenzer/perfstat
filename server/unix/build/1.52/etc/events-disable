@@ -1,0 +1,15 @@
+# events-disable configuration file
+# This file is used to suppress event logging of certain or all
+# services.  The format is as follows:
+#
+# Format: <hostname>:<service1>:<service2>
+#
+# The (*) wildcard can be used to cover all metrics if you want to 
+# completely disable event logging for a given host.
+#
+# Below is a real worl example:
+#
+# myhost.mydomain.com:cpu:mem:io
+#
+# In the above example event logging for cpu, mem, and io would be
+# completely suppressed.

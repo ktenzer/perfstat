@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+
+	<body>
+		<div class="navHeader"><a href="../list/index.pl">Metric Templates</a> :: <%$templateName%></div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Add Host</td>
+			</tr>
+			% if (keys(%$hostList) != 0) {
+				% if ($sessionObj->param("userMessage") ne "") {
+				<tr>
+					<td class="liteGray" valign="top" align="left" colspan="2"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+				</tr>
+				% $sessionObj->param("userMessage", "");
+				% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap">Action</th>
+			</tr>
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="insertHosts">
+				<input type="hidden" name="templateName" value="<%$templateName%>">
+				<td class="liteGray" align="left" valign="middle">
+					<select name="selectHosts" size="10" multiple>
+						%foreach my $hostListKey (sort(keys(%$hostList))) {
+						<option value="<%$hostListKey%>"><%$hostListKey%></option>
+						%}
+					</select>
+				</td>
+				<td class="darkGray" align="center" valign="bottom"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+			% } else {
+			<tr>
+				<td colspan="2" class="liteGray" align="left" valign="middle">
+					% if ($hostListLen == 0) {
+						<span class="table1Text1">No hosts are available</span>
+					% } else {
+						<span class="table1Text1">All available hosts are already in host group</span>
+					% }
+				</td>
+			</tr>
+			% }
+	</table>
+		% my $applyToHostList = $sessionObj->param('applyToHostList');
+		% if (keys(%$applyToHostList) != 0) {
+		<table width="500" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Apply Template to Host List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" width="10">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+			</tr>
+			%foreach my $hostName (sort(keys(%$applyToHostList))) {
+			%my $ip = $applyToHostList->{$hostName};
+			%my $queryString = "action=removeHost" . "&templateName=". URLEncode($templateName) . "&hostName=". URLEncode($hostName);
+			<tr>
+				<td class="liteGray" align="center" valign="middle" width="10">
+					<table width="100%" cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="index.pl?<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to remove <%$hostName%>');">Remove From List</a></th>
+						</tr>
+					</table>
+				</td>
+				<td align="left" valign="top" nowrap class="liteGray"><span class="table1Text1"><%$hostName%></span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$ip%></span></td>
+			</tr>
+			%}
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="applyTemplate2Hosts">
+				<input type="hidden" name="templateName" value="<%$templateName%>">
+				<td class="liteGray" valign="top" align="center" colspan="3"><input class="liteButton" type="submit" value="Apply to Hosts"></td>
+				</form>
+			</tr>
+	</table>
+		% } else {
+		<table width="500" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Apply Template to Host List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+			</tr>
+			<tr>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1">&nbsp;</span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2">&nbsp;</span></td>
+			</tr>
+	</table>
+		% }
+	</body>
+</html>

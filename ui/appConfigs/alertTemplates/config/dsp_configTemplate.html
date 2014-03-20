@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Perfstat Performance and Status Monitor</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+<body>
+<div class="navHeader"><a href="../list/index.pl">Alert Templates</a> :: <%$templateName%></div>
+<table cellpadding="2" cellspacing="1" border="0" class="table1">
+  <tr>
+    <td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Add Notify Rule </td>
+  </tr>
+  %if ($sessionObj->param("userMessage") ne "") {
+  <tr>
+    <td class="liteGray" valign="top" align="left" colspan="2"><span class="userMessage">
+      <%$sessionObj->param("userMessage")%>
+    </span></td>
+  </tr>
+  %$sessionObj->param("userMessage", "");
+  %}
+  <tr>
+    <th nowrap="nowrap" valign="middle" align="left">Rule</th>
+  </tr>
+  <tr>
+    <form action="index.pl" method="post">
+      <input type="hidden" name="action" value="add">
+      <input type="hidden" name="templateName" value="<%$templateName%>">
+      <td class="liteGray" align="left" valign="middle"><input style="font-family:'Courier New', Courier, mono" type="text" name="notifyRule" value="<%$notifyRule%>" size="100"></td>
+    </form>
+  </tr>
+</table>
+<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+  <tr>
+	<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="2">Notify Rule Set </td>
+  </tr>
+  <tr>
+	<th nowrap="nowrap" valign="middle" align="left" width="2%">Actions</th>
+	<th nowrap="nowrap" valign="middle" align="left">Rule</th>
+  </tr>
+	  % if ($notifyRulesArrayLength == 0) {
+	  <tr>
+		<td class="liteGray" colspan="2">&nbsp;</td>
+	  </tr>
+	  % } else { 
+	  	% if ($notifyRulesArrayLength > 1) {
+		  <tr>
+			<td class="liteGray" colspan="2">
+				<table cellpadding="1" cellspacing="1" border="0" class="table2">
+					<tr>
+						<th nowrap="nowrap"><a href="index.pl?action=deleteAll&templateName=<%$templateName%>">Delete All</a></th>
+					</tr>
+				</table>
+			</td>
+		  </tr>
+	  % } 
+	  % my $count = 0; 
+	  % foreach my $notifyRule (@$notifyRulesArray) {
+	  <tr>
+		<td class="liteGray" align="center" valign="top" width="2%">
+			<table cellpadding="1" cellspacing="1" border="0" class="table2">
+				<tr> 
+					% if ($notifyRulesArrayLength > 1) { 
+						% if (($count + 1) == 1) {
+							<th nowrap="nowrap"><img src="../../../appRez/images/common/spacer.gif" width="10" height="14" border="0"/></th>
+						% } else {
+							<th nowrap="nowrap"><a href="index.pl?action=moveUp&templateName=<%$templateName%>&contentID=<%$count%>"><img src="../../../appRez/images/navigation/arrow_up.gif" width="10" height="14" border="0"/></a></th>
+						% } 
+						% if (($count + 1) == $notifyRulesArrayLength) {
+							<th nowrap="nowrap"><img src="../../../appRez/images/common/spacer.gif" width="10" height="14" border="0"/></th>
+						% } else {
+							<th nowrap="nowrap"><a href="index.pl?action=moveDown&templateName=<%$templateName%>&contentID=<%$count%>"><img src="../../../appRez/images/navigation/arrow_down.gif" width="10" height="14" border="0"/></a></th>
+						% } 
+					% }
+					%if ($editFlag != $count) {
+						<th nowrap="nowrap"><a href="index.pl?templateName=<%$templateName%>&editFlag=<%$count%>">&nbsp;Edit&nbsp;</a></th>
+					% } else {
+						<th nowrap="nowrap"><a href="index.pl?templateName=<%$templateName%>">Clear</a></th>
+					%}
+					<th nowrap="nowrap"><a href="index.pl?action=delete&templateName=<%$templateName%>&contentID=<%$count%>">Delete</a></th>
+				</tr>
+			</table>
+		</td>
+		<form action="index.pl" method="post">
+		<td class="liteGray" align="left" valign="top">
+			%if ($editFlag != $count) {
+				<span class="table1Text1"><%$notifyRule%></span>
+			% } else {
+				<input type="hidden" name="action" value="edit">
+				<input type="hidden" name="contentID" value="<%$count%>">
+				<input type="hidden" name="templateName" value="<%$templateName%>">
+				<input type="text" style="font-family:'Courier New', Courier, mono" name="notifyRule" value="<%$notifyRule%>" size="100">
+			%}
+		</td>
+		</form>
+	  </tr>
+	  % $count++; 
+	  % } 
+	  % }
+</table>
+</body>
+</html>

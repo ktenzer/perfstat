@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+	</head>
+
+	<body>
+		<div class="navHeader">
+			<div class="navHeader">Asset Monitor :: <a href="../level1/index.pl?doToggle=1"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a></div>
+		</div>
+		<form name="insertItem" action="index.pl" method="post">
+		%if ($action ne "displayUpdateItem") {
+			<input type="hidden" name="action" value="insertItem">
+		%} else {
+			<input type="hidden" name="action" value="updateItem">
+			<input type="hidden" name="itemID" value="<%$request->param('itemID')%>">
+		%}
+		<input type="hidden" name="hgOwner" value="<%$sessionObj->param('hgOwner')%>">
+		<input type="hidden" name="hostGroupID" value="<%$sessionObj->param('hostGroupID')%>">
+		<input type="hidden" name="hostName" value="<%$sessionObj->param('hostName')%>">
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">
+					%if ($action ne "displayUpdateItem") {
+						Add Item
+					%} else {
+						Edit Item
+					%}
+				</td>
+			</tr>
+			% if (length($sessionObj->param("userMessage")) ne 0) {
+			<tr>
+				<td class="liteGray" valign="middle" align="left" colspan="2"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+			</tr>
+			% $sessionObj->param("userMessage", "");
+			% }
+			<tr>
+				<td class="liteGray" valign="middle" align="right"><span class="table1Text1">Date</span></td>
+					<td class="liteGray" valign="middle" align="left"><span class="table1Text1" style="font-size:6pt">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td><input type="text" name="date"  value="<%$date%>" size="10"maxlength="10"></td>
+									<td><span class="table1Text1" style="font-size:8pt">&nbsp;&nbsp;YYYY-MM-DD</span></td>
+								</tr>
+							</table>
+						</span></td>
+				</tr>
+			<tr>
+				<td class="liteGray" valign="middle" align="right"><span class="table1Text1">User</span></td>
+				<td class="liteGray" valign="middle" align="left"><input type="text" name="user" value="<%$user%>" size="20"></td>
+			</tr>
+				<tr>
+					<td class="liteGray" valign="top" align="right"><span class="table1Text1">Description</span></td>
+					<td class="liteGray" valign="top" align="left"><textarea name="description" cols="60" rows="2"><%$description%></textarea></td>
+				</tr>
+				<tr>
+				<td class="tdBottom" valign="middle" align="right" colspan="2">
+					<table cellpadding="0" cellspacing="0" border="0" >
+						<tr>
+							<td nowrap="nowrap"><input class="liteButton" type="submit" name="submit" value="ENTER"></td>
+							%if ($action eq "displayUpdateItem") {
+								<td nowrap="nowrap"><input class="liteButton" type="submit" name="submit" value="CLEAR"></td>
+							%}
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		</form>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="4">Change Log :: <%$sessionObj->param("hostName")%></td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%"></th>
+				<th nowrap="nowrap" valign="middle" align="left" width="5%">Date</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="5%">User</th>
+				<th valign="middle" align="left">Description</th>
+			</tr>
+			%if ($changeLogIndexLen == 0) { 
+			<tr>
+				<td class="liteGray" nowrap width="1%"></td>
+				<td class="liteGray" nowrap width="5%">&nbsp;</td>
+				<td class="liteGray" nowrap width="5%">&nbsp;</td>
+				<td class="liteGray">&nbsp;</td>
+			</tr>
+			%} else {
+				%my $hgOwner = $sessionObj->param('hgOwner');
+				%my $hgID = $sessionObj->param('hostGroupID');
+				%my $hostName = $sessionObj->param('hostName');
+				%foreach my $valueArray (@$changeLogArray) {
+				%my $indexValue =  $valueArray->[0];
+				%my $date = $valueArray->[1];
+				%my $user = $valueArray->[2];
+				%my $description = $valueArray->[3];
+					<tr>
+						<td class="liteGray" nowrap width="1%" valign="top" align="left">
+							<table cellpadding="2" cellspacing="1" border="0">
+								<tr>
+									%my $queryString = "action=displayUpdateItem&hgOwner=$hgOwner&hostGroupID=$hgID&hostName=$hostName&itemID=$indexValue&date=$date&user=$user&description=$description";
+									<td nowrap="nowrap"><span class="table1Text2"><a href="index.pl?<%$queryString%>">Edit</a></span></td>
+									<td nowrap="nowrap"><span class="table1Text2"><a href="index.pl?action=deleteItem&hgOwner=<%$hgOwner%>&hostGroupID=<%$hgID%>&hostName=<%$hostName%>&itemID=<%$indexValue%>">Delete</a></span></td>
+								</tr>
+							</table>
+						</td>
+						<td class="liteGray" nowrap width="5%" valign="top" align="left"><span class="table1Text2"><%$date%></span></td>
+						<td class="liteGray" nowrap width="5%" valign="top" align="left"><span class="table1Text2"><%$user%></span></td>
+						<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$description%></span></td>
+					</tr>
+				%}
+			%}
+		</table>
+	</body>
+</html>

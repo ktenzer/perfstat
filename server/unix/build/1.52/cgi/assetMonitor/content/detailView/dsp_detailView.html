@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+	</head>
+
+	<body>
+		<div class="navHeader">
+			<div class="navHeader">Asset Monitor :: <a href="../level1/index.pl?doToggle=1"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a> :: <%$sessionObj->param("hostName")%></div>
+		</div>
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr valign="top">
+				<td>
+					% my $ip = $hostObject->getOS();
+					% my $os = $hostObject->getOS();
+					% my $osVer = $hostObject->getOsVer();
+					% my $kernelDescriptor;
+					% if ($os ne "WindowsNT") {
+						%$kernelDescriptor ="Kernel Version:";
+					% } else {
+						%$kernelDescriptor ="Service Pack:";
+					%}
+					% my $kernelVer = $hostObject->getKernelVer();
+					% my $cpuNum = $hostObject->getCpuNum();
+					% my $cpuModel = $hostObject->getCpuModel();
+					% my $cpuSpeed = $hostObject->getCpuSpeed();
+					% my $memTotal = $hostObject->getMemTotal();
+					% my $patchArray = $hostObject->getPatchesArray();
+					<table cellpadding="2" cellspacing="1" border="0" class="table1">
+						<tr>
+							<td class="tdTop" nowrap colspan="2" valign="middle" align="left"><%$sessionObj->param("hostName")%></td>
+						</tr>
+						<tr>
+							<th nowrap valign="middle" align="left" width="5%">Property</th>
+							<th nowrap valign="middle" align="left">Value</th>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"><span class="table1Text2">CPU Model:</span></td>
+							<td  class="liteGray" valign="top" align="left"><span class="table1Text2"><%$cpuModel%></span></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"><span class="table1Text2">CPU Speed:</span></td>
+							<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$cpuSpeed%> MHz</span></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"><span class="table1Text2">Number of CPUs:</span></td>
+							<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$cpuNum%></span></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"></td>
+							<td class="liteGray" valign="top" align="left"></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"><span class="table1Text2">Total Memory:</span></td>
+							<td  class="liteGray" valign="top" align="left"><span class="table1Text2"><%$memTotal%> MB</span></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"></td>
+							<td class="liteGray" valign="top" align="left"></td>
+						</tr>
+						<tr>
+							<td nowrap  class="liteGray" valign="top" align="right" width="5%"><span class="table1Text2">OS:</span></td>
+							<td  class="liteGray" valign="top" align="left"><span class="table1Text2"><%$os%></span></td>
+						</tr>
+						<tr>
+							<td nowrap  class="liteGray" valign="top" align="right" width="5%"><span class="table1Text2">OS Version:</span></td>
+							<td  class="liteGray" valign="top" align="left"><span class="table1Text2"><%$osVer%></span></td>
+						</tr>
+						<tr>
+							<td nowrap  class="liteGray" valign="top" align="right" width="5%"><span class="table1Text2"><%$kernelDescriptor%></span></td>
+							<td  class="liteGray" valign="top" align="left"><span class="table1Text2"><%$kernelVer%></span></td>
+						</tr>
+						<tr>
+							<td  class="liteGray" nowrap valign="top" align="right" width="5%"></td>
+							<td class="liteGray" valign="top" align="left"></td>
+						</tr>
+						<tr>
+							<td nowrap  class="liteGray" valign="top" align="right" width="5%"><span class="table1Text2">Patch List</span></td>
+							<td  class="liteGray" valign="top" align="left">
+								<span class="table1Text2">
+								%foreach my $patchName (sort(@$patchArray)) {
+								 	<%$patchName%>,&nbsp;
+								%}
+								</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

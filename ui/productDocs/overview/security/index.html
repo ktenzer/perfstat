@@ -1,0 +1,20 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>Security ensures that only authorized clients are communicating with the perfstat application and data integrity is achieved.  Anytime you have client/server communications security is an issue. In the perfstat application security is handled at the server level. There are two main forms of security: client authentication and data verification. Unlike many applications, only system registered in the perfstat application can talk to the server daemon. This done via client authentication.</p>
+		<p><b>Client Authentication</b></p>
+		<p>The first phase of security is client authentication.  All clients or hosts that try to communicate with the perfstat server daemon must be registered within the application.  Registration is done by adding a host.  Hosts that are not registered and try and communicate with the perfstat server daemon will have their connection terminated.  Only registerd hosts can send the perfstat server daemon data/instructions.  The perfstat server daemon determines hostnames by doing a lookup on the ip address that initiates the connection.  Then it looks for that hostname in it's database of registered hosts.  If the daemon is unable to resolve a hostname it will look for an ip address instead.  It is possible to use ip addresses instead of hostnames, but this is not recommended.</p>
+		<p><b>Data Verification</b></p>
+		<p>Once a client has authenticated the second phase of security is the data verification layer. This is devided into three parts. The first part checks to ensure the data is perfstat data by looking for specific data patterns. Perfstat has a unique modular approach to data clasification which makes it possible to do pattern checking. </p>
+		<p>The second part of data verification is ensuring the size of the buffer sent for a particular connection does not exceed MAXBYTES. This ensures someone doesn't try and overflow a buffer. MAXBYTES is configurable in the perfstat configuration file (perf-conf). By default it is set to 8192 (8KB) meaning no client can send more that 8KB at a time. Only once a client has authenticated and the data has been verified will the perfstat server daemon do any processing. Connections that don't pass these security checks will be terminated and all data sent will be dumped.</p>
+		<p>The third part of data verification is done during data processing. Perfstat knows how many metrics to expect for a given service. If it does not recieve the correct number of metrics the connection will be terminated and all data dumped. </p>
+	</body>
+
+</html>

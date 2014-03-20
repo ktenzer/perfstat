@@ -1,0 +1,68 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The perfstat application like any application uses it's own terminology which must be understood in order to get the most out of the documentation and the application itself.  Below is a glossary of the perfstat terminology and description of application files:</p>
+		<p><b>Gerneral</b></p>
+		<p>Serialization - The process of writing a data structure to a data file stored on disk.</p>
+		<p>Deserialization - The process of retrieving data from disk and placing it into a data structure.</p>
+		<p>User Role - The role or user type defines the permissions a user has within the application. There are three roles or types: perfstat, admin, and user.</p>
+		<p>Perfstat User - The super user for the perfstat application. There can be only one perfstat user. The perfstat user can control other admin.</p>
+		<p>Admin Role - The admin role allows that user to add hosts and users. Admin have control over all hosts and users they add to the system. You can have many admin users.</p>
+		<p>User Role - The user role does not permit other user or host configurations. You can only manage your own user preferences.</p>
+		<p>Backend - Refers to the non graphical programs. Handles client/server communication, host-&gt;service-&gt;metric status, and stores all the application data.</p>
+		<p>Frontend - Refers to the graphical programs the comprise the web interface.</p>
+		<p>perfd - Perfstat server daemon. Handles client communications and data storage.</p>
+		<p>perfctl - Perfstat control daemon. Handles the scheduling of server and client programs within the perfstat application.</p>
+		<p>Objects - Perfstat objects contain all property data for the perfstat application.</p>
+		<p>Indexes - Perfstat indexes create relationships between objects, similar to database indexes.</p>
+		<p>Libraries - Perfstat libraries contain all the information needed to build or manipulate an object.</p>
+		<p><b>Objects</b></p>
+		<p>Metric - An object whose properties include: name, status, value, and thresholds.  Metrics are the foundation of the status portion of the perfstat application.</p>
+		<p>Service - An object which groups related metrics and/or sub services.  Note: most services do no have sub services.</p>
+		<p>Host - An object whose properties include: name, ip address, and asset information.  Note: hostnames must be unique in the perfstat application.</p>
+		<p>Host Group - An object which groups related hosts.  The relationships are defined by the user who creates the host group.</p>
+		<p>Graph Metric - An object whose properties include: name, color, and graph info.  Graph Metrics are the foundation of the performance protion of the perfstat application.</p>
+		<p>Graph - An object which groups Graph Metric(s) together in order to generate a graph.  Perfstat graphs can be pie, bar, or line.  You can create host graphs and host group graphs.</p>
+		<p>Group Policy - An object whose properties include: host limit, timeout interval, and status refresh interval.  This object resides under the admin and flows down to all users the admin creates.</p>
+		<p>User - An object whose properties include: name, password, creator, role, navigation bar width, and show all hosts.  There are three types of users: perfstat, admin, and user.</p>
+		<p>Report - An object which allows for the combination of asset info and performance info into a report.  Reports can be manualy generated or automated.</p>
+		<p><b>Indexes</b></p>
+		<p>User2Report - Index relating users to their reports.</p>
+		<p>User2HostGroup - Index relating users to their host groups.</p>
+		<p>Admin2User - Index relating admin to their users.</p>
+		<p>Admin2Host - Index relating admin to their hosts.</p>
+		<p>Host2HostGroup - Index relating hosts to their host groups.</p>
+		<p>HostGroupGraphs - Index relating graphs to host groups.</p>
+		<p>MultiServiceGraphs - Index relating graphs to sub services.</p>
+		<p>SingleServiceGraphs - Index relating graphs to services.</p>
+		<p><b>RRDTOOL</b></p>
+		<p>RRD - Round Robin Database.  Stores performance data for graphing puposes.</p>
+		<p>RRA - Round Robin Archive.  An RRD consists of one or more RRAs.  Defines the amount of time data is stored in an RRD before being written over.  By deafult in perfstat, four RRAs are created per RRD: day, week, month, and year.  Raw data is held for 6 days, then data gets averaged out over the week, month, and year RRAs.</p>
+		<p>RRD Step - Interval between data samples. By default in perfstat it is set to 5 minutes.</p>
+		<p>RRD Heartbeat - The maximum amount of time between intervals when data is valid.  If the RRD step exceeds the heartbeat data for that sample will be undefined.  By default in perfstat it is set to 10 minutes.</p>
+		<p>RRD Min - Minimum value of data.  The default in perfstat is 0.</p>
+		<p>RRD Max - Maximum value of data.  The default in perfstat is U, which means unkown.  It can be anything basically.</p>
+		<p><b>Directory Structure</b></p>
+		<p>bin - The bin directory stores all perfstat binary files.  These are all backend programs and cli tools.</p>
+		<p>cgi - The cgi directory stores all the programs the comprise the graphical web interface.</p>
+		<p>docs - The docs directory stores perfstat related documentation.</p>
+		<p>etc - The etc directory stores perfstat configuration files.</p>
+		<p>install - The install directory stores the perfstat installation program.</p>
+		<p>lib - The lib directory stores the perfstat and rrdtool libraries.</p>
+		<p>rrd - The rrd directory stores the round robin databases for every host.</p>
+		<p>src - The src directory stores the source code for all third party programs.</p>
+		<p>tmp - The tmp directory stores temporary files used by the daemons and client programs.</p>
+		<p>var - The var directory stores logging, event logs, status, user sessions, alerts, and the serialized object database.</p>
+		<p></p>
+		<p></p>
+		<p></p>
+	</body>
+
+</html>

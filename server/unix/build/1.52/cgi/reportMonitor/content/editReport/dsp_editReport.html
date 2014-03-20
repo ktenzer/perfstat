@@ -1,0 +1,160 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/rm.content.js"></script>
+	</head>
+
+	<body onLoad="<%$updateNav;%>">
+		<div class="navHeader">Report Monitor :: <a href="../reportList/index.pl">My Reports</a> :: Edit Report :: <%$reportName%></div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Edit Report Descriptors</td>
+			</tr>
+			% if ($sessionObj->param("userMessage") ne "") {
+				<tr>
+					<td class="liteGray" valign="top" align="left" colspan="3"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+				</tr>
+				% $sessionObj->param("userMessage", "");
+			% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Report Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form name="editReport" action="index.pl" method="post">
+					<input type="hidden" name="action" value="editReport">
+					<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+					<td class="liteGray" align="left" valign="middle"><input type="text" name="reportName" value="<%$reportName%>" size="24"></td>
+					<td class="liteGray" nowrap="nowrap" valign="middle" align="left"><input type="text" name="description" value="<%$description%>" size="35"></td>
+					<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+		</table>
+		% if ($displayMode eq "add") {
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="1" valign="middle" align="left">Add Report Content</td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="left" valign="middle">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+						</tr>
+						<tr>
+							<td>
+								<form method="get" action="index.pl">
+								<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+								<input type="hidden" name="reportName" value="<%$reportName%>">
+								<input type="hidden" name="description" value="<%$description%>">
+								<select name="contentType" size="1" onChange="submit();">
+									<option value="textComment" <%$contentType eq "textComment" ? "selected" : "";%>>Text Comment</option>
+									<option value="hostGroupGraphs" <%$contentType eq "hostGroupGraphs" ? "selected" : "";%>>Host Group Graphs</option>
+									<option value="hostAssets" <%$contentType eq "hostAssets" ? "selected" : "";%>>Host Assets</option>
+									<option value="hostEvents" <%$contentType eq "hostEvents" ? "selected" : "";%>>Host Events</option>
+									<option value="hostGraphs" <%$contentType eq "hostGraphs" ? "selected" : "";%>>Host Graphs</option>
+								</select>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+						</tr>
+						<tr>
+							<td class="liteGray" align="left" valign="middle">
+								% if ($contentType eq "textComment") {
+									%require("dsp_selectTextComment.pl");
+								% } elsif ($contentType eq "hostGroupGraphs") {
+									%require("dsp_selectHostGroupGraphs.pl");
+								% } elsif ($contentType eq "hostAssets") {
+									%require("dsp_selectHostAssets.pl");
+								% } elsif ($contentType eq "hostEvents") {
+									%require("dsp_selectHostEvents.pl");
+								% } elsif ($contentType eq "hostGraphs") {
+									%require("dsp_selectHostGraphs.pl");
+								% }
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		% } elsif ($displayMode eq "edit") {
+			<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="1" valign="middle" align="left"><%$editHeaderText%></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="left" valign="middle">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+						</tr>
+						<tr>
+							<td><img src="../../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9"></td>
+						</tr>
+						<tr>
+							<td class="liteGray" align="left" valign="middle">
+								% if ($contentType eq "textComment") {
+									%require("dsp_editTextComment.pl");
+								% } elsif ($contentType eq "hostGroupGraph") {
+									%require("dsp_editHostGroupGraphs.pl");
+								% } elsif ($contentType eq "hostAssets") {
+									%require("dsp_editHostAssets.pl");
+								% } elsif ($contentType eq "hostEvent") {
+									%require("dsp_editHostEvents.pl");
+								% } elsif ($contentType eq "hostGraph") {
+									%require("dsp_editHostGraphs.pl");
+								% }
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		%}
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="2">Content List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="2%">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+			</tr>
+			% if ($contentArrayLen == 0) {
+			<tr>
+				<td class="liteGray" colspan="2">&nbsp;</td>
+			</tr>
+			% } else {
+				% if ($contentArrayLen > 1) {
+				<tr>
+					<td class="liteGray" colspan="2">
+						<table cellpadding="1" cellspacing="1" border="0" class="table2">
+							<tr>
+								<th nowrap="nowrap"><a href="index.pl?action=deleteAllContent&reportNameID=<%$reportNameID%>&contentType=<%$contentType%>">Delete All</a></th>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				% }
+				% foreach my $displayStruct (@$contentDisplayArray) {
+					<tr>
+						<td class="liteGray" align="center" valign="top" width="2%">
+							<table cellpadding="1" cellspacing="1" border="0" class="table2">
+								<tr>
+									<th nowrap="nowrap"><a href="index.pl?displayMode=edit&reportNameID=<%$reportNameID%>&contentType=<%$displayStruct->{'contentType'}%>&contentID=<%$displayStruct->{'contentID'}%>">Edit</a></th>
+									<th nowrap="nowrap"><a href="index.pl?action=deleteContent&reportNameID=<%$reportNameID%>&contentType=<%$contentType%>&contentID=<%$displayStruct->{'contentID'}%>">Delete</a></th>
+								</tr>
+							</table>
+						</td>
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$displayStruct->{'textDisplay'}%></span></td>
+					</tr>
+				% }
+			% }
+		</table>
+	</body>
+</html>

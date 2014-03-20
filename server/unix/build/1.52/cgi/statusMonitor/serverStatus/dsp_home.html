@@ -1,0 +1,87 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('serverStatus');">
+		<div class="navHeader">Status Monitor :: PerfStat Server</div>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="top" align="left">Server Status</td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" width="10%"><span class="table1Text2">Status</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2">The server is <%$serverStatus%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" width="10%"><span class="table1Text2">Uptime</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$uptime%></span></td>
+			</tr>
+		</table>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="top" align="left">Server Settings</td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" width="10%"><span class="table1Text2">IP </span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'PERFSERVER'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" width="10%"><span class="table1Text2">Port</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'SERVERPORT'}%></span></td>
+			</tr>
+		</table>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="top" align="left">Email Settings</td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email </span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email All</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_ALL'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email Crit</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_CRIT'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email Warn</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_WARN'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">SMTP Server</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'SMTP_SERVER'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email To</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_TO'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email From</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_FROM'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Email Subject</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EMAIL_SUBJECT'}%></span></td>
+			</tr>
+		</table>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="top" align="left">Event Log Settings</td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Log Events</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'EVENTLOG'}%></span></td>
+			</tr>
+			<tr>
+				<td class="liteGray" align="right" valign="middle" nowrap width="10%"><span class="table1Text2">Log Size</span></td>
+				<td class="liteGray" nowrap="nowrap"><span class="table1Text2"><%$ENV{'LOGSIZE'}%></span></td>
+			</tr>
+		</table>
+	</body>
+</html>

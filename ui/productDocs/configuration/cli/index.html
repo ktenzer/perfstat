@@ -1,0 +1,31 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>The perfstat cli tools are used to configure and pull data from the perfstat application.  All tools are located in the /perfhome/bin/tools directory.</p>
+		<p><b>CLI Tools</b></p>
+		<p>perfconfig - used to configure the perfstat server and client.</p>
+		<p>     /perfhome/bin/tools/perfconfig [-list] [-root]</p>
+		<p>     /perfhome/bin/tools/perfconfig [-server] [-root]</p>
+		<p>     /perfhome/bin/tools/perfconfig [-client] [-root]</p>
+		<p>     /perfhome/bin/tools/perfconfig [-global] [-root]</p>
+		<p>perfreport - used to extract performance data for a specified host-&gt;service-&gt;metric during a specified time period.  It will print a timestamp, performance data, and the metric name.</p>
+		<p>     /perfhome/bin/tools/perfreport.pl [-h &lt;hostname&gt;] [-s &lt;service&gt;] [-m &lt;metric1,metric2,...&gt;|&lt;all&gt;] [-begin &lt;now&gt;|&lt;DATE&gt;&lt;TIME&gt;] [-end      &lt;now&gt;|&lt;DATE&gt;&lt;TIME&gt;] [-dump]</p>
+		<p>     -h - hostname</p>
+		<p>     -s - service</p>
+		<p>     -m - metric(s) or all</p>
+		<p>     -begin - start date and time format: xx/xx/xxxx xx:xx</p>
+		<p>     -end - end date and time format: xx/xx/xxxx xx:xx</p>
+		<p>     -dump - prints only the performance data, no label and no timestamp </p>
+		<p>     IE: /perfhome/bin/tools/perfreport.pl -h myhost.mydomain.com -s cpu -m all -begin 1/1/2002 -end now</p>
+		<p>     /perfhome/bin/tools/perfreport.pl [-h &lt;hostname&gt;] [-list &lt;services|serviceName&gt;]</p>
+		<p></p>
+	</body>
+
+</html>

@@ -1,0 +1,47 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 5">
+		<title>Welcome to Adobe GoLive 5</title>
+	</head>
+
+	<body bgcolor="#ffffff">
+		<p><b>Summary</b></p>
+		<p>Within the PerfStat application there are two defined formats for sending data from the client to the server: info and data.  Both adhere to a strict methodology for organizing the data.  All general information related to  the host are identified with the info data format.  All information related to the performance or operation of a host are identified within the data format.</p>
+		<p><b>Info Format</b></p>
+		<p>The info format is used to send general data about a host.  Things like the number of CPUs installed in the host are captured under this data format.  Currently this is not a dynamic feature within PerfStat and users cannot define their own info categories.  Below is a list of things that are currently gatherd:</p>
+		<p>CPU Model - The processor(s) model installed in the host</p>
+		<p>CPU Speed - The speed of the processor(s) in MHZ</p>
+		<p>Number of CPUs - The number of processor(s) installed in the host</p>
+		<p>Total Memory - Amount of memory installed in the host in MB</p>
+		<p>OS - The operating system type installed on the host</p>
+		<p>OS Version - The version of the operating system installed on the host</p>
+		<p>Kernel Version - The version of the operating system kernel installed on the system</p>
+		<p>Patch List - A comma separated list of patches installed on  the host</p>
+		<p></p>
+		<p>The format used to send info from client to server is as follows:</p>
+		<p>[osType] info [cpuNum] [cpuModel] [cpuSpeed] [memTotal] [osVersion] [kernelVersion] [patches]</p>
+		<p><b>Data Format</b></p>
+		<p>The data format is used to send specific performance or operational information about a host.  Things like cpu utilization are captured under the data format.  This is a dynamic feature with PerfStat and users can define their own unique data categories.  A data category is called a service.  A service can be standalone like cpu or can have additional sub-services like fs.  This was done to provide flexibility and granularity.  Below is a list of services that are configured by default and are part of the PerfStat distribution:</p>
+		<p>CPU - Data about the utilization of a hosts CPU(s)</p>
+		<p>FS - Data about the utilization of a hosts file system(s)</p>
+		<p>IO - Data about the utilization of a hosts physical drive(s)</p>
+		<p>MEMORY - Data about the utilization of a hosts physical/virtual memory</p>
+		<p>PROCS - Data about the number of processes running on a host</p>
+		<p>SOCKET - Data about the utilization of a hosts socket connection(s)</p>
+		<p>TCP - Data about the utilization of a hosts network interface(s)</p>
+		<p>UPTIME - Data about the amount of time a host has remained up</p>
+		<p></p>
+		<p>The format used to send data from client to server is as follows:</p>
+		<p>[osType] data [service] [Metric Value1] [Metric Value2] [Metric Value3]...</p>
+		<p>osType - The os type can be the following: Linux, SunOS, or WwindowsNT</p>
+		<p>service - If it is a standalone service it would be something like &quot;apache&quot;.  If it is a service with sub-services then it would look something like &quot;oracle.db1&quot;.</p>
+		<p>Metric Value# - This is the value of a metric being measured.  If the service is apache and Metric1 is number of httpd processes the Metric Value might be &quot;20&quot;.  The metric names are associated to the metric values on the PerfStat server.  You define the sequence on the server and then ensure the client program for that service sends the metric data in the correct order.</p>
+		<p>In order to add a unique user defined service into the PerfStat application you need to do the following:</p>
+		<p>1.  Write client program for unique service that gathers data</p>
+		<p>2.  Organize data using above format and interface with PerfStat client transport program perf.pl</p>
+		<p>3.  Configure serialized object for unique service on the PerfStat server which details all the information about that service including the ordering of metrics</p>
+	</body>
+
+</html>

@@ -1,0 +1,128 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link type="text/css" rel="stylesheet" href="../../perfStatResources/styleSheets/navigationFrame.css">
+		<script language="javascript" src="../../perfStatResources/javaScripts/navigationFrame.js"></script>
+		<script language="javascript" src="../../perfStatResources/javaScripts/pm.nav.js"></script>
+	</head>
+	<body onLoad="onBodyLoad('performance2');">
+	<table border="0" align="center" cellpadding="3" cellspacing="1" class="table1" width="100%">
+		<tr> 
+			<td height="25" class="header">Performance Monitor</td>
+		</tr>
+		<tr> 
+			<td height="25" class="subheader">
+				<table border="0" cellpadding="0" cellspacing="0" class="table2" align="center">
+					<tr>
+						<td nowrap><a href="javascript:openAll();">open all</a></td>
+						<td nowrap><img src="../../perfStatResources/images/common/spacer.gif" height="6" width="10" border="0"></td>
+						<td nowrap><a href="javascript:closeAll();">close all</a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td align="left" valign="top">
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor1.gif" border="0"></td>
+						<td nowrap><%$hostGroupID%></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+			<tr>
+			<td align="left" valign="top">
+				<div id="navContainer" style="margin-left:5px">
+				%foreach my $hostGroupMember (sort(keys(%$hgMemberHash))) {
+					%my $hostGroupMemberHash = $hostGroupDescHash->{'hostGroupMemberHash'};
+					%my $hostDescHash = $hostGroupMemberHash->{$hostGroupMember};
+					%my $osType = $hostDescHash->{'OS'};
+					%my $hasGraphs = $hostDescHash->{'hasGraphs'};
+					<table border="0" cellpadding="2" cellspacing="0">
+						<tr>
+							<td>
+								%if ($hasGraphs == 0) {
+									<img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9">
+								%} else {
+									<a id="x<%$hostGroupMember%>" href="javascript:Toggle('<%$hostGroupMember%>');"><img name="x<%$hostGroupMember%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a>
+								%}
+							</td>
+							<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor2.gif" border="0"></td>
+							<td nowrap>
+								%if ($hasGraphs == 0) {
+									<%$hostGroupMember%>
+								%} else {
+									<a id="x<%$hostGroupMember%>" href="javascript:Toggle('<%$hostGroupMember%>');"><%$hostGroupMember%></a>
+								%}
+							</td>
+						</tr>
+					</table>
+					<div id="<%$hostGroupMember%>" style="display:none; margin-left:12px;">
+					%my $serviceHashRefined = $hostDescHash->{'serviceHash'};
+					%foreach my $serviceHashRefinedKey (sort(keys(%$serviceHashRefined))) {
+						%my $serviceDescHash = $serviceHashRefined->{$serviceHashRefinedKey};
+						%if ($serviceDescHash->{'hasSubService'} == 0) {
+							<table border="0" cellpadding="2" cellspacing="0">
+								<tr>
+									<td><a id="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" href="javascript:Toggle('<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><img name="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a></td>
+									<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+									<td><a id="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" href="javascript:Toggle('<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><%$serviceHashRefinedKey%></a></td>
+								</tr>
+							</table>
+							<div id="<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" style="display:none; margin-left:12px;">
+							%my $graphHash = $serviceDescHash->{'graphHash'};
+							%foreach my $graphHashName (sort(keys(%$graphHash))) {
+								<table border="0" cellpadding="2" cellspacing="0">
+									<tr>
+										<td><img src="../../perfStatResources/images/common/spacer.gif" height="10" width="9" border="0"></td>
+										<td><img src="../../perfStatResources/images/navigation/icon_performanceMonitor2.gif" border="0"></td>
+										<td nowrap><a href="javascript:parent.content.insertService('<%$osType%>',  'single', '<%$hostGroupMember%>', '<%$serviceHashRefinedKey%>', '<%$graphHashName%>');"><%$graphHashName%><a></td>
+									</tr>
+								</table>
+							%}
+							</div>
+						%} else {
+							%my $subServiceHash = $serviceDescHash->{'subServiceHash'};
+							<table border="0" cellpadding="2" cellspacing="0">
+								<tr>
+									<td><a id="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" href="javascript:Toggle('<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><img name="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a></td>
+									<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+									<td nowrap><a id="x<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" href="javascript:Toggle('<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><%$serviceHashRefinedKey%></a></td>
+								</tr>
+							</table>
+							<div id="<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" style="display:none; margin-left:12px;">
+								%foreach my $subServiceHashKey (sort(keys(%$subServiceHash))) {
+									%my $idString = "$hostGroupMember^$serviceHashRefinedKey^$subServiceHashKey";
+									<table border="0" cellpadding="2" cellspacing="0">
+										<tr>
+											<td><a id="x<%$idString%>" href="javascript:Toggle('<%$idString%>');"><img name="x<%$idString%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a></td>
+											<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+											<td><a id="x<%$idString%>" href="javascript:Toggle('<%$idString%>');"><%$subServiceHashKey%></a></td>
+										</tr>
+									</table>
+									<div id="<%$idString%>" style="display:none; margin-left:12px;">
+										%my $graphHash = $subServiceHash->{$subServiceHashKey};
+										%foreach my $graphHashName (sort(keys(%$graphHash))) {
+											<table border="0" cellpadding="2" cellspacing="0">
+												<tr>
+													<td><img src="../../perfStatResources/images/common/spacer.gif" height="10" width="9" border="0"></td>
+													<td><img src="../../perfStatResources/images/navigation/icon_performanceMonitor2.gif" border="0"></td>
+													<td nowrap><a href="javascript:parent.content.insertService('<%$osType%>', 'single', '<%$hostGroupMember%>', '<%$serviceHashRefinedKey%>.<%$subServiceHashKey%>', '<%$graphHashName%>');"><%$graphHashName%><a></td>
+												</tr>
+											</table>
+										%}
+									</div>
+								%}
+							</div>
+						%}
+					%}
+					</div>
+				%}
+				</div>
+			</td>
+		</tr>
+		</table>
+	</body>
+</html>

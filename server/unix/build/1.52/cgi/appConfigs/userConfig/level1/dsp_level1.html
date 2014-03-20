@@ -1,0 +1,134 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/contentFrame.js"></script>
+		<script language="javascript" src="../../../perfStatResources/javaScripts/ac.users.js"></script>
+	</head>
+
+	<body onload="onLoad=updateNavigation(<%$updateNavCode%>, '<%$sessionObj->param("selectedAdmin")%>', '<%$sessionObj->param("selectedUser")%>')">
+		<div class="navHeader">User Config :: <%$sessionObj->param("selectedAdmin")%></div>
+			%if ($sessionObj->param("selectedAdmin") eq "perfstat") { 
+				<table cellpadding="2" cellspacing="1" border="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap" colspan="4" valign="middle" align="left">Add Admin</td>
+					</tr>
+					%if ($sessionObj->param("userMessage1") ne "") {
+					<tr>
+						<td class="liteGray" valign="top" align="left" colspan="4"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+					</tr>
+					%$sessionObj->param("userMessage1", "");
+					% }
+					<tr>
+						<th nowrap="nowrap" valign="middle" align="left">Admin Name</th>
+						<th nowrap="nowrap" valign="middle" align="left">Password</th>
+						<th nowrap="nowrap" valign="middle" align="left">Confirm Password</th>
+						<th nowrap="nowrap" valign="middle" align="center"></th>
+					</tr>
+					<tr>
+						<form action="index.pl" method="post">
+						<input type="hidden" name="action" value="insertAdmin">
+						<td class="liteGray" align="left" valign="top"><input type="text" name="insertAdminName" value="<%$insertAdminName%>" size="18"></td>
+						<td class="liteGray" nowrap="nowrap" valign="top" align="left"><input type="password" name="password" size="15"></td>
+						<td class="liteGray" align="left" valign="top"><input type="password" name="confirmPassword" size="15"></td>
+						<td><input class="liteButton" type="submit" value="ENTER"></td>
+						</form>
+					</tr>
+				</table>
+				%}
+				
+				%if ($sessionObj->param("role") eq "admin") { 
+				<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Manage Admin</td>
+					</tr>
+					<tr>
+						<th nowrap="nowrap" valign="middle" align="center" width="1%">Actions</th>
+						<th nowrap="nowrap" valign="middle" align="left">Admin Name</th>
+					</tr>
+					<tr>
+						%$queryString = "adminName=$adminName&role=admin&updateUserName=$adminName";
+						<td class="liteGray" align="left" valign="middle" width="1%">
+							<table cellpadding="1" cellspacing="1" border="0" class="table2">
+								<tr>
+									<th nowrap="nowrap"><a href="../level2/index.pl?<%$queryString%>">Config</a></th>
+								</tr>
+							</table>
+						</td>
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$adminName%></span></td>
+					</tr>
+					%foreach my $adminNameTemp (sort(keys(%$adminList))) {
+					%if ($adminNameTemp ne $sessionObj->param("selectedAdmin")) {
+					<tr>
+						%$queryString = "adminName=$adminName&updateUserName=$adminNameTemp";
+						<td class="liteGray" align="left" valign="middle" width="1%">
+							<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+								<tr>
+									<th nowrap="nowrap"><a href="../level2/index.pl?<%$queryString%>">Config</a></th>
+									<th nowrap="nowrap"><a href="index.pl?action=deleteAdmin&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$adminNameTemp%>')">Delete</a></th>
+								</tr>
+							</table>
+						</td>
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$adminNameTemp%></span></td>
+					</tr>
+					%}
+					%}
+				</table>
+
+			<table cellpadding="2" cellspacing="1" border="0" class="table1">
+				<tr>
+					<td class="tdTop" nowrap="nowrap" colspan="4" valign="middle" align="left">Add User</td>
+				</tr>
+				%if ($sessionObj->param("userMessage2") ne "") {
+				<tr>
+					<td class="liteGray" valign="top" align="left" colspan="4"><span class="userMessage"><%$sessionObj->param("userMessage2")%></span></td>
+				</tr>
+				%$sessionObj->param("userMessage2", "");
+				%}
+				<tr>
+					<th nowrap="nowrap" valign="middle" align="left">User Name</th>
+					<th nowrap="nowrap" valign="middle" align="left">Password</th>
+					<th nowrap="nowrap" valign="middle" align="left">Confirm Password</th>
+					<th nowrap="nowrap" valign="middle" align="center"></th>
+				</tr>
+				<tr>
+					<form name="insertUser" action="index.pl" method="post">
+					<input type="hidden" name="action" value="insertUser">
+					<input type="hidden" name="adminName" value="<%$adminName%>">
+					<td class="liteGray" align="left" valign="top"><input type="text" name="insertUserName" value="<%$insertUserName%>" size="18"></td>
+					<td class="liteGray" nowrap="nowrap" valign="top" align="left"><input type="password" name="password" size="15"></td>
+						<td class="liteGray" align="left" valign="top"><input type="password" name="confirmPassword" size="15"></td>
+						<td><input class="liteButton" type="submit" value="ENTER"></td>
+					</form>
+				</tr>
+			</table>
+			<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+				<tr>
+					<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Manage <%$sessionObj->param("role") eq "admin" ? "Users" : "Password"%></td>
+				</tr>
+				<tr>
+					<th nowrap="nowrap" valign="middle" align="center" width="10">Actions</th>
+					<th nowrap="nowrap" valign="middle" align="left">User Name</th>
+				</tr>
+				%foreach my $userNameTemp (sort(keys(%$userList))) {
+				%if ($userIndex->{$adminName}->{$userNameTemp} ne "admin") {
+				<tr>
+					%$queryString = "adminName=$adminName&updateUserName=$userNameTemp";
+					<td class="liteGray" align="center" valign="top" width="10">
+						<table cellpadding="1" cellspacing="1" border="0" class="table2" width="100%">
+							<tr>
+								<th nowrap="nowrap"><a href="../level2/index.pl?<%$queryString%>">Config</a></th>
+								<th nowrap="nowrap"><a href="index.pl?action=deleteUser&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$userNameTemp%>')">Delete</a></th>
+							</tr>
+						</table>
+					</td>
+					<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$userNameTemp%></span></td>
+				</tr>
+				%}
+				%}
+			</table>
+		%}
+	</body>
+</html>

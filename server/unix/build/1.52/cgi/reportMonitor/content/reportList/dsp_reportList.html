@@ -1,0 +1,119 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/rm.content.js"></script>
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('<%$navLinkChosen%>'); <%$updateNav;%>">
+		<div class="navHeader">Report Monitor :: <%$sessionObj->param("groupViewStatus") ne "shared" ?  "My Reports" : "Shared Reports"%></div>
+				%if ($sessionObj->param("groupViewStatus") ne "shared") {
+
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Add Report</td>
+			</tr>
+					% if ($sessionObj->param("userMessage") ne "") {
+
+			<tr>
+				<td class="liteGray" valign="top" align="left" colspan="3"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+			</tr>
+						% $sessionObj->param("userMessage", "");
+			% }
+
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Report Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form name="InsertReport" action="index.pl" method="get">
+					<input type="hidden" name="action" value="insertReport">
+					<td class="liteGray" align="left" valign="middle"><input type="text" name="reportName" value="<%$reportName%>" size="24"></td>
+					<td class="liteGray" nowrap="nowrap" valign="middle" align="left"><input type="text" name="description" value="<%$description%>" size="35"></td>
+					<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+		</table>
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="3">Report List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="2%">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Report Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+			</tr>
+			% if (@$myReportArray == 0) {
+			<tr>
+				<td class="liteGray" align="center" valign="top" width="2%">&nbsp;</td>
+				<td class="liteGray" align="left" valign="top">&nbsp;</td>
+				<td class="liteGray" valign="top" align="left">&nbsp;</td>
+			</tr>
+			%} else {
+			%foreach my $tempArray (@$myReportArray) {
+			%my $reportOwner = $userName;
+			%my $reportName = $tempArray->[0];
+			%my $reportDescription = $tempArray->[1];
+			%my $queryString = "adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) . "&reportOwner=" . URLEncode($reportOwner) . "&reportName=" . URLEncode($reportName);
+			<tr>
+				<td class="liteGray" align="center" valign="top" width="2%">
+					<table cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="../viewReport/index.pl?<%$queryString%>">View</a></th>
+							<th nowrap="nowrap"><a href="../editReport/index.pl?<%$queryString%>&reportNameID=<%$reportName%>">Edit</a></th>
+							<th nowrap="nowrap"><a href="../shareReport/index.pl?<%$queryString%>">Share</a></th>
+							<th nowrap="nowrap"><a href="index.pl?action=deleteReport&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$reportName%>');">Delete</a></th>
+						</tr>
+					</table>
+				</td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$reportName%></span></td>
+				<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$reportDescription%></span></td>
+			</tr>
+			%}
+			%}
+		</table>
+				%} else {	
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="4">Report List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="2%">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Owner</th>
+				<th nowrap="nowrap" valign="middle" align="left">Report Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+			</tr>
+			% if (@$sharedReportArray == 0) {
+			<tr>
+				<td class="liteGray" align="center" valign="top" width="2%">&nbsp;</td>
+				<td class="liteGray" align="left" valign="top">&nbsp;</td>
+				<td class="liteGray" align="left" valign="top">&nbsp;</td>
+				<td class="liteGray" valign="top" align="left">&nbsp;</td>
+			</tr>
+			% } else {
+				%foreach my $tempArray (@$sharedReportArray) {
+					%my $reportOwner = $tempArray->[0];
+					%my $reportName = $tempArray->[1];
+					%my $reportDescription = $tempArray->[2];
+					%my $queryString = "adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) . "&reportOwner=" . URLEncode($reportOwner) . "&reportName=" . URLEncode($reportName);
+					<tr>
+						<td class="liteGray" align="center" valign="top" width="2%">
+							<table cellpadding="1" cellspacing="1" border="0" class="table2">
+								<tr>
+									<th nowrap="nowrap"><a href="../viewReport/index.pl?<%$queryString%>">View</a></th>
+								</tr>
+							</table>
+						</td>
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$reportOwner%></span></td>
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$reportName%></span></td>
+						<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$reportDescription%></span></td>
+					</tr>
+				%}
+			%}
+		</table>
+		%}
+	</body>
+</html>

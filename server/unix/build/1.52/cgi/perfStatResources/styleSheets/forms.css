@@ -1,0 +1,37 @@
+/* Submit button */
+
+input, textarea, select 
+{
+	border-top-width : 1px; 
+	border-right-width : 1px; 
+	border-bottom-width : 1px; 
+	border-left-width : 1px;  
+}
+
+
+/* submit buttons */
+input.button 
+{
+	border-top-width: 1px; 
+	border-right-width: 1px; 
+	border-bottom-width: 1px; 
+	border-left-width: 1px;
+	padding-right: 1px;
+	background-color: #EFEFEF;
+	color: #000000;
+	font-size: 11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+}
+
+input.boldButton
+{
+	background-color : #FAFAFA;
+	font-weight : bold;
+}
+
+/* None-bold submit button */
+input.liteButton
+{
+	background-color : #FAFAFA;
+	font-weight : normal;
+}

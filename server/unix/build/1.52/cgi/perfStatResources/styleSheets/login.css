@@ -1,0 +1,47 @@
+body
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #E5e5e5;
+	color: #136DA8;
+	margin: 2px;
+	padding: 2px;
+}
+
+.blurb
+{
+	font-size: 10pt;
+	font-weight: bold;
+	color: rgb(19, 109, 168);
+	padding-right: 3px;
+}
+
+.stripe
+{
+	background-color: #13a8ff;
+	background-image: url("../images/header/stripe.gif");
+}
+
+.table1
+{
+	background-color: #FFFFFF;
+	border: 2px #98AAB1 solid;
+}
+.table1 td.header
+{
+	background-image: url("../images/header/bg.jpg");
+	height: 65px;
+	text-align: left;
+	vertical-align: top;
+	padding-top: 3px;
+	padding-left: 3px;
+}
+.table1 td.footer
+{
+	height: 29px;
+	background-image: url("../images/content/tableBottomBG.gif");
+	background-color:#D1D7DC;
+	border: #FFFFFF;
+	border-style: solid; 
+	border-width: 0px 1px 1px 1px;
+}
+.userErrorMessage { font-weight: normal; font-size: 12px; color: #FF0000; }

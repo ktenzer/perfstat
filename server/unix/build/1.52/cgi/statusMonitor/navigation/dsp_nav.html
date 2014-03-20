@@ -1,0 +1,173 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link type="text/css" rel="stylesheet" href="../../perfStatResources/styleSheets/navigationFrame.css">
+		<script language="javascript" src="../../perfStatResources/javaScripts/navigationFrame.js"></script>
+	</head>
+	<body onLoad="onBodyLoad('status');">
+		% if ($sessionObj->param("userName") eq "perfstat" || $sessionObj->param("role") eq "admin") {
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			% if ($sessionObj->param("userName") eq "perfstat") {
+			<tr>
+				<form action="index.pl" method="post">
+				<td nowrap="nowrap" valign="middle" align="right"><span class="table1Text1">Admin:</span></td>
+				<td nowrap="nowrap" valign="middle" align="left">
+					<select name="adminName" size="1" onChange="submit();">
+						% foreach my $adminNameTemp (sort (keys(%$adminList))) {
+						<option value="<%$adminNameTemp%>" <%$adminNameTemp eq $sessionObj->param("selectedAdmin") ? "selected" : "";%>><%$adminNameTemp%></option>
+						% }
+					</select>
+				</td>
+				</form>
+			</tr>
+			%}
+			% if ($sessionObj->param("role") eq "admin") {
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="adminName" value="<%$sessionObj->param("selectedAdmin")%>">
+				<td nowrap="nowrap" valign="middle" align="right"><span class="table1Text1">User:</span></td>
+				<td nowrap="nowrap" valign="middle" align="left">
+					<select name="userName" size="1" onChange="submit();">
+						% foreach my $userNameTemp (sort (keys(%$userList))) {
+						<option value="<%$userNameTemp%>" <%$userNameTemp eq $sessionObj->param("selectedUser")  ? "selected" : "";%>><%$userNameTemp%></option>
+						% }
+					</select>
+				</td>
+				</form>
+			</tr>
+			%}
+		</table>
+		%}
+		<table border="0" align="center" cellpadding="3" cellspacing="1" class="table1" width="100%">
+		<tr> 
+			<td height="25" class="header">Status Monitor</td>
+		</tr>
+		<tr> 
+			<td height="25" class="subheader">
+				<table border="0" cellpadding="0" cellspacing="0" class="table2" align="center">
+					<tr>
+						<td nowrap><a href="javascript:openAll();">open all</a></td>
+						<td nowrap><img src="../../perfStatResources/images/common/spacer.gif" height="6" width="10" border="0"></td>
+						<td nowrap><a href="javascript:closeAll();">close all</a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td align="left" valign="top">
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor2.gif" border="0"></td>
+						<td nowrap><a id="serverStatus" href="../serverStatus/index.pl?hostGroupID=allHosts" target="content">Perfstat Server</a></td>
+					</tr>
+					<tr>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor1.gif" border="0"></td>
+						<td nowrap><a id="myHostGroups" href="index.pl?groupViewStatus=self">My Host Groups</a></td>
+					</tr>
+					<tr>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor1.gif" border="0"></td>
+						<td nowrap><a id="sharedHostGroups" href="index.pl?groupViewStatus=shared">Shared Host Groups</a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+			<tr>
+			<td align="left" valign="top">
+				<div id="navContainer" style="margin-left:5px">
+				%foreach my $hostGroupDescHash (@$hostGroupArray) {
+				%my $hasHosts = $hostGroupDescHash->{'hasHosts'};
+				%my $hgOwner = $hostGroupDescHash->{'hostGroupOwner'};
+				%my $hostGroupID = $hostGroupDescHash->{'hostGroupID'};
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td>
+							% if ($hasHosts == 0) {
+							<img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9">
+							% } else {
+							<a id="x<%$hostGroupID%>" href="javascript:Toggle('<%$hostGroupID%>');"><img name="x<%$hostGroupID%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a>
+							% }
+						</td>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor1.gif" border="0"></td>
+						<td>
+							% if ($hasHosts == 0) {
+								<%$hostGroupID%>
+							%} else {
+							<a target="content" href="../clientStatus/level2/index.pl?hgOwner=<%$hgOwner%>&hostGroupID=<%$hostGroupID%>" onClick="Toggle('<%$hostGroupID%>');"><%$hostGroupID%></a>
+							%}
+						</td>
+					</tr>
+				</table>
+				% if ($hasHosts != 0) {
+				<div id="<%$hostGroupID%>" style="display:none; margin-left:1em">
+				%my $hostGroupMemberHash = $hostGroupDescHash->{'hostGroupMemberHash'};
+				%foreach my $hostGroupMember (sort(keys(%$hostGroupMemberHash))) {
+				%my $hostDescHash = $hostGroupMemberHash->{$hostGroupMember};
+				%my $hasServices = $hostDescHash->{'hasServices'};
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td>
+							%if ($hasServices == 0) {
+							<img src="../../perfStatResources/images/common/spacer.gif" border="0" width="9" height="9">
+							%} else {
+							<a id="x<%$hostGroupID%>^<%$hostGroupMember%>" href="javascript:Toggle('<%$hostGroupID%>^<%$hostGroupMember%>');"><img name="x<%$hostGroupID%>^<%$hostGroupMember%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a>
+							%}
+						</td>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor2.gif" border="0"></td>
+						<td nowrap>
+							%if ($hasServices == 0) {
+							<%$hostGroupMember%>
+							%} else {
+							<a target="content" href="../clientStatus/level3/index.pl?hostGroupID=<%$hostGroupID%>&hostName=<%$hostGroupMember%>" onClick="Toggle('<%$hostGroupID%>^<%$hostGroupMember%>');"><%$hostGroupMember%></a>
+							%}
+						</td>
+					</tr>
+				</table>
+				% if ($hasServices != 0) {
+				<div id="<%$hostGroupID%>^<%$hostGroupMember%>" style="display:none; margin-left:12px;">
+				%my $serviceHashRefined = $hostDescHash->{'serviceHash'};
+				%foreach my $serviceHashRefinedKey (sort(keys(%$serviceHashRefined))) {
+				%my $serviceDescHash = $serviceHashRefined->{$serviceHashRefinedKey};
+				% if ($serviceDescHash->{'hasSubService'} != 1) {
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><img src="../../perfStatResources/images/common/spacer.gif" height="10" width="9" border="0"></td>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+						<td><a target="content" href="../clientStatus/level3/index.pl?hostGroupID=<%$hostGroupID%>&hostName=<%$hostGroupMember%>&serviceName=<%$serviceHashRefinedKey%>"><%$serviceHashRefinedKey%></a></td>
+					</tr>
+				</table>
+				% } else {
+				%my $subServiceHash = $serviceDescHash->{'subServiceHash'};
+				%my @list = sort(keys(%$subServiceHash));
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><a id="x<%$hostGroupID%>^<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" href="javascript:Toggle('<%$hostGroupID%>^<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><img name="x<%$hostGroupID%>^<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" src="../../perfStatResources/images/navigation/icon_plusNavBar.gif" border="0"></a></td>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+						<td nowrap><a target="content" href="../clientStatus/level3/index.pl?hostGroupID=<%$hostGroupID%>&hostName=<%$hostGroupMember%>&serviceName=<%$serviceHashRefinedKey%>.<%$list[0]%>" onClick="Toggle('<%$hostGroupID%>^<%$hostGroupMember%>^<%$serviceHashRefinedKey%>');"><%$serviceHashRefinedKey%></a></td>
+					</tr>
+				</table>
+				<div id="<%$hostGroupID%>^<%$hostGroupMember%>^<%$serviceHashRefinedKey%>" style="display:none; margin-left:12px;">
+				%foreach my $subServiceHashKey (sort(keys(%$subServiceHash))) {
+				<table border="0" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><img src="../../perfStatResources/images/common/spacer.gif" height="10" width="9" border="0"></td>
+						<td><img src="../../perfStatResources/images/navigation/icon_statusMonitor3.gif" border="0"></td>
+						<td><a href="../clientStatus/level3/index.pl?hostGroupID=<%$hostGroupID%>&hostName=<%$hostGroupMember%>&serviceName=<%$serviceHashRefinedKey%>.<%$subServiceHashKey%>" target="content"><%$subServiceHashKey%></a></td>
+					</tr>
+				</table>
+				%}
+				</div>
+				%}
+				%}
+				</div>
+				%}
+				%}
+				</div>
+				%}
+				%}
+				</div>
+			</td>
+		</tr>
+		</table>
+	</body>
+</html>

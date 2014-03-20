@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('userConfig');">
+		<div class="navHeader"><%$navHeaderText%>  :: <%$sessionObj->param("selectedAdmin")%> :: <%$updateUserName%></div>
+			<table cellpadding="2" cellspacing="1" border="0" class="table1">
+				<tr>
+					<td class="tdTop" nowrap="nowrap" colspan="4" valign="middle" align="left">Modify User</td>
+				</tr>
+				% if ($sessionObj->param("userMessage2") ne "") {
+				<tr>
+					<td class="liteGray" valign="top" align="left" colspan="4"><span class="userMessage"><%$sessionObj->param("userMessage2")%></span></td>
+				</tr>
+				% $sessionObj->param("userMessage2", "");
+				% }
+
+				<tr>
+					<th nowrap="nowrap" valign="middle" align="left">User Name</th>
+					<th nowrap="nowrap" valign="middle" align="left">Password</th>
+					<th nowrap="nowrap" valign="middle" align="left">Confirm Password</th>
+					<th nowrap="nowrap" valign="middle" align="center"></th>
+				</tr>
+				<tr>
+					<form action="index.pl" method="post">
+						<input type="hidden" name="action" value="updateUserPassword">
+						<input type="hidden" name="adminName" value="<%$adminName%>">
+						<input type="hidden" name="updateUserName" value="<%$updateUserName%>">
+						<input type="hidden" name="updateUserRole" value="<%$updateUserRole%>">
+						<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$updateUserName%></span></td>
+						<td class="liteGray" nowrap="nowrap" valign="top" align="left"><input type="password" name="password" size="15"></td>
+						<td class="liteGray" align="left" valign="top"><input type="password" name="confirmPassword" size="15"></td>
+						<td class="darkGray" valign="top" align="center"><input class="liteButton" type="submit" name="submit" value="ENTER"></td>
+					</form>
+				</tr>
+			</table>
+			
+			<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="updateShowAllHosts">
+				<input type="hidden" name="adminName" value="<%$adminName%>">
+				<input type="hidden" name="updateUserName" value="<%$updateUserName%>">
+				<input type="hidden" name="updateUserRole" value="<%$updateUserRole%>">
+				<table cellpadding="2" cellspacing="1" border="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Preference</td>
+					</tr>
+					<tr>
+						<td class="liteGray" valign="middle" align="left"><span class="table1Text1">Show All Hosts</span></td>
+						<td class="liteGray" valign="middle" align="left">
+							<select name="showAllHosts" size="1" onchange="submit();">
+							<option value="1" <%$updateUserShowAllHosts eq 1 ? "selected" : "";%>>true</option>
+							<option value="0" <%$updateUserShowAllHosts eq 0 ? "selected" : "";%>>false</option>
+						</select>
+						</td>
+					</tr>
+				</table>
+			</form>
+	</body>
+</html>

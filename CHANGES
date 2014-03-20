@@ -1,0 +1,362 @@
+1.0
+06/09/02	First Version!!!
+
+1.01
+06/11/02	Added support for host status reporting
+06/13/02	Added restart functionality of perf.sh
+06/13/02	Better error handling and logging
+06/15/02	Fixed bug #1 with host status reporting
+		(perfctl.pl)
+1.02
+08/20/02	Added global configuration file (perf-conf)
+08/21/02	Added automated install (perf-install.sh)
+08/22/02	Fixed bug #2 in host status reporting 
+		(perfctl.pl)
+08/22/02	Added host level security (perf-hosts)
+
+1.10
+09/15/02	Fixed bug #3 in host status reporting
+		(perfctl.pl)
+09/20/02	Added Event Logging capabilities (perfd.pl)
+09/25/02	Added tighter restriction to incomming data
+		(perfd.pl)
+09/26/02	Added Event Logging capabilities (client)
+09/27/02	Added tracking of event status (client) 
+
+1.11
+09/28/02	Added threshold for max number of bytes
+		(perfd.pl)
+10/01/02	Fixed bug #1 in event logging (client)
+
+1.12
+10/06/02	Added ability for server to track a clients
+		status: warn, crit, or no status (perfd.pl)
+10/06/02	Changed functionality of host status so
+		that all files reside under 
+10/07/02	Added ability to track state of all event
+		thresholds: warn, crit, ok (client)
+10/08/02	Changed location of rrd/event data to reside
+		under hosts directory (perfd.pl)
+10/11/02	Changed event log so that most current info
+		is logged at the top of the file (perfd.pl)
+10/14/02	Added ability to limit the number of event
+		log entries (perfd.pl)
+1.20
+11/14/02	Added more flexibility to client control 
+		(perfctl.pl)
+11/17/02	Created custom scheduler eliminating dependency
+		on Schedule module (perfctl.pl)
+12/02/02	Enabled event logging to be controled from
+		server instead of client for greater management
+		capability (perfd.pl) 
+1.21
+12/22/02	Enabled ability to disable event logging of
+		a particular event or host (perfd.pl)
+1/12/03		Fixed bug preventing perfmon to work correctly
+		when events are disabled (perfd.pl)
+1.30
+1/4/03		Fixed bug which prevented alerts from being
+		generated for metrics which have sub-metrics
+		ie: fs (perfd.pl)
+1/12/03		Added capability to disable event logging for
+		all events of a particular host (perfd.pl)
+1/16/03		Fixed bug which caused all events to be logged
+		upon startup of perfmon (perfd.pl)
+1/22/03		Added new feature to allow sending of alerts
+		when thresholds are reached via snmp (perfd.pl)
+
+1.31
+1/28/03		Fixed bug in alert sending where alerts would
+		be sent without triggers being met (perfd.pl)
+2/01/03		Added ability to send alerts based on class
+		of alert (perfd.pl)
+2/03/03		Added more flexibility to alerting allowing 
+		user to configure alerts based on hostname,
+		hours of the day, days of the month, and
+		services (perfd.pl)
+2/05/03		Added wild cards to event/alert configuration
+		files (perfd.pl)
+
+1.32
+2/06/03		Added notification when a hosts event log
+		information is missing (perfd.pl)
+2/08/03		Disabled sending alerts if a host is not
+		configured in notify-rules (perfd.pl)
+2/08/03		Removed dependency Find.pm by re-writing
+		host status (perfctl.pl)
+2/08/03		Fixed bug in startup of PerfMon that allowed
+		a user to start multiple instances (perf.sh)
+
+1.33
+2/09/03		Fixed bug that caused inode information to be
+		incorrectly processed (fs.pl)
+1.34
+2/10/03		Enabled events-disable to accept (*) wildcard
+		(perfd.pl)
+2/12/03		Completed first Win32 client
+2/19/03		Enabled PerfMon client for Win32 to run as service
+		(perfctl.exe)
+2/20/03		Created MSI installation package for Win32
+2/22/03		Added RRD support for Win32 systems (rrd-conf)
+2/23/03		Fixed device expression match to allow a
+		an alpha-numeric name (perfd.pl)
+
+1.35
+2/25/03		Re-write of perf.sh allowing it to run under either
+		Solaris or Linux (perf.sh)
+2/26/03		Added new logic to Perfmon enabling program to track\
+		if processes are active or shutdown (perf.sh)
+2/28/03		Restricted fs.pl from showing non file systems (fs.pl)
+3/1/03		Added data source checking to ensure that data being
+		sent to perfmon is in correct format (perfd.pl)
+
+1.36
+3/10/03		Fixed pattern matching bug (perfctl.pl)
+3/21/03		Compiled all unix binaries on native OS
+4/7/03		Created true global configuration for all programs
+		to share (perf-conf)
+4/12/03		Fixed bug preventing PerfStat from shutting down
+		properly when the Server daemon wasn't running (perf.sh)
+4/20/03		Created new PerfStat configuration tool for configuring
+		the Server, Client, Sar, and RRDTOOL (perfconfig.pl)	
+
+1.40
+5/1/03		Integrated new data storage mechanism using
+		serilized/de-serialized objects to handle all
+		data dynamically (perfd.pl)
+5/5/03		Integrated RRDs into new data structure (perfd.pl)
+5/7/03		Integrated Events into new data structure (perfd.pl)
+5/8/03		Fixed bug when handling RRDs for a sub 
+		service (perfd.pl)
+
+1.41
+5/12/03		Fixed bug causing incorrect file system statistics
+		(fs.pl)
+5/14/03		Included all needed perl libraries with each binary
+		eliminating need to set paths
+5/15/03		Added support to handle updating data structures from
+		web FE (perfd.pl)
+
+1.42
+5/17/03		Added better error handling and process management
+		(perf.sh)
+5/20/03		Added functionality to handle dynamic updates from web 
+		FE (perfd.pl)
+5/20/03		Added shared memory object to allow multi process access
+		to host data hash (perfd.pl)
+5/21/03		Added locking to serialization/de-serialization (perfd.pl)
+5/23/03		Added locking to control shared memory between child
+		and parent processes (perfd.pl)
+5/23/03		Fixed bug in pattern match during install (perfconfig.sh)
+5/24/03		Added ability to set shared memory object id via perf-conf
+		(perfd.pl)
+
+1.43
+5/26/03		Added better debug logging (perfctl.pl & perf.pl)
+5/29/03		Fixed bug in shutdown of server and client processes
+		(perf.sh)
+5/29/03		Separated client side logging into unique file
+		(perfctl.pl & perf.pl)
+6/5/04		Replaced sar with iostat, vmstat, and netstat providing
+		improved metrics continuity (perfctl.pl)
+6/14/03		Added true scheduling of metrics gathering programs
+		(perfctl.pl)
+6/16/03		Fixed logging bug (perf.sh)
+6/18/03		Added RRA and DST definitions to PerfStat libraries
+		(Service.pm & Metric.pm)
+6/19/03		Fixed runtime bug (perfctl.pl)
+
+1.44
+6/22/03		Added ability to configure RRA dynamically per service (perfd.pl)
+6/22/03		Added ability to configure DST, Heartbeat, RRAMin, and RRAMax
+		(perfd.pl)
+6/24/03		Separated socket data from tcp (socket.pl)
+6/24/03		Added error logging to data gathering programs
+6/26/03		Fixed locking bug with host status (perfd.pl)
+6/26/03		Fixed bug in startup of PerfServer and PerfClient (perf.sh)
+
+1.45
+6/27/03		Fixed CheckStatus() bug while running client only (perfctl.pl)
+6/27/03		Added Step to PerfStat libraries (Service.pm)
+6/27/03		Added ability to configure Step when creating RRD (perfd.pl)
+7/3/03		Added functionality to handle incremental counters 
+		(tcp.pl and socket.pl)
+7/7/03		Fixed bug in parsing of vmstat causing RRDCheck and
+		getRRDIndexes failures from perfd (perfctl.pl)
+7/10/03		Fixed bug in update of hostHash causing a complete data
+		load for new services (perfd.pl)
+7/17/03		Fixed bug causing new hosts data to be reloaded everytime from
+		disk instead up being updated only once in parent shared memory
+		object (perfd.pl)
+7/18/03		Improved locking in client programs (perfctl.pl)
+7/19/03		Improved data load for hostHash to load a specific services
+		config instead of all the services for a given host (perfd.pl)
+7/19/03		Added error handling for freeze/thaw of global hostHash
+		(perfd.pl)
+7/19/03		Added error handling for non-numeric values in data (perfd.pl)
+
+1.46
+7/21/03		Added counter handling for multi-device services
+7/26/03		Improved PerfStat client and server performance by increasing 
+		buffered data and reducing the number of socket connections
+		required (perfctl.pl and perfd.pl)
+7/27/03		Fixed bug in counter handling when restarting PerfStat
+7/31/03		Fixed bug in io data collection causing data to intermitently
+		not be updated (perfctl.pl)
+7/31/03		Fixed bug in file locking on Solaris preventing PerfStat server
+		from initiating (perfd.pl)
+8/4/03		Fixed bug in directory creation causing deserialization problems
+		(perfd.pl)
+8/7/03		Fixed bug causing data to be sent to PerfStat server at random
+		intervals (perfctl.pl)
+8/8/03		Fixed bug causing PerfStat to not log errors on startup (perf.sh)
+
+1.47
+11/4/03		Added application uptime tracking (perfd.pl)
+11/18/03	Redesinged hostIndex data structure to include a hash for host
+		specific items (Host.pm/Service.pm/Metric.pm/Graph.pm)
+11/24/03	Moved OS field from service to host under hostIndex (Host.pm)
+11/25/03	Added new fields to hostIndex: lastUpdate (host), lastUpdate
+		(service), and status (service) (Host.pm/Service.pm)	
+11/28/03	Added status for metrics to hostIndex (perfd.pl)
+12/1/03		Added ability to track lastUpdate of client with hostIndex
+		(perfd.pl)
+12/3/03		Expanded nostatus tracking to include services instead of
+		just hosts (perfd.pl/perfctl.pl)
+12/6/03		Added IP and owner fields to hostIndex (Host.pm)
+12/7/03		Moved perf-hosts functionality into hostIndex (perfd.pl)
+12/10/03	Added tool for creating hosts (addHost.pl)
+12/15/03	Moved logs under perfhome/logs (perfd.pl/perfctl.pl)
+12/16/03	Separated status check from perfctl.pl (status.pl)  
+12/18/03	Moved contents of state dir into var/db/hosts (perfd.pl)
+12/23/03	Created hostconfig program to add/del/mod hosts (hostconfig.pl)
+12/26/03	Created perfconfig program to modift PerfStat client/server
+		configuration (perfconfig.pl)
+1/5/04		Added ability for PerfStat to run under single user
+
+1.48
+1/8/04		Added error checking for service programs (perfctl.pl)
+1/11/04		Added installation program to ease deployment (perfinstall.pl)
+1/12/04		Added ability to run PerfStat configuration as root with
+		[-root] option (perfconfig.pl)
+1/12/04		Extended error logging in host configuration program 
+		(hostconfig.pl)
+1/13/04		Moved version number to perf-conf (perf.sh/perfinstall.pl)
+1/15/04		Added ability to set PerfStat server IP in the event the
+		server is multi-homed (perfd.pl)
+1/15/04		Fixed bug in device parsing when device had certain wild
+		characters (perfd.pl)
+1/17/04		Fixed bug in RRD update causing data inconsistency problems
+		for various metrics (perfd.pl)
+1/18/04		Improved RRD update algorythim to update all DS's for a 
+		service at the same time (perfd.pl)
+2/4/04		Added new reporting program for a host/service (perfreport.pl)
+2/15/04		Redesigned graph data objects to allow for dynamic graph
+		generation (Graph.pm/GraphMetric.pm)
+2/20/04		Added high and low threshold to metric for better control
+		of user inputs (Metric.pm)
+2/24/04		Updated serialized files for Linux, Solaris, and Windows
+		with new graph objects (ser files)
+
+1.49
+3/12/04		Added improved process managment to not only look for the pid,
+		but check the username as well (perf.sh)
+3/20/04		Restricted shared memory access to user and group (perfd.pl)
+3/22/04		Added PerfStat group to allow apache and other non-perfstat
+		users access to application (perf-conf)
+4/1/04		Implememted host connectivity test via ping (perfctl.pl/conn.pl)
+4/3/04		Expanded ping capabilities to include host services 
+		(perfctl.pl/conn.pl)
+4/4/04		Fixed bug preventing nostatus from being updated in .ser files
+		(status.pl)
+4/13/04		Improved process managment of conn process, so that it doesn't
+		start if a process is already running (conn.pl)
+4/27/04		Added service configuration tool to handle managment of host
+		services via the cli (serviceconfig.pl)
+4/29/04		Fixed bug causing deletion of non-existent temporary state
+		files (perfd.pl)
+5/1/04		Implemented userIndex object in shared memory for fast access
+		to user data (perfd.pl)
+5/4/04		Added ability to disable event configuration for a given metric
+		via hasEvents (perfd.pl)
+5/6/04		Added app user verification when adding or modifying hosts
+		(hostconfig.pl)
+5/9/04		Added user configuration tool for managing Perfstat users
+		(userconfig.pl)
+5/11/04		Added user role verification when adding or modifying hosts
+		(hostconfig.pl)
+5/12/04		Added input checking to Perfstat user configuration (userconfig.pl)
+5/14/04		Updated Perfstat config program to reflect settings for user
+		shared memory (perfconfig.pl)
+
+1.50
+5/23/04		Fixed bug in service update while adding conn.port services
+		(serviceconfig.pl)
+5/23/04		Fixed bug in user creator verification (userconfig.pl)
+5/23/04		Changed permissions to 770 on perfstat dir and added apache
+		user to perfstat group (perfinstall.pl)
+5/27/04		Changed freeze operation of hostIndex to occur only when there
+		is a status change (conn.pl)
+5/28/04		Converted status logic to use the hostIndex instead of a file
+		based data model (perfd.pl)
+5/28/04		Tuned status updates, so that updates are only made if the
+		status of a metric changed (perfd.pl)
+5/29/04		Added event logging and notification to conn related metrics
+		(conn.pl)
+6/29/04		Changed event log output to be the same amoung all services 
+		(conn.pl/perfd.pl)
+6/30/04		Added metricValue to hostIndex (perfd.pl)
+7/1/04		Fixed bug in host status check causing status to be changed
+		to nostatus during every STATUS_INTERVAL (status.pl)
+7/1/04		Changed disk serialization to serialize data foreach service
+		at every update (conn.pl/status.pl/perfd.pl)
+7/2/04		Fixed bug in event logging when status is equal to nostatus
+		(perfd.pl)
+7/2/04		Fixed bug in event logging when status is equal to nostatus
+		(conn.pl/perfd.pl)
+7/6/04		Changed umask to 0007 and permissions for new dirs to 0770
+		(conn.pl/perfd.pl/hostconfig.pl/serviceconfig.pl/userconfig.pl)
+8/3/04		Ported install script from perl to shell to allow for better
+		integration with rpm and pkgadd (perfinstall.sh)
+8/6/04		Fixed bug in tcp collection causing incorrect data to be sent
+		for multiple interfaces (tcp.pl)
+8/22/04		Removed shared memory due to issues encountered on the Solaris
+		operating system (perfd.pl/userconfig.pl/hostconfig.pl/conn.pl/
+		status.pl)
+
+1.51
+11/9/04		Added host information gathering script (info.pl)
+11/11/04	Updated perfstat daemon to handle different data types, data &
+		info (perfd.pl)
+11/11/04	Updated perfstat client daemon to schedule host info job
+		(perfctl.pl)
+
+1.52
+1/15/05		Updated perfreport tool to handle individual or many metrics to support
+		new pie/bar graphs (perfreport.pl)
+2/4/05		Implemented new lookup mappings
+2/9/05		Seperated alert email feature from perfd.pl (alert.pl)
+2/10/05		Changed SMTP program enabling better connection handling
+		and more features (alert.pl)
+2/12/05		Added ability to send email alerts to multiple instead of single
+		recipients (alert.pl)
+2/16/05		Added metric totals for io, fs, and tcp (io.pl/fs.pl/tcp.pl)
+2/24/05		Separated rrdtool (GPL code) from perfd.pl (rrdAPI.pl)
+3/5/05		Added OS patch levels to host info and removed swap (info.pl)
+3/5/05		Changed uptime from hours to days (uptime.pl)
+3/10/05		Added event logging and alerting for nostatus alerts (status.pl)
+3/16/05		Added snmp trap support for third party application via the
+		TRAP_SCRIPT variable in perf-conf (perfd.pl,status.pl,conn.pl)
+3/29/05		Fixed alerting bug where the alert program ran on top of itself
+		(alert.pl)
+3/29/05		Added self process monitoring to status program (status.pl)
+5/19/05		Added error checking to ensure sub-service isn't null (perfd.pl)
+6/11/05		Fixed bug in counter metrics where it wasn't calculating over time,
+		we are no longer useing DERIVE function in RRDTOOL (tcp.pl/memory.pl/socket.pl)
+10/25/05	Updated ping and nostatus programs to handle notification ser files
+		(status.pl/conn.pl)
+10/25/05	Fixed bug in GetConfiguration sub where on some OS's the environment
+		variables were getting garbled; used split instead of regex for
+		parsing (all programs)
+11/12/05	Removed tar and gzip from perf-conf, thus disabling snapshot abilities (perf-conf)
+11/12/05	Rounded all Linux/Windows metrics to two decimal points

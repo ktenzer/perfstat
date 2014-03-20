@@ -1,0 +1,234 @@
+body
+{
+	background-color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif
+}
+.navHeader
+{
+	font-family: verdana, arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #136DA8;
+	margin-bottom: 10px;
+}
+.navHeader a:link, .navHeader a:active, .navHeader a:visited
+{
+	text-decoration: underline;
+	color: #136DA8;
+}
+.navHeader a:hover
+{
+	text-decoration: none;
+	color : #DD6900; 
+}
+/* Style the table 1 */
+.table1 
+{
+	background-color: #FFFFFF;
+	border: 2px #006699 solid;
+	margin-bottom: 10px;
+}
+.table1 a:link, .table1 a:active, .table1 a:visited
+{
+	text-decoration: underline;
+	color : #006699; 
+}
+.table1 a:hover
+{
+	text-decoration: underline;
+	color : #DD6900; 
+}
+.table1 th,td
+{ 
+	font-family: Verdana, Arial, Helvetica, sans-serif
+}
+.table1 td.tdTop
+{
+	color: #FFA34F;
+	font-size: 11px; font-weight : bold;
+	background-color: #006699;
+	height: 24px;
+	padding-left: 6px;
+	border-width: 1px 1px 0px 1px;
+	background-image: url(../images/content/tableHeaderBG.gif);
+	vertical-align: middle;
+}
+.table1 th
+{
+	color : #006699; 
+	font-size: 11px; font-weight : bold;
+	background-color: #006699;
+	border-style: solid;
+	border: #FFFFFF;
+	border-width: 1px 1px 0px 1px;
+	height: 24px;
+	background-image: url(../images/content/tableDescriptorBG.gif);
+	padding-left: 6px;
+}
+.table1 td.liteGray
+{
+	padding-left: 6px;
+	padding-right: 6px;
+	background-color: #EFEFEF;
+}
+.table1 td.darkGray
+{
+	padding-left: 6px;
+	padding-right: 6px;
+	background-color: #DEE3E7;
+}
+.table1 td.tdBottom
+{
+	height: 29px;
+	background-image: url("../images/content/tableBottomBG.gif");
+	background-color:#D1D7DC;
+	border: #FFFFFF;
+	border-style: solid; 
+	border-width: 0px 1px 1px 1px;
+}
+/* Define Unique spans */
+.table1Text1 { font-weight: bold; font-size: 12px; color: #006699; }
+.table1Text2 { font-size : 11px; }
+/* Style the table2*/
+.table2 
+{
+	background-color: #458FB5;
+}
+.table2  th,td
+{ 
+	font-family: Verdana, Arial, Helvetica, sans-serif
+}
+.table2 th
+{
+	color: #136DA8;
+	font-size: 9px;
+	font-weight: bold;
+	background-color: #E5E5E5;
+	background-image: url(../images/content/table2HeaderBG.gif);
+	height: 17px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+.table2 td
+{ 
+	background-color: #FFFFFF;
+	text-align: center;
+}
+.table2 a:link, .table2 a:active, .table2 a:visited
+{
+	text-decoration: none;
+}
+.table2 a:hover
+{
+	text-decoration: none;
+}
+.table2 a:link img, .table2 a:active img, .table2 a:visited img
+{
+	border: 0px;
+}
+.table2 a:hover img
+{
+	border: 0px;
+}
+/* Style the table3*/
+.table3
+{
+	background-color: #458FB5;
+}
+.table3  th,td
+{ 
+	font-family: Verdana, Arial, Helvetica, sans-serif
+}
+.table3 th
+{
+	color: #136DA8;
+	font-size: 9px;
+	font-weight: bold;
+	background-color: #E5E5E5;
+	background-image: url(../images/content/table2HeaderBG.gif);
+	height: 17px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+.table3 td
+{ 
+	background-color: #FFFFFF;
+	text-align: left;
+}
+.table3 a:link, .table3 a:active, .table3 a:visited
+{
+	text-decoration: none;
+}
+.table3 a:hover
+{
+	text-decoration: none;
+}
+/* Define Unique spans */
+.table3Text1 { font-size: 10px; color: #006699; }
+/* Style the table4*/
+.table4
+{
+	background-color: #458FB5;
+}
+.table4  th,td
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif
+}
+.table4 th
+{
+	color: #136DA8;
+	font-size: 9px;
+	font-weight: bold;
+	background-color: #E5E5E5;
+	background-image: url(../images/content/table2HeaderBG.gif);
+	height: 17px;
+	padding-left: 3px;
+	padding-right: 3px;
+  text-align: left;
+}
+.table4 td
+{
+	background-color: #FFFFFF;
+	text-align: left;
+}
+.table4 a:link, .table4 a:active, .table4 a:visited
+{
+	text-decoration: underline;
+}
+.table4 a:hover
+{
+	text-decoration: underline;
+}
+.smallJSLinkTable a:link, .smallJSLinkTable a:visited
+{
+	font-size: 7pt;
+	font-weight: bold;
+	text-decoration: none;
+	background-color: transparent;
+	color: #000000;
+}
+.smallJSLinkTable a:hover, .smallJSLinkTable a:visited:hover
+{
+	color: #0000FF;
+}
+
+/* Style the tableHeader*/
+.tableHeader
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #FFA34F;
+	font-size: 11px; font-weight : bold;
+}
+
+.smallLink { font-weight: normal; font-size: 9px; color: #000000; }
+.smallLink a:link, .smallLink a:active, .smallLink a:visited
+{
+	text-decoration: none;
+	color: #000000; 
+}
+.smallLink a:hover
+{
+	text-decoration: underline;
+	color: #DD6900; 
+}
+.userMessage { font-weight: normal; font-size: 12px; color: #0000FF; }

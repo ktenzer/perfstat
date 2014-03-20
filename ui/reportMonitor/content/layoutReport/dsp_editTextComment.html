@@ -1,0 +1,33 @@
+<form action="index.pl" method="post">
+<input type="hidden" name="action" value="editTextComment">
+<input type="hidden" name="reportNameID" value="<%$reportNameID%>">
+<input type="hidden" name="contentID" value="<%$contentID%>">
+	<table border="0" cellpadding="0" cellspacing="0">
+		%if ($sessionObj->param("userMessage1") ne "") {
+		<tr>
+			<td class="liteGray" valign="top" align="left"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+		</tr>
+		<tr>
+			<td class="liteGray" valign="top" align="left"><img name="xallHosts_host1" src="../../../appRez/images/common/spacer.gif" border="0" width="9" height="9"></td>
+		</tr>
+		%$sessionObj->param("userMessage1", "");
+		% }
+		<tr>
+			<td>
+				<fieldset>	
+        			<legend align="top">Edit Text Comment</legend>
+					<textarea name="textComment" cols="65" rows="7"><%$textComment%></textarea>
+				</fieldset>
+			</td>
+		</tr>
+		<td class="liteGray" valign="top" align="center">
+			<table border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td><input class="liteButton" type="submit" name="Update" value="UPDATE"></td>
+				<td>&nbsp;</td>
+				<td><input class="liteButton" type="button" name="clear" value="Go Back" onclick="location='index.pl?reportNameID=<%$reportNameID%>';"></td>
+			  </tr>
+			</table>
+      </td>
+	</table>
+</form>

@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('clientStatus');">
+		<div class="navHeader">
+			Status Monitor :: <a href="../level1/index.pl"><%$sessionObj->param("groupViewStatus") ne "shared" ?  "My HostGroups" : "Shared HostGroups"%></a>  :: <a href="../level2/index.pl?hgOwner=<%$sessionObj->param('hgOwner')%>&hostGroupID=<%$sessionObj->param('hostGroupID')%>"><%$sessionObj->param("hostGroupID")%></a> :: <a href="../level3/index.pl?hostGroupID=<%$sessionObj->param("hostGroupID")%>&hostName=<%$sessionObj->param("hostName")%>&serviceName=<%$sessionObj->param("serviceName")%>"><%$sessionObj->param("hostName")%></a>
+		</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="6" valign="middle" align="left">Event Log :: <%$sessionObj->param("serviceName")%> </td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Date</th>
+				<th nowrap="nowrap" valign="middle" align="left">Status</th>
+				<th nowrap="nowrap" valign="middle" align="left">Metric</th>
+				<th nowrap="nowrap" valign="middle" align="left">Value</th>
+				<th nowrap="nowrap" valign="middle" align="left">Boundary</th>
+				<th nowrap="nowrap" valign="middle" align="left">Unit</th>
+			</tr>
+			%foreach my $logEntry (@$logData) {
+			%$logEntry =~ m/(.*)\s+(OK|WARN|CRIT|nostatus)\s+(.*)\s+\S+\s+(\d+\.?\d*|\S+)\s+\S+\s+(\d+\.?\d*|\S+)\s+\S+\s+(\S+)/;
+			% my $date=$1; my $status=$2; my $friendlyName=$3; my $value=$4; my $boundary=$5; my $unit=$6;
+			<tr>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$date%></span></td>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$status%></span></td>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$friendlyName%></span></td>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$value%></span></td>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$boundary%></span></td>
+				<td class="liteGray" nowrap><span class="table1Text2"><%$unit%></span></td>
+			</tr>
+			%}
+		</table>
+	</body>
+</html>

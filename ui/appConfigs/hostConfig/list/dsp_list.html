@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Perfstat Performance and Status Monitor</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+	<body onLoad="parent.navigation.setLinkChosen('hostConfig');">
+		<div class="navHeader">Host Config</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="4" valign="middle" align="left">Add Host</td>
+			</tr>
+			% if ($sessionObj->param("userMessage") ne "") {
+			<tr>
+				<td class="liteGray" valign="top" align="left" colspan="4"><span class="userMessage"><%$sessionObj->param("userMessage1")%></span></td>
+			</tr>
+			% $sessionObj->param("userMessage1", "");
+			% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+				<th nowrap="nowrap" valign="top" align="left">OS</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form name="insertItem" action="index.pl" method="post">
+				<input type="hidden" name="action" value="add">
+				<td class="liteGray" align="left" valign="middle"><input type="text" name="newHostName" value="<%$newHostName%>" size="24"></td>
+				<td class="liteGray" nowrap="nowrap" valign="middle" align="left"><input type="text" name="newipAddress" value="<%$newipAddress%>" size="24"></td>
+				<td class="liteGray" align="left" valign="middle">
+					<select name="newosName" size="1">
+						% foreach my $osNameTemp (sort( @$osList)) {
+							<option value="<%$osNameTemp%>" <%$osNameTemp eq $newosName ? "selected" : "";%>><%$osNameTemp%></option>
+						%}
+					</select>
+				</td>
+				<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+		</table>
+		% if ($lenHostArray > 0) {
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="4">Manage Hosts</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="2%">Actions</th>
+				<th align="left" valign="middle" nowrap="nowrap">Host Name</th>
+				<th align="left" valign="middle" nowrap="nowrap">IP</th>
+				<th nowrap="nowrap" valign="middle" align="left">OS</th>
+			</tr>
+			%foreach my $tempArray (@$hostArray) {
+			%if ($editFlag eq $tempArray->[0] && $sessionObj->param("userMessage2") ne "") {
+				<tr>
+					<td class="liteGray" align="left" valign="top" width="2%">&nbsp;</td>
+					<td colspan="3" align="left" valign="top" class="liteGray"><span class="userMessage"><%$sessionObj->param("userMessage2")%></span></td>
+				</tr>
+				% $sessionObj->param("userMessage2", "");
+			%}
+			<tr>
+				<td class="liteGray" align="left" valign="top" width="10">
+					<table cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							%$queryString = "hostName=$tempArray->[0]";
+							%if ($editFlag ne $tempArray->[0]) {
+								<th nowrap="nowrap"><a href="index.pl?editFlag=<%$tempArray->[0]%>">&nbsp;Edit&nbsp;</a></th>
+							% } else {
+								<th nowrap="nowrap"><a href="index.pl">Clear</a></th>
+							%}
+							<th nowrap="nowrap"><a href="../alerts/index.pl?<%$queryString%>">Alerts</a></th>
+							<th nowrap="nowrap"><a href="../metrics/index.pl?<%$queryString%>">Metrics</a></th>
+							<th nowrap="nowrap"><a href="index.pl?action=delete&hostName=<%$tempArray->[0]%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$tempArray->[0]%>');">Delete</a></th>
+						</tr>
+					</table>
+				</td>
+				<form action="index.pl" method="get">
+				<input type="hidden" name="action" value="edit">
+				<input type="hidden" name="hostName" value="<%$tempArray->[0]%>">
+				<td width="25%" align="left" valign="top" nowrap class="liteGray">
+					%if ($editFlag ne $tempArray->[0]) {
+						<span class="table1Text1"><span class="table1Text1"><%$tempArray->[1]%></span>
+					% } else {
+						<input type="text" name="editName" value="<%$tempArray->[1]%>" size="30" onKeyPress="return submitenter(this,event)">
+					%}
+				</td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left">
+					%if ($editFlag ne $tempArray->[0]) {
+						<span class="table1Text2"><%$tempArray->[2]%></span>
+					% } else {
+						<input type="text" name="editipAddress" value="<%$tempArray->[2]%>" size="24" onKeyPress="return submitenter(this,event)">
+					%}
+				</td>
+				<td class="liteGray" align="left" valign="middle">
+					<span class="table1Text2"><%$tempArray->[3]%></span>
+				</td>
+				</form>
+			</tr>
+			% }
+		</table>
+		%}
+	</body>
+</html>

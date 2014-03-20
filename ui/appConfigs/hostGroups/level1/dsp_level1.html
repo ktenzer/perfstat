@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+	</head>
+
+	<body onLoad="parent.navigation.setLinkChosen('hostGroups');">
+		<div class="navHeader">Host Groups</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Add Host Group</td>
+			</tr>
+			% if ($sessionObj->param("userMessage") ne "") {
+			<tr>
+				<td class="liteGray" valign="top" align="left" colspan="3"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+			</tr>
+			% $sessionObj->param("userMessage", "");
+			% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Group Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form name="insertItem" action="index.pl" method="post">
+				<input type="hidden" name="action" value="insertHostGroup">
+				<input type="hidden" name="adminName" value="<%$adminName%>">
+				<input type="hidden" name="userName" value="<%$userName%>">
+				<td class="liteGray" align="left" valign="middle"><input type="text" name="hgNewName" value="<%$hgNewName%>" size="24"></td>
+				<td class="liteGray" nowrap="nowrap" valign="middle" align="left"><input type="text" name="description" value="<%$description%>" size="35"></td>
+				<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+		</table>
+		% if (@$myHostGroupArray != 0) {	
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="4">My Host Groups</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="10">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%">Host Group Name</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%">Number of Hosts</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+			</tr>
+			%foreach my $tempArray (@$myHostGroupArray) {
+			%my $hgOwner = $userName;
+			%my $hgName = $tempArray->[0];
+			%my $hgDescription = $tempArray->[1];
+			%my $hgNumberOfHosts = $tempArray->[2];
+			%$queryString = "adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) . "&hgOwner=" . URLEncode($hgOwner) . "&hgName=" . URLEncode($hgName) . "&hgNewName=" . URLEncode($hgName) . "&description=" . URLEncode($hgDescription);
+			<tr>
+				<td class="liteGray" align="left" valign="top" width="10">
+					<table cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="../config/index.pl?<%$queryString%>">Config</a></th>
+							<th nowrap="nowrap"><a href="../share/index.pl?<%$queryString%>">Share</a></th>
+							<th nowrap="nowrap"><a href="index.pl?action=deleteHostGroup&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to delete <%$hgName%>');">Delete</a></th>
+						</tr>
+					</table>
+				</td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><span class="table1Text1"><%$hgName%></span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$hgNumberOfHosts%></span></td>
+				<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$hgDescription%></span></td>
+			</tr>
+			%}
+		</table>
+		%}
+		% if (@$sharedHostGroupArray != 0) {	
+		<table cellpadding="2" cellspacing="1" border="0" class="table1" width="100%">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" valign="middle" align="left" colspan="5">Shared Host Groups</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left" width="10">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%">Host Group Owner</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%">Host Group Name</th>
+				<th nowrap="nowrap" valign="middle" align="left" width="1%">Number of Hosts</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+				
+			</tr>
+			%foreach my $tempArray (@$sharedHostGroupArray) {
+			%my $hgOwner = $tempArray->[0];
+			%my $hgName = $tempArray->[1];
+			%my $hgDescription = $tempArray->[2];
+			%my $hgNumberOfHosts = $tempArray->[3];
+			%$queryString = "adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) . "&hgOwner=" . URLEncode($hgOwner) . "&hgName=" . URLEncode($hgName);
+			<tr>
+				<td class="liteGray" align="left" valign="top" width="10">
+					<table cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="index.pl?action=removeSharedHostGroup&<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to remove <%$hgName%> from this list');">Remove</a></th>
+						</tr>
+					</table>
+				</td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><span class="table1Text1"><%$hgOwner%></span></td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><span class="table1Text1"><%$hgName%></span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$hgNumberOfHosts%></span></td>
+				<td class="liteGray" valign="top" align="left"><span class="table1Text2"><%$hgDescription%></span></td>
+			</tr>
+			%}
+		</table>
+		%}
+	</body>
+</html>

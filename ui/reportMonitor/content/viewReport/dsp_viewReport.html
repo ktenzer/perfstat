@@ -1,0 +1,218 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Status And Performance Monitoring</title>
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../appRez/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../appRez/javaScripts/contentFrame.js"></script>
+		<script language="javascript" src="../../../appRez/javaScripts/rm.content.js"></script>
+	</head>
+
+<body onLoad="<%$updateNav;%>">
+<table cellpadding="0" cellspacing="0" border="0">
+	% foreach my $tempColArray (@$displayRowArray) {
+		<tr>
+		% foreach my $tempStruct (@$tempColArray) {
+			% my $colSpan = $tempStruct->{'colSpan'};
+			% my $contentStruct = $tempStruct->{'payload'};
+			<td valign="top" colspan="<%$colSpan%>">
+			%if ($contentStruct->{'contentType'} eq "textComment") {
+				<table cellpadding="0" cellspacing="0" border="0" class="table1" width="100%">
+					<tr>
+						<td class="liteGray" style="padding:5px;"> 
+		  					<span style="font:normal normal normal 15px Arial, Helvetica, sans-serif;"><%$contentStruct->{'textComment'}%></span>
+						</td>
+					</tr>
+				</table>
+			%} elsif ($contentStruct->{'contentType'} eq "hostGroupGraph") {
+				%my $hgName = $contentStruct->{'hgName'};
+				%my $serviceName = $contentStruct->{'serviceName'};
+				%my $graphName = $contentStruct->{'graphName'};
+				%my $intervalName = $contentStruct->{'intervalName'};
+				%my $graphType = $contentStruct->{'graphType'};
+				<table class="table1" style="margin-right:3px;" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td class="tdTop" style="font-size: <%$fontSize%>" nowrap="nowrap"><%$hgName%> :: <%$serviceName%> :: <%$graphName%> :: <%$intervalName%></td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="center">
+							%if ($graphType eq "bar") {
+								<img src="../../../appLib/graphs/hostgroupGraphs/singleServiceGraphs/drawGDGraph/index.pl?action=drawGraph&hgName=<%$hgName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=bar" border="0">
+							%} elsif ($graphType eq "pie") {
+								<img src="../../../appLib/graphs/hostgroupGraphs/singleServiceGraphs/drawGDGraph/index.pl?action=drawGraph&hgName=<%$hgName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=pie" border="0">
+							%}
+						</td>
+					</tr>
+				</table>
+			%} elsif ($contentStruct->{'contentType'} eq "hostAssets") {
+				%my $hostName = $contentStruct->{'hostName'};
+				%my $displayHostName = $contentStruct->{'displayHostName'};
+				%my $cpuAssets = $contentStruct->{'cpuAssets'};
+				%my $numCPUassets = @$cpuAssets;
+				%my $memAssets = $contentStruct->{'memoryAssets'};
+				%my $numMemAssets = @$memAssets;
+				%my $osAssets = $contentStruct->{'osAssets'};
+				%my $numOSassets = @$osAssets;
+				%my $hostObject = populateHostObject($hostName);
+				<table border="0" cellpadding="0" cellspacing="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap"><%$displayHostName%></td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="left">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="left">
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									%if ($numCPUassets) {
+									<td valign="top">
+										<table class="table2" cellpadding="2" cellspacing="1" border="0">
+											<tr align="left">
+												<th colspan="2" nowrap="nowrap">CPU</th>
+											</tr>
+											%if (searchArray($cpuAssets, 'model')) {
+											% my $cpuModel = $hostObject->getCpuModel();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Model:</b></td>
+												<td style="text-align:left;"><span class="table1Text2"><%$cpuModel%></td>
+											</tr>
+											%}
+											%if (searchArray($cpuAssets, 'speed')) {
+											% my $cpuSpeed = $hostObject->getCpuSpeed();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Speed:</b></td>
+												<td nowrap style="text-align:left;"><span class="table1Text2"><%$cpuSpeed%> MHZ</td>
+											</tr>
+											%}
+											%if (searchArray($cpuAssets, 'number')) {
+											% my $cpuNum = $hostObject->getCpuNum();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Number:</b></td>
+												<td style="text-align:left;"><span class="table1Text2"><%$cpuNum%></td>
+											</tr>
+											%}
+										</table>
+									</td>
+									<td>&nbsp;<td>
+									%}
+									%if ($numMemAssets) {
+									<td valign="top">
+										<table class="table2" cellpadding="2" cellspacing="1" border="0">
+											<tr align="left">
+												<th colspan="2" nowrap="nowrap">Mem</th>
+											</tr>
+											%if (searchArray($memAssets, 'total')) {
+											% my $memTotal = $hostObject->getMemTotal();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Total:</b></td>
+												<td nowrap style="text-align:left;"><span class="table1Text2"><%$memTotal%> MB</td>
+											</tr>
+											%}
+										</table>
+									</td>
+									<td>&nbsp;<td>
+									%}
+									%if ($numOSassets) {
+									<td valign="top">
+										<table class="table2" cellpadding="2" cellspacing="1" border="0">
+											<tr align="left">
+												<th colspan="2" nowrap="nowrap">OS</th>
+											</tr>
+											%if (searchArray($osAssets, 'name')) {
+											% my $os = $hostObject->getOS();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Name:</b></td>
+												<td style="text-align:left;"><span class="table1Text2"><%$os%></td>
+											</tr>
+											%}
+											%if (searchArray($osAssets, 'version')) {
+											% my $osVer = $hostObject->getOsVer();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Version:</b></td>
+												<td style="text-align:left;"><span class="table1Text2"><%$osVer%></td>
+											</tr>
+											%}
+											%if (searchArray($osAssets, 'kernel')) {
+											% my $kernelVer = $hostObject->getKernelVer();
+											<tr>
+												<td style="text-align:right;"><span class="table1Text2"><b>Kernel:</b></td>
+												<td style="text-align:left;"><span class="table1Text2"><%$kernelVer%></td>
+											</tr>
+											%}
+											%if (searchArray($osAssets, 'patchList')) {
+											% my $patchArray = $hostObject->getPatchesArray();
+											<tr>
+												<td valign="top" style="text-align:right;"><span class="table1Text2"><b>Patch List:</b></td>
+												<td style="text-align:left;"><span class="table1Text2">
+													%foreach my $patchName (sort(@$patchArray)) {
+														<%$patchName%>,&nbsp;
+													%}
+												</td>
+											</tr>
+											%}
+										</table>
+									</td>
+									%}
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="left">&nbsp;</td>
+					</tr>
+				</table>
+			%} elsif ($contentStruct->{'contentType'} eq "hostEvent") {
+				%my $hostName = $contentStruct->{'hostName'};
+				%my $displayHostName = $contentStruct->{'displayHostName'};
+				%my $serviceName = $contentStruct->{"serviceName"};
+				<table cellpadding="0" cellspacing="0" border="0" class="table1">
+					<tr>
+						<td class="tdTop" nowrap="nowrap">Event Log :: <%$displayHostName%> :: <%$serviceName%></td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="center" style="padding:10px;">
+							<iframe scrolling="auto" width="600" height="150" frameborder="0" src="index.pl?action=displayEventLog&hostName=<%$hostName%>&serviceName=<%$serviceName%>"></iframe>
+						</td>
+					</tr>
+				</table>
+			%} elsif ($contentStruct->{'contentType'} eq "hostGraph") {
+				%my $os = $contentStruct->{'osName'};
+				%my $hostName = $contentStruct->{'hostName'};
+				%my $displayHostName = $contentStruct->{'displayHostName'};
+				%my $serviceName = $contentStruct->{'serviceName'};
+				%my $graphName = $contentStruct->{'graphName'};
+				%my $intervalName = $contentStruct->{'intervalName'};
+				%my $graphType = $contentStruct->{'graphType'};
+				%my $graphIndex = "multiServiceGraphs";
+				%if ( $contentStruct->{'graphServiceType'} eq "singleService") {
+					%$graphIndex = "singleServiceGraphs";
+				%} elsif ($contentStruct->{'graphServiceType'} eq "aggregateSubService" && $serviceName =~ /^.+\.Total\b/) {						
+					%$graphIndex = "singleServiceGraphs";
+				%};
+				<table class="table1" style="margin-right:3px;" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td class="tdTop" style="font-size: <%$fontSize%>" nowrap="nowrap"><%$displayHostName%> :: <%$serviceName%> :: <%$graphName%> :: <%$intervalName%></td>
+					</tr>
+					<tr>
+						<td class="liteGray" nowrap valign="middle" align="center" style="padding:6px 8px 6px 6px;">
+							%if ($graphType eq "line") {
+								<img src="../../../appLib/graphs/hostGraphs/<%$graphIndex%>/drawLineGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>" border="0">
+							%} elsif ($graphType eq "bar") {
+								<img src="../../../appLib/graphs/hostGraphs/<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=bar" border="0">
+							%} elsif ($graphType eq "pie") {
+								<img src="../../../appLib/graphs/hostGraphs/<%$graphIndex%>/drawGDGraph/index.pl?action=drawGraph&os=<%$os%>&hostName=<%$hostName%>&serviceName=<%$serviceName%>&graphName=<%$graphName%>&intervalName=<%$intervalName%>&graphScale=<%$graphScale%>&graphType=pie" border="0">
+							%}
+						</td>
+					</tr>
+				</table>
+			%} elsif ($contentStruct->{'contentType'} eq "blank") {
+				&nbsp;
+			%}
+			</td>
+		% }
+		</tr>
+	%}
+</table>
+</body>
+</html>

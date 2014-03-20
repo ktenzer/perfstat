@@ -1,0 +1,65 @@
+body
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #E5e5e5;
+	margin: 2px;
+	padding: 2px;
+}
+
+.table1
+{
+	background-color: #FFFFFF;
+	border: 2px #98AAB1 solid;
+	margin-bottom: 6px;
+}
+
+.table1 td
+{
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	background-color: transparent;
+	color: #136DA8;
+}
+
+.table1 td.header
+{
+	background-image: url("../images/navigation/tableHeaderBG.gif");
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.table1 td.subheader
+{
+	background-color: #136da8;
+	height: 15px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.table2 a:link, .table2 a:visited
+{
+	font-size: 7pt;
+	font-weight: bold;
+	text-decoration: none;
+	background-color: transparent;
+	color: #FFFFFF;
+}
+.table2 a:hover, .table2 a:visited:hover
+{
+	color: #000000;
+}
+
+a:link, a:visited
+{
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	background-color: transparent;
+	color: #136DA8;
+}
+a:hover, a:visited:hover
+{
+	color: #D86E12;
+}

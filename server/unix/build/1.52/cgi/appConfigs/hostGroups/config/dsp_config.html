@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>PerfStat Tool: Perfomance Monitoring & Status Notification</title>
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/contentFrame.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="../../../perfStatResources/styleSheets/forms.css" media="screen">
+		<script language="javascript" src="../../../perfStatResources/javaScripts/contentFrame.js"></script>
+	</head>
+
+	<body>
+		<div class="navHeader">
+			<a href="../level1/index.pl?adminName=<%$adminName%>&userName=<%$userName%>">Host Groups</a> :: <%$sessionObj->param("selectedAdmin")%> :: <%$sessionObj->param("selectedUser")%> :: <%$hgName%>
+		</div>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Config Host Group</td>
+			</tr>
+			% if ($sessionObj->param("userMessage") ne "") {
+			<tr>
+				<td class="liteGray" valign="top" align="left" colspan="3"><span class="userMessage"><%$sessionObj->param("userMessage")%></span></td>
+			</tr>
+			% $sessionObj->param("userMessage", "");
+			% }
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Group Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">Description</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="updateHostGroup">
+				<input type="hidden" name="adminName" value="<%$adminName%>">
+				<input type="hidden" name="userName" value="<%$userName%>">
+				<input type="hidden" name="hgName" value="<%$hgName%>">
+				<td class="liteGray" align="left" valign="top"><input type="text" name="hgNewName" value="<%$hgNewName%>" size="24"></td>
+					<td class="liteGray" nowrap="nowrap" valign="top" align="left"><input type="text" name="description" value="<%$description%>" size="35"></td>
+					<td class="darkGray" align="center" valign="middle">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td nowrap="nowrap"><input class="liteButton" type="submit" name="submit" value="ENTER"></td>
+							</tr>
+						</table>
+					</td>
+				</form>
+			</tr>
+		</table>
+		<table cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="2" valign="middle" align="left">Add Host</td>
+			</tr>
+			% if (keys(%$hostHash) != 0) {
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap">Actions</th>
+			</tr>
+			<tr>
+				<form action="index.pl" method="post">
+				<input type="hidden" name="action" value="insertHost">
+				<input type="hidden" name="adminName" value="<%$adminName%>">
+				<input type="hidden" name="userName" value="<%$userName%>">
+				<input type="hidden" name="hgName" value="<%$hgName%>">
+				<input type="hidden" name="hgNewName" value="<%$hgNewName%>">
+				<input type="hidden" name="description" value="<%$description%>">
+				<td class="liteGray" align="left" valign="middle">
+					<select name="hostName" size="1">
+						%foreach my $hostHashKey (sort(keys(%$hostHash))) {
+						<option value="<%$hostHashKey%>"><%$hostHashKey%></option>
+						%}
+					</select>
+				</td>
+				<td class="darkGray" align="center" valign="middle"><input class="liteButton" type="submit" value="ENTER"></td>
+				</form>
+			</tr>
+			% } else {
+			<tr>
+				<td class="liteGray" align="left" valign="middle">
+					% if ($hostListLen == 0) {
+						<span class="table1Text1">No hosts are available</span>
+					% } else {
+						<span class="table1Text1">All available hosts are already in host group</span>
+					% }
+				</td>
+			</tr>
+			% }
+		</table>
+		% if (@$hostGroupMemberArray != 0) {
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Host List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" width="10">Actions</th>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+			</tr>
+			%foreach my $hostGroupMember (@$hostGroupMemberArray) {
+			%my $memberName = $hostGroupMember->[0];
+			%my $tempIP = $hostGroupMember->[1];
+			%my $queryString = 	"action=removeHost&adminName=" . URLEncode($adminName) . "&userName=" . URLEncode($userName) .  "&hgName=". URLEncode($hgName) . "&hgNewName=". URLEncode($hgNewName) . "&description=". URLEncode($description) . "&hostName=". URLEncode($memberName);
+			<tr>
+				<td class="liteGray" align="center" valign="middle" width="10">
+					<table width="100%" cellpadding="1" cellspacing="1" border="0" class="table2">
+						<tr>
+							<th nowrap="nowrap"><a href="index.pl?<%$queryString%>" onclick="return warnOnClickAnchor('Are you sure you want to remove <%$memberName%>');">Remove From List</a></th>
+						</tr>
+					</table>
+				</td>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1"><%$memberName%></span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2"><%$tempIP%></span></td>
+			</tr>
+			%}
+		</table>
+		% } else {
+		<table width="100%" cellpadding="2" cellspacing="1" border="0" class="table1">
+			<tr>
+				<td class="tdTop" nowrap="nowrap" colspan="3" valign="middle" align="left">Host List</td>
+			</tr>
+			<tr>
+				<th nowrap="nowrap" valign="middle" align="left">Host Name</th>
+				<th nowrap="nowrap" valign="middle" align="left">IP</th>
+			</tr>
+			<tr>
+				<td class="liteGray" align="left" valign="top"><span class="table1Text1">&nbsp;</span></td>
+				<td class="liteGray" nowrap="nowrap" valign="top" align="left"><span class="table1Text2">&nbsp;</span></td>
+			</tr>
+		</table>
+		% }
+	</body>
+</html>
